@@ -24,6 +24,8 @@ dependencies:
   jwt_decode: ^0.3.1
   flutter_animate: ^4.2.0+1
   numberpicker: ^2.1.2
+  url_launcher: ^6.1.14
+  data_table_2: ^2.5.8
 
 dev_dependencies:
   flutter_test:

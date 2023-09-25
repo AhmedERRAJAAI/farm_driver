@@ -8,7 +8,6 @@ import '../mywidgets/dashboard_button.dart';
 import './calendar_screen.dart';
 import './before_add_screen.dart';
 import 'reports_screen.dart';
-import '../screens/add_reports_screen.dart';
 import '../mywidgets/side_drawer.dart';
 import '../mywidgets/badge_widget.dart';
 import '../mywidgets/sites_slider.dart';
@@ -32,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   goRecordsPage(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(AddScreen.routeName);
+    Navigator.of(ctx).pushNamed(RecordScreen.routeName);
   }
 
   goToBeforeAddReportsPage(BuildContext ctx) {
@@ -64,17 +63,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       isLoading = true;
     });
     try {
-      await Provider.of<DashboardProvider>(context, listen: false)
-          .fetchSliderData()
-          .then((_) {
+      await Provider.of<DashboardProvider>(context, listen: false).fetchSliderData().then((_) {
         setState(() {
           isLoading = false;
           failedToFetch = false;
         });
       });
-      // await Provider.of<SitesBatsProvider>(context, listen: false).fetchSites();
     } catch (e) {
-      print(e);
       setState(() {
         isLoading = false;
         failedToFetch = true;
@@ -164,8 +159,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                    'Check your internet connection and refresh'),
+                                const Text('Check your internet connection and refresh'),
                                 TextButton(
                                     onPressed: () {
                                       fetchSliderData();
@@ -180,11 +174,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           width: deviceSize.width,
                         ),
               Container(
-                //Buttons
-                height: deviceSize.height * 0.27,
                 width: deviceSize.width * 1,
                 color: Colors.transparent,
-                margin: const EdgeInsets.only(top: 4),
+                margin: const EdgeInsets.only(top: 4, bottom: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -194,7 +186,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         DashboardAppButton(
                           title: "Enregistrements",
                           width: deviceSize.width * 0.45,
-                          height: deviceSize.height * 0.13,
+                          height: 110,
                           bgcolor: const Color(0xFFFFFFFF),
                           toPage: goRecordsPage,
                           icon: const Icon(
@@ -206,7 +198,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         DashboardAppButton(
                           title: "Ajouter",
                           width: deviceSize.width * 0.45,
-                          height: deviceSize.height * 0.13,
+                          height: 110,
                           bgcolor: const Color(0xFFFFFFFF),
                           toPage: goToBeforeAddReportsPage,
                           icon: const Icon(
@@ -217,14 +209,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DashboardAppButton(
                           title: "Charts",
                           width: deviceSize.width * 0.45,
-                          height: deviceSize.height * 0.13,
-                          // bgcolor: const Color(0xFFfef5e6),
+                          height: 110,
                           bgcolor: const Color(0xFFFFFFFF),
                           toPage: goToCharts,
                           icon: const Icon(
@@ -236,9 +228,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         DashboardAppButton(
                           title: "supplementation",
                           width: deviceSize.width * 0.45,
-                          height: deviceSize.height * 0.13,
-                          // bgcolor: Color(0xFFffedef),
-                          bgcolor: Color(0xFFFFFFFF),
+                          height: 110,
+                          bgcolor: const Color(0xFFFFFFFF),
                           toPage: goToCharts,
                           icon: const Icon(
                             Icons.vaccines_outlined,
@@ -251,8 +242,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
+              
               Container(
-                height: deviceSize.height * 0.3,
+                // height: deviceSize.height * 0.3,
                 width: deviceSize.width,
                 margin: const EdgeInsets.only(bottom: 60, top: 10),
                 decoration: BoxDecoration(

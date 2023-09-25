@@ -40,8 +40,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -57,9 +56,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
                             ),
                             Icon(
                               Icons.stream,
-                              color: _viaIsExpanded
-                                  ? widget.postColor
-                                  : Colors.white,
+                              color: _viaIsExpanded ? widget.postColor : Colors.white,
                             )
                           ],
                         ),
@@ -70,9 +67,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
                             });
                           },
                           child: Transform.rotate(
-                            angle: _viaIsExpanded
-                                ? 180 * (3.14159265359 / 180)
-                                : 0,
+                            angle: _viaIsExpanded ? 180 * (3.14159265359 / 180) : 0,
                             child: Icon(
                               Icons.expand_more,
                               color: widget.postColor,
@@ -97,12 +92,10 @@ class _ViabilityPostState extends State<ViabilityPost> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 6),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 6),
                           border: const OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: widget.postColor),
+                            borderSide: BorderSide(width: 1, color: widget.postColor),
                           ),
                           labelText: 'Nombre de mortalité',
                         ),
@@ -127,7 +120,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
                             ),
                           ),
                           // fillColor: Colors.red,
-                          labelText: 'Sujets éliminées',
+                          labelText: 'Sujets triés',
                           // labelStyle: TextStyle(color: Colors.red),
                         ),
                         keyboardType: TextInputType.number,
@@ -143,8 +136,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
               child: GestureDetector(
                 onTap: () {},
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -155,16 +147,12 @@ class _ViabilityPostState extends State<ViabilityPost> {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: _viaIsExpanded
-                                  ? widget.postColor
-                                  : Colors.white,
+                              color: _viaIsExpanded ? widget.postColor : Colors.white,
                             ),
                           ),
                           Icon(
                             Icons.stream,
-                            color: _viaIsExpanded
-                                ? widget.postColor
-                                : Colors.white,
+                            color: _viaIsExpanded ? widget.postColor : Colors.white,
                           )
                         ],
                       ),
@@ -177,13 +165,10 @@ class _ViabilityPostState extends State<ViabilityPost> {
                                 });
                         },
                         child: Transform.rotate(
-                          angle:
-                              _viaIsExpanded ? 180 * (3.14159265359 / 180) : 0,
+                          angle: _viaIsExpanded ? 180 * (3.14159265359 / 180) : 0,
                           child: Icon(
                             Icons.expand_more,
-                            color: _viaIsExpanded
-                                ? widget.postColor
-                                : Colors.white,
+                            color: _viaIsExpanded ? widget.postColor : Colors.white,
                             size: 26,
                           ),
                         ),

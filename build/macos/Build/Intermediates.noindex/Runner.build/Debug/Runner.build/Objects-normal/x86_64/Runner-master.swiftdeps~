@@ -1,0 +1,8 @@
+version: "Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)"
+options: "7669f2036aebf4f6f91def77b54d98fc8727cd4322733e2e3969c38671cf57ed"
+build_start_time: [1695337003, 336758000]
+build_end_time: [1695337003, 564624000]
+inputs:
+  "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/macos/Flutter/GeneratedPluginRegistrant.swift": !private [1695336912, 618084441]
+  "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/macos/Runner/AppDelegate.swift": !private [1671141058, 0]
+  "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/macos/Runner/MainFlutterWindow.swift": !private [1671141058, 0]

@@ -16,87 +16,81 @@ class LotsScreen extends StatefulWidget {
 class _LotsScreenState extends State<LotsScreen> {
   bool _isInit = true;
   bool isLoading = false;
-
+  bool failedToFetch = false;
+  List lotsData = [];
   @override
   void initState() {
-    isLoading = true;
     Future.delayed(Duration.zero).then((value) {});
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        isLoading = true;
-      });
-      final siteData =
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      Provider.of<SitesBatsProvider>(context, listen: false)
-          .fetchLots(siteData['siteId'])
-          .then((_) {
-        setState(() {
-          isLoading = false;
-        });
-      });
+    final siteData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    lotsData = Provider.of<SitesBatsProvider>(context, listen: false).lotsData;
+    if (_isInit && lotsData.isEmpty) {
+      fetchLots(siteData['siteId']);
     }
     _isInit = false;
     super.didChangeDependencies();
   }
 
-  Future<void> _refreshPage(BuildContext context, siteId) async {
-    await Provider.of<SitesBatsProvider>(context, listen: false)
-        .fetchLots(siteId);
-  }
-
-  goToPage(BuildContext ctx, routeName) {
-    Navigator.of(ctx).pushNamed(routeName);
+  void fetchLots(site) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<SitesBatsProvider>(context, listen: false).fetchLots(site).then((_) {
+        setState(() {
+          lotsData = Provider.of<SitesBatsProvider>(context, listen: false).lotsData;
+          failedToFetch = false;
+          isLoading = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        failedToFetch = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final siteData =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final lotsData = Provider.of<SitesBatsProvider>(context).lotsData;
+    final siteData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    lotsData = Provider.of<SitesBatsProvider>(context).lotsData;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            RefreshIndicator(
-              onRefresh: () => _refreshPage(context, siteData['siteId']),
-              child: Container(
-                height: deviceSize.height * 0.26,
-                padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
-                color: const Color.fromARGB(255, 179, 215, 255),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios,
-                          color: Theme.of(context).primaryColor),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          siteData['siteName'],
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Hero(
-                          tag: 'siteToLot${siteData['siteId']}',
-                          child: Icon(MdiIcons.sitemapOutline,
-                              size: 73, color: Theme.of(context).primaryColor),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+            Container(
+              // height: deviceSize.height * 0.26,
+
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+              color: Colors.blue.shade100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).primaryColor),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        siteData['siteName'],
+                        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 26, fontWeight: FontWeight.bold),
+                      ),
+                      Hero(
+                        tag: 'siteToLot${siteData['siteId']}',
+                        child: Icon(MdiIcons.sitemapOutline, size: 73, color: Theme.of(context).primaryColor),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Container(
@@ -104,49 +98,65 @@ class _LotsScreenState extends State<LotsScreen> {
               padding: const EdgeInsets.only(right: 8, left: 8),
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : lotsData.isEmpty
+                  : failedToFetch
                       ? Center(
                           child: FittedBox(
                             child: Column(
                               children: [
-                                Icon(
-                                  Icons.sentiment_dissatisfied,
-                                  size: 28,
-                                  color: Colors.orange[600],
-                                ),
                                 Text(
-                                  'Aucun lot actif trouvé',
-                                  style: TextStyle(
-                                      color: Colors.orange[900], fontSize: 16),
-                                )
+                                  'Failed to fetch',
+                                  style: TextStyle(color: Colors.orange[900], fontSize: 16),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      fetchLots(siteData['siteId']);
+                                    },
+                                    child: const Text("Actualiser"))
                               ],
                             ),
                           ),
                         )
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: AnimateList(
-                              interval: 50.ms,
-                              effects: [
-                                FadeEffect(
-                                  duration: 100.ms,
-                                )
-                              ],
-                              children: lotsData
-                                  .map((lot) => LotListItem(
-                                        id: lot.id,
-                                        effectif:
-                                            lot.ep! > 0 ? lot.ep : lot.edp,
-                                        name: lot.code,
-                                        batname: lot.name,
-                                        edp: lot.edp,
-                                        fAge: lot.firstAge,
-                                        lAge: lot.lastAge,
-                                      ))
-                                  .toList(),
+                      : lotsData.isEmpty
+                          ? Center(
+                              child: FittedBox(
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.sentiment_dissatisfied,
+                                      size: 28,
+                                      color: Colors.orange[600],
+                                    ),
+                                    Text(
+                                      'Aucun lot actif trouvé',
+                                      style: TextStyle(color: Colors.orange[900], fontSize: 16),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : SingleChildScrollView(
+                              child: Column(
+                                children: AnimateList(
+                                  interval: 50.ms,
+                                  effects: [
+                                    FadeEffect(
+                                      duration: 100.ms,
+                                    )
+                                  ],
+                                  children: lotsData
+                                      .map((lot) => LotListItem(
+                                            id: lot.id,
+                                            effectif: lot.ep! > 0 ? lot.ep : lot.edp,
+                                            name: lot.code,
+                                            batname: lot.name,
+                                            edp: lot.edp,
+                                            fAge: lot.firstAge,
+                                            lAge: lot.lastAge,
+                                          ))
+                                      .toList(),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
             ),
           ],
         ),

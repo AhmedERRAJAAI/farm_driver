@@ -43,63 +43,65 @@ class _ParamItemState extends State<ParamItem> {
       isLoading = true;
     });
     try {
-      Provider.of<SitesBatsProvider>(context, listen: false)
-          .fetchDaysReports(lotId, age, id)
-          .then((_) {
+      Provider.of<SitesBatsProvider>(context, listen: false).fetchDaysReports(lotId, age, id).then((_) {
         setState(() {
-          daysData =
-              Provider.of<SitesBatsProvider>(context, listen: false).paramDays;
-          print(daysData[0]);
+          // daysData = Provider.of<SitesBatsProvider>(context, listen: false).paramDays;
           isLoading = false;
         });
       });
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       rethrow;
     }
   }
 
-  void _showModalBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          height: 450,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Column(children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('01/02/2023'),
-                      Text('08/02/2023'),
-                    ],
+  void _showModalBottomSheet(context, age, id, lotId) async {
+    await fetchData(context, age, id, lotId).then((value) {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SizedBox(
+            height: 450,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Column(children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('01/02/2023'),
+                        Text('08/02/2023'),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  child: Column(
-                    children: [
-                      TableHeader(columns: daysData[0].header),
-                      DayWidget(days: daysData[0].body),
-                    ],
-                  ),
-                ),
-              ]),
+                  daysData.isEmpty
+                      ? CircularProgressIndicator()
+                      : SizedBox(
+                          child: Column(
+                            children: [
+                              TableHeader(columns: daysData[0].header),
+                              DayWidget(days: daysData[0].body),
+                            ],
+                          ),
+                        ),
+                ]),
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        fetchData(context, widget.age, widget.id, widget.lotId);
-        _showModalBottomSheet();
+        _showModalBottomSheet(context, widget.age, widget.id, widget.lotId);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
@@ -119,8 +121,7 @@ class _ParamItemState extends State<ParamItem> {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       widget.paramName,
-                      style:
-                          TextStyle(color: Colors.grey.shade800, fontSize: 13),
+                      style: TextStyle(color: Colors.grey.shade800, fontSize: 13),
                     ),
                   ),
                   Text(
@@ -137,10 +138,7 @@ class _ParamItemState extends State<ParamItem> {
                 children: <Widget>[
                   Text(
                     widget.reel.toString(),
-                    style: TextStyle(
-                        color: Colors.grey.shade800,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
+                    style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   EcartChip(
                     colorName: widget.color,

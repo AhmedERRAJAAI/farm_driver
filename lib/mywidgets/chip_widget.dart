@@ -14,13 +14,13 @@ class EcartChip extends StatelessWidget {
   final Map<String, Color> colors = {
     'red': const Color(0xFFD54503),
     'green': const Color(0xFF006203),
-    'orange': const Color(0xFFFFAE00)
+    'orange': Colors.orange.shade800
   };
 
   final Map<String, Color> bgcolors = {
     'red': const Color(0xFFFFCAC7),
     'green': const Color(0xFFDBFFDC),
-    'orange': const Color(0xFFFEE6C5),
+    'orange': Colors.orange.shade50,
   };
 
   final List<IconData> myIcons = [
@@ -40,9 +40,10 @@ class EcartChip extends StatelessWidget {
         color: bgcolors[colorName],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            ecart.toString(),
+            "${ecart > 0 ? '+ $ecart' : '$ecart'}",
             style: TextStyle(fontSize: 12, color: colors[colorName]),
           ),
           Icon(

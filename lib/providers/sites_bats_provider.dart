@@ -22,10 +22,34 @@ class SitesBatsProvider with ChangeNotifier {
     try {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        print('SENT');
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING SENDING REPORTS");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> createLot(data) async {
+    final url = Uri.parse('https://farmdriver.savas.ma/api/add-lot/');
+
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+    final body = json.encode(data);
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        notifyListeners();
+      } else {
+        throw Exception("ERROR  DURING CREATING REPORT");
       }
     } catch (e) {
       rethrow;
@@ -37,7 +61,9 @@ class SitesBatsProvider with ChangeNotifier {
   ];
 
   List<_Site> get sitesData {
-    return [..._sites];
+    return [
+      ..._sites
+    ];
   }
 
   List<_Lot> _lots = [
@@ -45,7 +71,9 @@ class SitesBatsProvider with ChangeNotifier {
   ];
 
   List<_Lot> get lotsData {
-    return [..._lots];
+    return [
+      ..._lots
+    ];
   }
 
   Future<void> fetchSites() async {
@@ -56,7 +84,9 @@ class SitesBatsProvider with ChangeNotifier {
       return;
     }
     final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
-    final headers = {'Authorization': 'Bearer $_accessToken'};
+    final headers = {
+      'Authorization': 'Bearer $_accessToken'
+    };
 
     try {
       final response = await http.get(
@@ -74,6 +104,7 @@ class SitesBatsProvider with ChangeNotifier {
               name: item['name'],
               lotNbr: item['lot_nbr'],
               pouss: item['containsPouss'],
+              type: '',
             ),
           );
         }
@@ -100,7 +131,9 @@ class SitesBatsProvider with ChangeNotifier {
       'Authorization': 'Bearer $_accessToken'
     };
     final body = json.encode(
-      {'siteId': siteId},
+      {
+        'siteId': siteId
+      },
     );
     try {
       final response = await http.post(url, headers: headers, body: body);
@@ -111,18 +144,72 @@ class SitesBatsProvider with ChangeNotifier {
         for (var item in fetchedItems) {
           extractedLots.add(
             _Lot(
-                id: item['id'],
-                code: item['code'],
-                name: item['batiment'],
-                edp: item['edp'],
-                ep: item['ep'],
-                age: item['age'],
-                firstAge: item['firstAge'],
-                lastAge: item['lastAge'],
-                prod: item['isProd']),
+              id: item['id'],
+              lotId: item['lot_id'],
+              code: item['code'],
+              name: item['batiment'],
+              edp: item['edp'],
+              ep: item['ep'],
+              age: item['age'],
+              firstAge: item['firstAge'],
+              lastAge: item['lastAge'],
+              prod: item['isProd'],
+              type: '',
+            ),
           );
         }
         _lots = extractedLots;
+        notifyListeners();
+      } else {
+        throw Exception("ERROR  DURING FETCHING LOTS");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  List<_Bat> _bats = [
+    // FETCHED DATA ...
+  ];
+
+  List<_Bat> get batsGetter {
+    return [
+      ..._bats
+    ];
+  }
+
+  Future<void> fetchAllBats(siteId) async {
+    final url = Uri.parse('https://farmdriver.savas.ma/api/get-bats-mob/');
+
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $_accessToken'
+    };
+    final body = json.encode(
+      {
+        'site': siteId
+      },
+    );
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseBody = utf8.decode(response.bodyBytes);
+        final fetchedItems = json.decode(responseBody) as List;
+        final List<_Bat> extractedLots = [];
+        for (var item in fetchedItems) {
+          extractedLots.add(_Bat(
+            name: item['name'],
+            id: item['id'],
+            isEmpty: item['isEmpty'],
+            type: item['type'],
+          ));
+        }
+        _bats = extractedLots;
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING FETCHING LOTS");
@@ -137,24 +224,29 @@ class SitesBatsProvider with ChangeNotifier {
   ];
 
   List<TableData> get reportsData {
-    return [..._reports];
+    return [
+      ..._reports
+    ];
   }
 
   Future<void> fetchReports(lotId, startAge, lastAge) async {
-    final url =
-        Uri.parse('https://farmdriver.savas.ma/api/get-table-data-mob/');
+    final url = Uri.parse('https://farmdriver.savas.ma/api/get-table-data-mob/');
 
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
     final body = json.encode(
-      {"lotId": lotId, 'startSlice': startAge, 'endSlice': lastAge},
+      {
+        "lotId": lotId,
+        'startSlice': startAge,
+        'endSlice': lastAge
+      },
     );
     try {
       final response = await http.post(url, headers: headers, body: body);
@@ -164,21 +256,13 @@ class SitesBatsProvider with ChangeNotifier {
         final List<TableData> extractedReps = [];
         for (var rep in fetchedItems) {
           extractedReps.add(
-            TableData(
-                edp: rep['effectifDP'],
-                ep: rep['effectifP'],
-                calendar: rep['calendrier'],
-                consumption: rep['consommation'],
-                indiceConver: rep['indice_conver'],
-                lumiere: rep['lumiere'],
-                flash: rep['flash'],
-                params: rep['params']),
+            TableData(edp: rep['effectifDP'], ep: rep['effectifP'], calendar: rep['calendrier'], consumption: rep['consommation'], indiceConver: rep['indice_conver'], lumiere: rep['lumiere'], flash: rep['flash'], params: rep['params']),
           );
           _reports = extractedReps;
         }
         notifyListeners();
       } else {
-        throw Exception("ERROR  DURING FETCHING REPORTS");
+        throw Exception("${response.statusCode} (Aucune donnée disponible)");
       }
     } catch (e) {
       rethrow;
@@ -190,32 +274,31 @@ class SitesBatsProvider with ChangeNotifier {
   ];
 
   List<_Guide> get getGuides {
-    return [..._guides];
+    return [
+      ..._guides
+    ];
   }
 
   Future<void> fetchActiveGuides() async {
-    final url =
-        Uri.parse('https://farmdriver.savas.ma/api/get-active-mob-guides/');
+    final url = Uri.parse('https://farmdriver.savas.ma/api/get-active-mob-guides/');
 
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
     }
     final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
-    final headers = {'Authorization': 'Bearer $_accessToken'};
+    final headers = {
+      'Authorization': 'Bearer $_accessToken'
+    };
     try {
       final response = await http.get(url, headers: headers);
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedGuides = json.decode(responseBody);
-        print(fetchedGuides);
         final List<_Guide> extractedReps = [];
         for (var guide in fetchedGuides) {
           extractedReps.add(
-            _Guide(
-              id: guide['id'],
-              name: guide['name'],
-            ),
+            _Guide(id: guide['id'], name: guide['name'], type: 'PH'),
           );
           _guides = extractedReps;
         }
@@ -224,7 +307,6 @@ class SitesBatsProvider with ChangeNotifier {
         throw Exception("ERROR  DURING FETCHING GUIDES");
       }
     } catch (e) {
-      print(e);
       rethrow;
     }
   }
@@ -257,11 +339,7 @@ class SitesBatsProvider with ChangeNotifier {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedData = json.decode(responseBody);
-        _prefilledCreateData = PrefilledProd(
-            closed: fetchedData['closed'],
-            date: fetchedData['nextDate'],
-            lotCode: fetchedData['lot_code'],
-            lastRepData: fetchedData['last_rep']);
+        _prefilledCreateData = PrefilledProd(closed: fetchedData['closed'], date: fetchedData['nextDate'], lotCode: fetchedData['lot_code'], lastRepData: fetchedData['last_rep']);
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING FETCHING PREFILLING DATA");
@@ -271,12 +349,10 @@ class SitesBatsProvider with ChangeNotifier {
     }
   }
 
-  List<BottomSheetTable> _daysData = [
-    // FETCHED DATA ...
-  ];
+  late BottomSheetTable _daysData;
 
-  List<BottomSheetTable> get paramDays {
-    return [..._daysData];
+  BottomSheetTable get paramDays {
+    return _daysData;
   }
 
   Future<void> fetchDaysReports(lotId, age, param_id) async {
@@ -292,18 +368,18 @@ class SitesBatsProvider with ChangeNotifier {
       'Authorization': 'Bearer $_accessToken'
     };
     final body = json.encode(
-      {"lotId": lotId, 'age': age, 'param_id': param_id},
+      {
+        "lotId": lotId,
+        'age': age,
+        'param_id': param_id
+      },
     );
     try {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedItems = json.decode(responseBody) as Map;
-        final List<BottomSheetTable> extractedReps = [];
-        extractedReps.add(BottomSheetTable(
-            header: fetchedItems['head'] ?? [],
-            body: fetchedItems['body'] ?? []));
-        _daysData = extractedReps;
+        _daysData = BottomSheetTable(header: fetchedItems['head'] ?? [], body: fetchedItems['data'] ?? [], dates: fetchedItems['dates'], name: fetchedItems['name']);
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING FETCHING REPORTS");
@@ -320,20 +396,18 @@ class PrefilledProd {
   final bool closed;
   final Map<String, dynamic> lastRepData;
 
-  PrefilledProd(
-      {required this.date,
-      required this.lotCode,
-      required this.closed,
-      required this.lastRepData});
+  PrefilledProd({required this.date, required this.lotCode, required this.closed, required this.lastRepData});
 }
 
 // {nextDate: 05/04/2023, type: day, closed: false, lot_code: LOT_IN_B1_TALMOUST, last_rep: {formule: DIK3421, lumiere_alum: 05:00, lumiere_extin: 20:00, flash_alum: null, flash_extin: null, intensite: 0, intensIsLux: false, coloration: null, qty_coquille: 3}}
 
 class BottomSheetTable {
+  final String name;
+  final List dates;
   final List header;
-  final List<Map> body;
+  final List body;
 
-  BottomSheetTable({required this.header, required this.body});
+  BottomSheetTable({required this.header, required this.body, required this.dates, required this.name});
 }
 
 class _ParamDays {
@@ -375,17 +449,30 @@ class TableData {
 class _Guide {
   final int id;
   final String name;
+  final String type;
 
   _Guide({
     required this.id,
     required this.name,
+    required this.type,
   });
+}
+
+class _Bat {
+  final String name;
+  final int id;
+  final bool isEmpty;
+  final String type;
+
+  _Bat({required this.name, required this.id, required this.isEmpty, required this.type});
 }
 
 class _Lot {
   final int id;
+  final int lotId;
   final String code;
   final String name;
+  final String type;
   final bool prod;
   final int? edp;
   final int? ep;
@@ -395,9 +482,11 @@ class _Lot {
 
   _Lot({
     required this.id,
+    required this.lotId,
     required this.code,
     required this.name,
     required this.prod,
+    required this.type,
     this.firstAge,
     this.lastAge,
     this.edp,
@@ -411,12 +500,14 @@ class _Site {
   final String name;
   final int lotNbr;
   final bool pouss;
+  final String type;
 
   _Site({
     required this.id,
     required this.name,
     required this.lotNbr,
     required this.pouss,
+    required this.type,
   });
 }
 

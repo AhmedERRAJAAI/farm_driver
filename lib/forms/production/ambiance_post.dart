@@ -120,12 +120,10 @@ class _AmbiancePostState extends State<AmbiancePost> {
       if (widget.prevData.isNotEmpty) {
         lightOn = stringToTimeOfDay(widget.prevData['lumiere_alum'] ?? '');
         lightOff = stringToTimeOfDay(widget.prevData['lumiere_extin'] ?? '');
-        lightDuration =
-            stringToTimeOfDay(widget.prevData['lightDuration'] ?? '');
+        lightDuration = stringToTimeOfDay(widget.prevData['lightDuration'] ?? '');
         flashOn = stringToTimeOfDay(widget.prevData['flash_alum'] ?? '');
         flashOff = stringToTimeOfDay(widget.prevData['flash_alum'] ?? '');
-        flashDuration =
-            stringToTimeOfDay(widget.prevData['flashDuration'] ?? '');
+        flashDuration = stringToTimeOfDay(widget.prevData['flashDuration'] ?? '');
         intensite = double.parse("${widget.prevData['intensite'] ?? '0.0'}");
         isLux = widget.prevData['intensIsLux'];
         _tempMin = double.parse("${widget.prevData['tempIntMin'] ?? '0.0'}");
@@ -148,16 +146,14 @@ class _AmbiancePostState extends State<AmbiancePost> {
         borderRadius: BorderRadius.circular(8.0), // Border radius
       ),
       duration: const Duration(milliseconds: 300),
-      height:
-          _ambianceIsExpanded ? 400.0 : 80.0, // Change the height when expanded
+      height: _ambianceIsExpanded ? 420.0 : 80.0, // Change the height when expanded
       child: _ambianceIsExpanded
           ? SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -173,9 +169,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                             ),
                             Icon(
                               Icons.sentiment_satisfied,
-                              color: _ambianceIsExpanded
-                                  ? widget.postColor
-                                  : Colors.white,
+                              color: _ambianceIsExpanded ? widget.postColor : Colors.white,
                             )
                           ],
                         ),
@@ -186,9 +180,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                             });
                           },
                           child: Transform.rotate(
-                            angle: _ambianceIsExpanded
-                                ? 180 * (3.14159265359 / 180)
-                                : 0,
+                            angle: _ambianceIsExpanded ? 180 * (3.14159265359 / 180) : 0,
                             child: Icon(
                               Icons.expand_more,
                               color: Colors.green.shade700,
@@ -217,13 +209,10 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     context: context,
                                     cancelText: 'Annuler',
                                     initialTime: lightDuration,
-                                    initialEntryMode:
-                                        TimePickerEntryMode.inputOnly,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
+                                    initialEntryMode: TimePickerEntryMode.inputOnly,
+                                    builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: true),
+                                        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
                                         child: child ?? Text(''),
                                       );
                                     },
@@ -240,13 +229,11 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                 },
                                 child: FittedBox(
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       const Text('Lumiére'),
                                       const Icon(Icons.timelapse_sharp),
-                                      Text(
-                                          "${lightDuration.hour}h: ${lightDuration.minute}m")
+                                      Text("${lightDuration.hour}h: ${lightDuration.minute}m")
                                     ],
                                   ),
                                 ),
@@ -261,11 +248,9 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     cancelText: 'Annuler',
                                     context: context,
                                     initialTime: lightOn,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
+                                    builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: true),
+                                        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
                                         child: child ?? Text(''),
                                       );
                                     },
@@ -273,15 +258,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                   if (newTime == null) return;
                                   setState(() {
                                     lightOn = newTime;
-                                    lightDuration = calculateTimeDuration(
-                                        lightOn, lightOff);
+                                    lightDuration = calculateTimeDuration(lightOn, lightOff);
                                     widget.lOnGetter(lightOn);
                                     widget.liDurGetter(lightDuration);
                                   });
                                 },
                                 child: FittedBox(
-                                  child: Text(
-                                      'ON: ${lightOn.hour}:${lightOn.minute}'),
+                                  child: Text('ON: ${lightOn.hour}:${lightOn.minute}'),
                                 ),
                               ),
                             ),
@@ -294,11 +277,9 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     cancelText: 'Annuler',
                                     context: context,
                                     initialTime: lightOff,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
+                                    builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: true),
+                                        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
                                         child: child ?? Text(''),
                                       );
                                     },
@@ -307,15 +288,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
 
                                   setState(() {
                                     lightOff = newTime;
-                                    lightDuration = calculateTimeDuration(
-                                        lightOn, lightOff);
+                                    lightDuration = calculateTimeDuration(lightOn, lightOff);
                                     widget.lOffGetter(lightOff);
                                     widget.liDurGetter(lightDuration);
                                   });
                                 },
                                 child: FittedBox(
-                                  child: Text(
-                                      'OFF: ${lightOff.hour}:${lightOff.minute}'),
+                                  child: Text('OFF: ${lightOff.hour}:${lightOff.minute}'),
                                 ),
                               ),
                             ),
@@ -334,22 +313,18 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                       context: context,
                                       cancelText: 'Annuler',
                                       initialTime: flashDuration,
-                                      initialEntryMode:
-                                          TimePickerEntryMode.inputOnly,
-                                      builder: (BuildContext context,
-                                          Widget? child) {
+                                      initialEntryMode: TimePickerEntryMode.inputOnly,
+                                      builder: (BuildContext context, Widget? child) {
                                         return MediaQuery(
-                                          data: MediaQuery.of(context).copyWith(
-                                              alwaysUse24HourFormat: true),
+                                          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
                                           child: child ?? Text(''),
                                         );
                                       },
                                     );
                                     if (newTime == null) return;
                                     setState(() {
-                                      flashOn = TimeOfDay(hour: 00, minute: 00);
-                                      flashOff =
-                                          TimeOfDay(hour: 00, minute: 00);
+                                      flashOn = const TimeOfDay(hour: 00, minute: 00);
+                                      flashOff = const TimeOfDay(hour: 00, minute: 00);
                                       flashDuration = newTime;
                                       widget.fOnGetter(flashOn);
                                       widget.fOffGetter(flashOff);
@@ -358,13 +333,11 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                   },
                                   child: FittedBox(
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         const Text('Flash'),
                                         const Icon(Icons.timelapse_sharp),
-                                        Text(
-                                            "${flashDuration.hour}h: ${flashDuration.minute}m")
+                                        Text("${flashDuration.hour}h: ${flashDuration.minute}m")
                                       ],
                                     ),
                                   )),
@@ -377,11 +350,9 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                   TimeOfDay? newTime = await showTimePicker(
                                     context: context,
                                     initialTime: flashOn,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
+                                    builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: true),
+                                        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
                                         child: child ?? Text(''),
                                       );
                                     },
@@ -389,15 +360,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                   if (newTime == null) return;
                                   setState(() {
                                     flashOn = newTime;
-                                    flashDuration = calculateTimeDuration(
-                                        flashOn, flashOff);
+                                    flashDuration = calculateTimeDuration(flashOn, flashOff);
                                     widget.fOnGetter(flashOn);
                                     widget.flDurGetter(flashDuration);
                                   });
                                 },
                                 child: FittedBox(
-                                  child: Text(
-                                      'ON: ${flashOn.hour}:${flashOn.minute}'),
+                                  child: Text('ON: ${flashOn.hour}:${flashOn.minute}'),
                                 ),
                               ),
                             ),
@@ -409,172 +378,154 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                   TimeOfDay? newTime = await showTimePicker(
                                     context: context,
                                     initialTime: flashOff,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
+                                    builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: true),
-                                        child: child ?? Text(''),
+                                        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                                        child: child ?? const Text(''),
                                       );
                                     },
                                   );
                                   if (newTime == null) return;
                                   setState(() {
                                     flashOff = newTime;
-                                    flashDuration = calculateTimeDuration(
-                                        flashOn, flashOff);
+                                    flashDuration = calculateTimeDuration(flashOn, flashOff);
                                     widget.fOffGetter(flashOff);
                                     widget.flDurGetter(flashDuration);
                                   });
                                 },
                                 child: FittedBox(
-                                  child: Text(
-                                      'OFF: ${flashOff.hour}:${flashOff.minute}'),
+                                  child: Text('OFF: ${flashOff.hour}:${flashOff.minute}'),
                                 ),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 7),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: deviceSize.width * 0.92,
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: isLux
-                                        ? Colors.amber.shade900
-                                        : Colors.yellow.shade700,
-                                    width: 0.6),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                        Container(
+                          width: deviceSize.width,
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: isLux ? Colors.amber.shade900 : Colors.yellow.shade800, width: 1.4),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text('Intensité'),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      const Text('Intensité   '),
+                                      Stack(
+                                        alignment: Alignment.center,
                                         children: [
-                                          const Text(
-                                            'Lux',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                          AnimatedContainer(
+                                            duration: const Duration(milliseconds: 200),
+                                            height: isLux ? (intensite / 2) : intensite / 100 * 22,
+                                            width: 22,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: isLux ? Colors.amber.shade900.withOpacity(intensite / 44) : Colors.yellow.shade800.withOpacity(intensite / 100), // Color of the shadow
+                                                  spreadRadius: 10, // Spread radius
+                                                  blurRadius: 10, // Blur radius
+                                                  offset: Offset(0, 0), // Offset of the shadow
+                                                ),
+                                              ],
+                                              color: isLux ? Colors.amber.shade900 : Colors.yellow.shade800,
+                                              // border:
+                                              //     Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(22),
+                                            ),
+                                            child: FittedBox(
+                                              child: Text(
+                                                "${intensite.toStringAsFixed(0)} ${isLux ? 'Lx' : '%'}",
+                                                style: TextStyle(color: Colors.transparent),
+                                              ),
+                                            ),
                                           ),
-                                          Switch(
-                                            value: !isLux,
-                                            activeColor: Colors.yellow.shade700,
-                                            inactiveThumbColor:
-                                                Colors.amber.shade900,
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                isLux = !isLux;
-                                                widget.intensiteUnit(isLux);
-                                                intensite = 0;
-                                                widget
-                                                    .intensiteGetter(intensite);
-                                              });
-                                            },
+                                          Container(
+                                            width: 22,
+                                            height: 22,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(50),
+                                            ),
+                                            child: FittedBox(
+                                              child: Text(
+                                                "${intensite.toStringAsFixed(0)} ${isLux ? 'Lx' : '%'}",
+                                              ),
+                                            ),
                                           ),
-                                          const Text(
-                                            '%',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )
                                         ],
                                       ),
                                     ],
                                   ),
-                                  isLux
-                                      ? Expanded(
-                                          child: Slider.adaptive(
-                                            activeColor: Colors.amber.shade900,
-                                            value: intensite,
-                                            max: 40,
-                                            min: 0,
-                                            divisions: 20,
-                                            label: intensite.round().toString(),
-                                            onChanged: (double value) {
-                                              setState(() {
-                                                intensite = value;
-                                                widget
-                                                    .intensiteGetter(intensite);
-                                              });
-                                            },
-                                          ),
-                                        )
-                                      : Expanded(
-                                          child: Slider.adaptive(
-                                            activeColor: Colors.yellow.shade700,
-                                            value: intensite,
-                                            max: 100,
-                                            min: 0,
-                                            divisions: 20,
-                                            label: intensite.round().toString(),
-                                            onChanged: (double value) {
-                                              setState(() {
-                                                intensite = value;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                  FittedBox(
-                                    child: Stack(
-                                      alignment: Alignment.bottomCenter,
-                                      children: [
-                                        AnimatedContainer(
-                                          duration:
-                                              const Duration(milliseconds: 200),
-                                          height: isLux
-                                              ? (intensite / 64 * 100)
-                                              : intensite / 100 * 65,
-                                          width: 22,
-                                          decoration: BoxDecoration(
-                                            color: isLux
-                                                ? Colors.amber.shade900
-                                                : Colors.yellow.shade700,
-                                            // border:
-                                            //     Border.all(color: Colors.grey),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                          ),
-                                          child: FittedBox(
-                                            child: Text(
-                                              "${intensite.toStringAsFixed(0)} ${isLux ? 'Lx' : '%'}",
-                                              style: TextStyle(
-                                                  color: Colors.transparent),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 22,
-                                          height: deviceSize.height * 0.08,
-                                          decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: Colors.grey),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                          ),
-                                          child: FittedBox(
-                                            child: Text(
-                                              "${intensite.toStringAsFixed(0)} ${isLux ? 'Lx' : '%'}",
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        'Lux',
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      Switch(
+                                        value: !isLux,
+                                        activeColor: Colors.yellow.shade800,
+                                        inactiveThumbColor: Colors.amber.shade900,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            isLux = !isLux;
+                                            widget.intensiteUnit(isLux);
+                                            intensite = 0;
+                                            widget.intensiteGetter(intensite);
+                                          });
+                                        },
+                                      ),
+                                      const Text(
+                                        '%',
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      )
+                                    ],
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                              isLux
+                                  ? Expanded(
+                                      child: Slider.adaptive(
+                                        activeColor: Colors.amber.shade900,
+                                        value: intensite,
+                                        max: 44,
+                                        min: 0,
+                                        divisions: 20,
+                                        label: intensite.round().toString(),
+                                        onChanged: (double value) {
+                                          setState(() {
+                                            intensite = value;
+                                            widget.intensiteGetter(intensite);
+                                          });
+                                        },
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: Slider.adaptive(
+                                        activeColor: Colors.yellow.shade700,
+                                        value: intensite,
+                                        max: 100,
+                                        min: 0,
+                                        divisions: 20,
+                                        label: intensite.round().toString(),
+                                        onChanged: (double value) {
+                                          setState(() {
+                                            intensite = value;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 7),
                         Row(
@@ -586,11 +537,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                               child: Center(
                                 child: TextFormField(
                                   controller: widget.poidsVifController,
-                                  decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 6, vertical: 0),
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Poids corporel'),
+                                  decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 6, vertical: 0), border: OutlineInputBorder(), labelText: 'Poids corporel'),
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -607,11 +554,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                               child: Center(
                                 child: TextFormField(
                                   controller: widget.homogController,
-                                  decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 6, vertical: 0),
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Homogéniété'),
+                                  decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 6, vertical: 0), border: OutlineInputBorder(), labelText: 'Homogéniété'),
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -631,10 +574,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                             Container(
                                 width: deviceSize.width * 0.46,
                                 padding: const EdgeInsets.only(top: 4),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(5)),
+                                decoration: BoxDecoration(border: Border.all(width: 1, color: Colors.grey), borderRadius: BorderRadius.circular(5)),
                                 child: Column(
                                   children: [
                                     const Text('Temperature intérieur'),
@@ -643,16 +583,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                           showDialog(
                                             context: context,
                                             barrierDismissible: true,
-                                            builder: ((ctx) =>
-                                                NumberPickerDialog(
-                                                  initialValue:
-                                                      _tempMin, // Pass initial value
+                                            builder: ((ctx) => NumberPickerDialog(
+                                                  initialValue: _tempMin, // Pass initial value
                                                   onChanged: (value) {
                                                     // Update _coloration when the value changes
                                                     setState(() {
                                                       _tempMin = value;
-                                                      widget.tempIntMinGetter(
-                                                          value);
+                                                      widget.tempIntMinGetter(value);
                                                     });
                                                   },
                                                 )),
@@ -666,16 +603,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                           showDialog(
                                             context: context,
                                             barrierDismissible: true,
-                                            builder: ((ctx) =>
-                                                NumberPickerDialog(
-                                                  initialValue:
-                                                      _tempMax, // Pass initial value
+                                            builder: ((ctx) => NumberPickerDialog(
+                                                  initialValue: _tempMax, // Pass initial value
                                                   onChanged: (value) {
                                                     // Update _coloration when the value changes
                                                     setState(() {
                                                       _tempMax = value;
-                                                      widget.tempIntMaxGetter(
-                                                          value);
+                                                      widget.tempIntMaxGetter(value);
                                                     });
                                                   },
                                                 )),
@@ -688,11 +622,8 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                 )),
                             Container(
                                 padding: const EdgeInsets.only(top: 4),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(5)),
-                                width: deviceSize.width * 0.46,
+                                decoration: BoxDecoration(border: Border.all(width: 1, color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                width: deviceSize.width * 0.44,
                                 child: Column(
                                   children: [
                                     const Text('Temperature extérieure'),
@@ -701,16 +632,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                           showDialog(
                                             context: context,
                                             barrierDismissible: true,
-                                            builder: ((ctx) =>
-                                                NumberPickerDialog(
-                                                  initialValue:
-                                                      _tempExMin, // Pass initial value
+                                            builder: ((ctx) => NumberPickerDialog(
+                                                  initialValue: _tempExMin, // Pass initial value
                                                   onChanged: (value) {
                                                     // Update _coloration when the value changes
                                                     setState(() {
                                                       _tempExMin = value;
-                                                      widget.tempExtMinGetter(
-                                                          value);
+                                                      widget.tempExtMinGetter(value);
                                                     });
                                                   },
                                                 )),
@@ -724,16 +652,13 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                           showDialog(
                                             context: context,
                                             barrierDismissible: true,
-                                            builder: ((ctx) =>
-                                                NumberPickerDialog(
-                                                  initialValue:
-                                                      _tempExMax, // Pass initial value
+                                            builder: ((ctx) => NumberPickerDialog(
+                                                  initialValue: _tempExMax, // Pass initial value
                                                   onChanged: (value) {
                                                     // Update _coloration when the value changes
                                                     setState(() {
                                                       _tempExMax = value;
-                                                      widget.tempExtMaxGetter(
-                                                          value);
+                                                      widget.tempExtMaxGetter(value);
                                                     });
                                                   },
                                                 )),
@@ -757,8 +682,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
               child: GestureDetector(
                 onTap: () {},
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -769,16 +693,12 @@ class _AmbiancePostState extends State<AmbiancePost> {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: _ambianceIsExpanded
-                                  ? widget.postColor
-                                  : Colors.white,
+                              color: _ambianceIsExpanded ? widget.postColor : Colors.white,
                             ),
                           ),
                           Icon(
                             Icons.sentiment_satisfied,
-                            color: _ambianceIsExpanded
-                                ? widget.postColor
-                                : Colors.white,
+                            color: _ambianceIsExpanded ? widget.postColor : Colors.white,
                           )
                         ],
                       ),
@@ -791,14 +711,10 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                 });
                         },
                         child: Transform.rotate(
-                          angle: _ambianceIsExpanded
-                              ? 180 * (3.14159265359 / 180)
-                              : 0,
+                          angle: _ambianceIsExpanded ? 180 * (3.14159265359 / 180) : 0,
                           child: Icon(
                             Icons.expand_more,
-                            color: _ambianceIsExpanded
-                                ? widget.postColor
-                                : Colors.white,
+                            color: _ambianceIsExpanded ? widget.postColor : Colors.white,
                             size: 26,
                           ),
                         ),

@@ -4,66 +4,32 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class CarouselSliderItem extends StatelessWidget {
   final double width;
-  final double height;
   final String siteName;
   final String lastUpdated;
   final String temprature;
   final String humidity;
-  // final String weatherType;
   final String effectifPresent;
   final String ageMoy;
   final String prodjour;
-  final String weatherIcon;
   final bool siteIsGood;
   final String statusMsg;
-  // final bool isLoading;
 
   CarouselSliderItem({
     required this.width,
-    required this.height,
     required this.siteName,
     required this.lastUpdated,
     required this.temprature,
     required this.humidity,
-    // required this.weatherType,
-    required this.weatherIcon,
     required this.effectifPresent,
     required this.ageMoy,
     required this.prodjour,
     required this.siteIsGood,
     required this.statusMsg,
-    // required this.isLoading,
   });
-
-  Icon iconFinder(weatherIcon) {
-    switch (weatherIcon) {
-      case '01d':
-        return const Icon(Icons.wb_sunny_outlined, color: Colors.white);
-      case '02d':
-        return Icon(MdiIcons.weatherPartlyCloudy, color: Colors.white);
-      case '03d':
-        return const Icon(Icons.cloud_outlined, color: Colors.white);
-      case '04d':
-        return const Icon(Icons.cloud_outlined, color: Colors.white);
-      case '09d':
-        return Icon(MdiIcons.weatherPartlyRainy, color: Colors.white);
-      case '10d':
-        return Icon(MdiIcons.weatherRainy, color: Colors.white);
-      case '11d':
-        return Icon(MdiIcons.weatherRainy, color: Colors.white);
-      case '13d':
-        return Icon(MdiIcons.weatherRainy, color: Colors.white);
-      case '50d':
-        return Icon(MdiIcons.weatherRainy, color: Colors.white);
-      default:
-        return const Icon(Icons.info);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
       padding: const EdgeInsets.all(9),
       width: width,
       margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -72,7 +38,6 @@ class CarouselSliderItem extends StatelessWidget {
         color: const Color.fromARGB(255, 26, 85, 134),
       ),
       child: Column(
-        //General structure of the card
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -103,15 +68,12 @@ class CarouselSliderItem extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         siteName.toString(),
-                        style: const TextStyle(
-                            color: Color(0xFFfbfafd),
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.4),
+                        style: const TextStyle(color: Color(0xFFfbfafd), fontWeight: FontWeight.w600, letterSpacing: 0.4),
+                        textScaleFactor: MediaQuery.textScaleFactorOf(context),
                       ),
                       Text(
                         'MAJ: $lastUpdated',
-                        style: const TextStyle(
-                            fontSize: 8, color: Color(0xFFfbfafd)),
+                        style: const TextStyle(fontSize: 8, color: Color(0xFFfbfafd)),
                       )
                     ],
                   ),
@@ -132,9 +94,7 @@ class CarouselSliderItem extends StatelessWidget {
                               color: Color(0xFFfbfafd),
                               size: 13,
                             ),
-                            Text('$temprature °C',
-                                style: const TextStyle(
-                                    fontSize: 12, color: Color(0xFFfbfafd))),
+                            Text('$temprature °C', style: const TextStyle(fontSize: 12, color: Color(0xFFfbfafd))),
                           ],
                         ),
                         Row(
@@ -144,17 +104,12 @@ class CarouselSliderItem extends StatelessWidget {
                               color: Colors.white,
                               size: 14,
                             ),
-                            Text('$humidity %',
-                                style: const TextStyle(
-                                    fontSize: 12, color: Color(0xFFfbfafd))),
+                            Text('$humidity %', style: const TextStyle(fontSize: 12, color: Color(0xFFfbfafd))),
                           ],
                         ),
-                        // Text((weatherType.toString()),
-                        //     style: const TextStyle(
-                        //         fontSize: 10, color: Color(0xFFfbfafd))),
+                        
                       ],
                     ),
-                    // iconFinder(weatherIcon),
                   ],
                 ),
               )
@@ -164,68 +119,62 @@ class CarouselSliderItem extends StatelessWidget {
             //Second Row
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Column(
-                //Middle Row
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 7),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Effectif présent",
-                          style: TextStyle(color: Colors.white, fontSize: 10),
-                        ),
-                        Text(
-                          effectifPresent.toString(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 6),
+                child: Column(
+                  //Middle Row
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 7),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Effectif présent",
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                          ),
+                          Text(
+                            effectifPresent.toString(),
+                            style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 7),
-                    child: Column(
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 7),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Age moyen",
+                            style: TextStyle(color: Colors.white, fontSize: 11),
+                          ),
+                          Text(
+                            ageMoy.toString(),
+                            style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Age moyen",
+                          "Prod./jour",
                           style: TextStyle(color: Colors.white, fontSize: 11),
                         ),
                         Text(
-                          ageMoy.toString(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
+                          prodjour.toString(),
+                          style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Prod./jour",
-                        style: TextStyle(color: Colors.white, fontSize: 11),
-                      ),
-                      Text(
-                        prodjour.toString(),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ].animate(interval: .250.seconds, effects: [
-                  const FadeEffect()
-                ]).slideY(curve: Curves.decelerate),
+                  ].animate(interval: .250.seconds, effects: [
+                    const FadeEffect()
+                  ]).slideY(curve: Curves.decelerate),
+                ),
               ),
               Container(
                 //GO TO SITE BUTTON
@@ -233,8 +182,7 @@ class CarouselSliderItem extends StatelessWidget {
                 height: 60,
                 decoration: BoxDecoration(
                     // color: const Color(0XFFFD8D14),
-                    border:
-                        Border.all(color: const Color(0XFFFD8D14), width: 2),
+                    border: Border.all(color: const Color(0XFFFD8D14), width: 2),
                     borderRadius: BorderRadius.circular(60)),
                 child: OutlinedButton(
                   onPressed: () {},
@@ -257,8 +205,7 @@ class CarouselSliderItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(1),
             width: width,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(6)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
             child: Row(
               children: [
                 siteIsGood
@@ -275,11 +222,7 @@ class CarouselSliderItem extends StatelessWidget {
                 Flexible(
                   child: Text(
                     statusMsg.toString(),
-                    style: TextStyle(
-                        color: siteIsGood
-                            ? const Color(0xFF339900)
-                            : const Color(0xFFF97910),
-                        fontSize: 10),
+                    style: TextStyle(color: siteIsGood ? const Color(0xFF339900) : const Color(0xFFF97910), fontSize: 10),
                   ),
                 )
               ],

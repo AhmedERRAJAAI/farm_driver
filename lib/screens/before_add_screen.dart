@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './calendar_screen.dart';
 import '../forms/production_form.dart';
 import '../forms/lotForm.dart';
-import '../screens/add_reports_screen.dart';
+import '../forms/poussForm.dart';
 
 class BeforeAddingScreen extends StatelessWidget {
   const BeforeAddingScreen({super.key});
@@ -48,8 +48,7 @@ class BeforeAddingScreen extends StatelessWidget {
               ),
               const PopupMenuItem(
                 value: 1,
-                child: Text(
-                    "Ajouter un lot"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
+                child: Text("Ajouter un lot"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
               )
             ],
           ),
@@ -80,13 +79,13 @@ class BeforeAddingScreen extends StatelessWidget {
               const SizedBox(height: 10),
               SizedBox(
                 width: deviceSize.width,
-                height: deviceSize.height * 0.13,
+                height: deviceSize.height * 0.15,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.amber.shade800,
                   ),
                   onPressed: () {
-                    goToPage(context, AddReportScreen.routeName);
+                    goToPage(context, PoussForm.routeName);
                   },
                   child: const Text(
                     "Rapport de poussiniere",
@@ -97,7 +96,7 @@ class BeforeAddingScreen extends StatelessWidget {
               const SizedBox(height: 10),
               SizedBox(
                 width: deviceSize.width,
-                height: deviceSize.height * 0.13,
+                height: deviceSize.height * 0.15,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.blue,

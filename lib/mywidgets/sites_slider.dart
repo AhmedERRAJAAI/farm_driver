@@ -18,53 +18,48 @@ class DashSlider extends StatefulWidget {
 class _DashSliderState extends State<DashSlider> {
   @override
   Widget build(BuildContext context) {
-    final init_sliders = Provider.of<DashboardProvider>(context);
-    final sliderData = init_sliders.slidesData;
+    final initSliders = Provider.of<DashboardProvider>(context);
+    final sliderData = initSliders.slidesData;
 
     return Container(
-        //Slider
-        color: Colors.transparent,
-        padding: const EdgeInsets.only(bottom: 6),
-        child: CarouselSlider(
-                items: sliderData.map((e) {
-                  return CarouselSliderItem(
-                    width: widget.width * 0.96,
-                    siteName: e.siteName ?? "Non défini",
-                    temprature: e.currentTemp ?? '--',
-                    // weatherType: e.wheatherType ?? '--',
-
-                    lastUpdated: e.lastUpdate ?? '--',
-                    effectifPresent: e.effectifPresent ?? '--',
-                    ageMoy: e.ageMoy ?? '--',
-                    prodjour: e.prodJour ?? '--',
-                    siteIsGood: e.siteIsGood ?? false,
-                    statusMsg: e.statusMsg ?? '--',
-                    weatherIcon: e.weatherIcon,
-                    height: widget.height * 0.28,
-                    humidity: e.humidity ?? '--',
-                  );
-                }).toList(),
-                options: CarouselOptions(
-                  height: widget.height * 0.28,
+      //Slider
+      color: Colors.transparent,
+      padding: const EdgeInsets.only(bottom: 6),
+      child: sliderData.length > 1
+          ? CarouselSlider(
+              items: sliderData.map((e) {
+                return CarouselSliderItem(
+                  width: widget.width * 0.96,
+                  siteName: e.siteName ?? "Non défini",
+                  temprature: e.currentTemp ?? '--',
+                  lastUpdated: e.lastUpdate ?? '--',
+                  effectifPresent: e.effectifPresent ?? '--',
+                  ageMoy: e.ageMoy ?? '--',
+                  prodjour: e.prodJour ?? '--',
+                  siteIsGood: e.siteIsGood ?? false,
+                  statusMsg: e.statusMsg ?? '--',
+                  humidity: e.humidity ?? '--',
+                );
+              }).toList(),
+              options: CarouselOptions(
                   // enableInfiniteScroll: false,
                   // autoPlay: true,
                   // autoPlayAnimationDuration: Duration(milliseconds: 1000),
-                ),
-              )
-            // : CarouselSliderItem(
-            //     width: widget.width * 0.96,
-            //     siteName: sliderData.last.siteName ?? "Non défini",
-            //     temprature: sliderData.last.currentTemp ?? '--',
-            //     weatherType: sliderData.last.wheatherType ?? '--',
-            //     lastUpdated: sliderData.last.lastUpdate ?? '--',
-            //     effectifPresent: sliderData.last.effectifPresent ?? '--',
-            //     ageMoy: sliderData.last.ageMoy ?? '--',
-            //     prodjour: sliderData.last.prodJour ?? '--',
-            //     siteIsGood: sliderData.last.siteIsGood ?? false,
-            //     statusMsg: sliderData.last.statusMsg ?? '--',
-            //     weatherIcon: sliderData.last.weatherIcon,
-            //     height: widget.height * 0.28,
-            //   ),
-              );
+                  ),
+            )
+          : CarouselSliderItem(
+              humidity: sliderData.last.humidity ?? '--',
+              width: widget.width * 0.96,
+              siteName: sliderData.last.siteName ?? "Non défini",
+              temprature: sliderData.last.currentTemp ?? '--',
+              // weatherType: sliderData.last.wheatherType ?? '--',
+              lastUpdated: sliderData.last.lastUpdate ?? '--',
+              effectifPresent: sliderData.last.effectifPresent ?? '--',
+              ageMoy: sliderData.last.ageMoy ?? '--',
+              prodjour: sliderData.last.prodJour ?? '--',
+              siteIsGood: sliderData.last.siteIsGood ?? false,
+              statusMsg: sliderData.last.statusMsg ?? '--',
+            ),
+    );
   }
 }

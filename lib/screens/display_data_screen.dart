@@ -15,6 +15,10 @@ class DisplayDataScreen extends StatefulWidget {
 class _DisplayDataScreenState extends State<DisplayDataScreen> {
   bool _isInit = true;
   bool isLoading = false;
+  bool failedToFecthReports = false;
+
+  List reportsData = [];
+  String failedMsg = "échec de récupération des données";
 
   @override
   void initState() {
@@ -26,26 +30,33 @@ class _DisplayDataScreenState extends State<DisplayDataScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      setState(() {
-        isLoading = true;
-      });
-      final lotData =
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      Provider.of<SitesBatsProvider>(context, listen: false)
-          .fetchReports(lotData['lotId'], lotData['fage'], lotData['lage'])
-          .then((_) {
-        setState(() {
-          isLoading = false;
-        });
-      });
+      fetchReports();
     }
     _isInit = false;
     super.didChangeDependencies();
   }
 
-  Future<void> _refreshPage(BuildContext context, siteId) async {
-    await Provider.of<SitesBatsProvider>(context, listen: false)
-        .fetchLots(siteId);
+  void fetchReports() async {
+    setState(() {
+      isLoading = true;
+    });
+    final lotData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    try {
+      await Provider.of<SitesBatsProvider>(context, listen: false).fetchReports(lotData['lotId'], lotData['fage'], lotData['lage']).then((_) {
+        setState(() {
+          reportsData = Provider.of<SitesBatsProvider>(context, listen: false).reportsData;
+          isLoading = false;
+          failedToFecthReports = false;
+        });
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        failedMsg = '${e.toString()}';
+        isLoading = false;
+        failedToFecthReports = true;
+      });
+    }
   }
 
   goToPage(BuildContext ctx, routeName) {
@@ -54,15 +65,15 @@ class _DisplayDataScreenState extends State<DisplayDataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final reportsData = Provider.of<SitesBatsProvider>(context).reportsData;
+    reportsData = Provider.of<SitesBatsProvider>(context).reportsData;
     final deviceSize = MediaQuery.of(context).size;
-    final lotData =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final lotData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
+              height: 80,
               width: deviceSize.width,
               padding: const EdgeInsets.only(right: 10, left: 15, top: 25),
               decoration: BoxDecoration(
@@ -73,41 +84,48 @@ class _DisplayDataScreenState extends State<DisplayDataScreen> {
                 children: [
                   IconButton(
                     alignment: Alignment.centerLeft,
-                    icon: Icon(Icons.arrow_back_ios,
-                        color: Theme.of(context).primaryColor),
+                    icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).primaryColor),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   Text(
                     '${lotData['lotCode']} (${lotData['batiment']})',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context).primaryColor),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Theme.of(context).primaryColor),
                   ),
                 ],
               ),
             ),
             isLoading
-                ? const CircularProgressIndicator()
-                : Container(
-                    color: Colors.white,
-                    child: CarouselSlider(
-                      items: reportsData.map((report) {
-                        return ReportItem(
-                          height: deviceSize.height,
-                          width: deviceSize.height,
-                          oneReport: report,
-                          lotId: lotData['lotId'],
-                        );
-                      }).toList(),
-                      options: CarouselOptions(
-                        enableInfiniteScroll: false,
-                        height: deviceSize.height * 0.9,
-                        viewportFraction: 1,
-                        reverse: false,
+                ? const LinearProgressIndicator()
+                : failedToFecthReports
+                    ? Column(
+                        children: [
+                          Text(failedMsg),
+                          TextButton(
+                              onPressed: () {
+                                fetchReports();
+                              },
+                              child: Text("Refresh"))
+                        ],
+                      )
+                    : Container(
+                        color: Colors.white,
+                        child: CarouselSlider(
+                          items: reportsData.map((report) {
+                            return ReportItem(
+                              height: deviceSize.height,
+                              width: deviceSize.height,
+                              oneReport: report,
+                              lotId: lotData['lotId'],
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                            enableInfiniteScroll: false,
+                            height: deviceSize.height * 0.9,
+                            viewportFraction: 1,
+                            reverse: false,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
           ],
         ),
       ),
