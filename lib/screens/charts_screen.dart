@@ -3,7 +3,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartsScreen extends StatefulWidget {
   const ChartsScreen({super.key});
-  static final routeName = 'charts/';
+  static const routeName = 'charts/';
 
   @override
   State<ChartsScreen> createState() => _ChartsScreenState();
@@ -45,7 +45,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   yValueMapper: (_SalesData sales, _) => sales.sales,
                   name: 'Sales',
                   // Enable data label
-                  dataLabelSettings: DataLabelSettings(isVisible: true))
+                  dataLabelSettings: const DataLabelSettings(isVisible: true))
             ],
           ),
         ));

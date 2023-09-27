@@ -11,7 +11,7 @@ class ReportItem extends StatelessWidget {
   final double width;
   final TableData oneReport;
   final int lotId;
-  ReportItem({
+  const ReportItem({super.key, 
     required this.height,
     required this.width,
     required this.oneReport,

@@ -6,8 +6,8 @@ class ReportHeader extends StatelessWidget {
   final double height;
   final TableData oneReport;
 
-  ReportHeader(
-      {required this.width, required this.height, required this.oneReport});
+  const ReportHeader(
+      {super.key, required this.width, required this.height, required this.oneReport});
   @override
   Widget build(BuildContext context) {
     return Container(

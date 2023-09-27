@@ -8,8 +8,8 @@ class UserProductWidget extends StatelessWidget {
   final String imageUrl;
   final Function deleteHandler;
 
-  UserProductWidget(
-      {required this.deleteHandler,
+  const UserProductWidget(
+      {super.key, required this.deleteHandler,
       required this.id,
       required this.title,
       required this.imageUrl});
@@ -78,7 +78,7 @@ class UserProductWidget extends StatelessWidget {
                 deleteHandler(id);
               },
               icon: const Icon(Icons.delete),
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.error,
             ),
           ],
         ),

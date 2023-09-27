@@ -9,7 +9,7 @@ class ReportItem extends StatefulWidget {
   final double width;
   final TableData oneReport;
   final int lotId;
-  ReportItem({
+  const ReportItem({super.key, 
     required this.height,
     required this.width,
     required this.oneReport,
@@ -87,7 +87,7 @@ class _ReportItemState extends State<ReportItem> {
                         DataColumn(
                           label: Text(
                             head[i],
-                            style: TextStyle(fontSize: 13),
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ),
                     ],
@@ -270,7 +270,7 @@ class _ReportItemState extends State<ReportItem> {
                     },
                     label: Chip(
                       labelPadding: EdgeInsets.zero,
-                      padding: EdgeInsets.all(3),
+                      padding: const EdgeInsets.all(3),
                       backgroundColor: isSortedAsc == null
                           ? Colors.blue.shade50
                           : isSortedAsc == false

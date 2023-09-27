@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import './chip_widget.dart';
 
 class DayWidget extends StatelessWidget {
   final List days;
-  DayWidget({required this.days});
+  const DayWidget({super.key, required this.days});
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     print(days);
-    return Text("test");
+    return const Text("test");
     //   return Container(
     //     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
     //     margin: const EdgeInsets.symmetric(horizontal: 6),

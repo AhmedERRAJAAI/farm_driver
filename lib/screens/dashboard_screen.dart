@@ -3,16 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../providers/dashboard_provider.dart';
 import '../mywidgets/dashboard_button.dart';
-// import '../providers/sites_bats_provider.dart';
 
 import './calendar_screen.dart';
 import './before_add_screen.dart';
-import 'reports_screen.dart';
+import 'apps_screen.dart';
 import '../mywidgets/side_drawer.dart';
 import '../mywidgets/badge_widget.dart';
 import '../mywidgets/sites_slider.dart';
 import '../mywidgets/charts_slider.dart';
-// import '../screens/charts_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -30,12 +28,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // Navigator.of(ctx).pushNamed(ChartsScreen.routeName);
   }
 
-  goRecordsPage(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(RecordScreen.routeName);
-  }
-
-  goToBeforeAddReportsPage(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(BeforeAddingScreen.routeName);
+  appsPage(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(AppsScreen.routeName);
   }
 
   bool _isInit = true;
@@ -123,9 +117,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     context: context,
                     builder: (context) {
                       return Container(
-                        child: Text("hello"),
                         color: Colors.blue,
                         height: 500,
+                        child: const Text("hello"),
                       );
                     });
               },
@@ -184,26 +178,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DashboardAppButton(
-                          title: "Enregistrements",
-                          width: deviceSize.width * 0.45,
-                          height: 110,
-                          bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goRecordsPage,
-                          icon: const Icon(
-                            Icons.description_outlined,
-                            color: Color(0xFF40a8ea),
-                            size: 35,
-                          ),
-                        ),
-                        DashboardAppButton(
+                          route: BeforeAddingScreen.routeName,
                           title: "Ajouter",
                           width: deviceSize.width * 0.45,
                           height: 110,
                           bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToBeforeAddReportsPage,
+                          toPage: goToPage,
                           icon: const Icon(
                             Icons.app_registration,
                             color: Color(0xFF90bc29),
+                            size: 35,
+                          ),
+                        ),
+                        DashboardAppButton(
+                          route: "/",
+                          title: "Charts",
+                          width: deviceSize.width * 0.45,
+                          height: 110,
+                          bgcolor: const Color(0xFFFFFFFF),
+                          toPage: goToPage,
+                          icon: const Icon(
+                            Icons.query_stats_outlined,
+                            color: Color(0xFFf1a741),
                             size: 35,
                           ),
                         ),
@@ -214,26 +210,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DashboardAppButton(
-                          title: "Charts",
+                          route: "/",
+                          title: "supplémentation",
                           width: deviceSize.width * 0.45,
                           height: 110,
                           bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToCharts,
+                          toPage: goToPage,
                           icon: const Icon(
-                            Icons.query_stats_outlined,
-                            color: Color(0xFFf1a741),
+                            Icons.vaccines_outlined,
+                            color: Color(0xFFf87878),
                             size: 35,
                           ),
                         ),
                         DashboardAppButton(
-                          title: "supplementation",
+                          route: AppsScreen.routeName,
+                          title: "Plus",
                           width: deviceSize.width * 0.45,
                           height: 110,
                           bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToCharts,
+                          toPage: goToPage,
                           icon: const Icon(
-                            Icons.vaccines_outlined,
-                            color: Color(0xFFf87878),
+                            Icons.apps,
+                            color: Color(0xFF40a8ea),
                             size: 35,
                           ),
                         ),
@@ -242,7 +240,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
-              
               Container(
                 // height: deviceSize.height * 0.3,
                 width: deviceSize.width,

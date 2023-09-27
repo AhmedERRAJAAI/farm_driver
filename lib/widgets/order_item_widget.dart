@@ -7,7 +7,7 @@ import '../providers/orders.dart';
 class OrderItemWidget extends StatefulWidget {
   final OrderItem order;
 
-  OrderItemWidget({required this.order});
+  const OrderItemWidget({super.key, required this.order});
 
   @override
   State<OrderItemWidget> createState() => _OrderItemWidgetState();

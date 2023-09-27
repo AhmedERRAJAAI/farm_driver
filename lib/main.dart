@@ -2,32 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
-import 'package:flutter/services.dart';
 
 import './providers/dashboard_provider.dart';
 import './providers/sites_bats_provider.dart';
-import './providers/products_provider.dart';
+import './providers/settings_apps_provider.dart';
 import './providers/table_charts_provider.dart';
+import './providers/init_account_provider.dart';
+import './providers/forms_provider.dart';
 import './providers/cart.dart';
 import './providers/auth.dart';
-import './providers/orders.dart';
-import './screens/products_screen.dart';
-import './screens/product_detail_screen.dart';
-import './screens/cart_screen.dart';
-import './screens/orders_screen.dart';
-import './screens/user_products_screen.dart';
-import './screens/edit_products_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/dashboard_screen.dart';
 import './screens/calendar_screen.dart';
-import './screens/reports_screen.dart';
+import 'screens/apps_screen.dart';
 import './screens/table_data_view.dart';
 import './screens/charts_screen.dart';
 import './screens/lots_screen.dart';
 import './screens/display_data_screen.dart';
 import './screens/before_add_screen.dart';
 import './screens/age_details_screen.dart';
+import './screens/manage_lots_screen.dart';
+import './screens/create_profile_screen.dart';
 import './forms/production_form.dart';
 import './forms/lotForm.dart';
 import './forms/poussForm.dart';
@@ -36,20 +32,25 @@ import './forms/poussForm.dart';
 void main() {
   HttpOverrides.global = MyHttpOverrides();
   initializeDateFormatting().then((_) {
-    runApp(MyApp());
+    runApp(const MyApp());
   });
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (ctx) => ProductsProvider(),
+            create: (ctx) => DashboardProvider(),
           ),
           ChangeNotifierProvider(
-            create: (ctx) => DashboardProvider(),
+            create: (ctx) => InitUserProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => FormsProvider(),
           ),
           ChangeNotifierProvider(
             create: (ctx) => SitesBatsProvider(),
@@ -61,10 +62,10 @@ class MyApp extends StatelessWidget {
             create: (ctx) => Cart(),
           ),
           ChangeNotifierProvider(
-            create: (ctx) => Orders(),
+            create: (ctx) => Auth(),
           ),
           ChangeNotifierProvider(
-            create: (ctx) => Auth(),
+            create: (ctx) => SettingsAppsProvider(),
           ),
         ],
         //when ever u create a new class instance (object use create) (like this case: instantiating the provider)
@@ -89,30 +90,26 @@ class MyApp extends StatelessWidget {
             ),
 
             home: auth.isAuth
-                ? DashboardScreen()
+                ? const DashboardScreen()
                 : FutureBuilder(
                     future: auth.tryAutoLogin(),
                     builder: (ctx, authResultSnapshot) => authResultSnapshot.connectionState == ConnectionState.waiting ? SplashScreen() : AuthScreen(),
                   ),
             routes: {
               // '/': (ctx) => auth.isAuth ? ProductsScreen() :AuthScreen(),
-              AgeDetailsScreen.routeName: (ctx) => AgeDetailsScreen(),
+              AgeDetailsScreen.routeName: (ctx) => const AgeDetailsScreen(),
               LotForm.routeName: (ctx) => const LotForm(),
-              TableDataView.routeName: (ctx) => TableDataView(),
+              TableDataView.routeName: (ctx) => const TableDataView(),
               ProductionFrom.routeName: (ctx) => const ProductionFrom(),
               BeforeAddingScreen.routeName: (ctx) => const BeforeAddingScreen(),
               DisplayDataScreen.routeName: (ctx) => const DisplayDataScreen(),
               PoussForm.routeName: (ctx) => const PoussForm(),
               LotsScreen.routeName: (ctx) => const LotsScreen(),
               ChartsScreen.routeName: (ctx) => const ChartsScreen(),
-              RecordScreen.routeName: (ctx) => RecordScreen(),
+              AppsScreen.routeName: (ctx) => const AppsScreen(),
               CalendarScreen.routeName: (ctx) => const CalendarScreen(),
-              ProductsScreen.routeName: (ctx) => ProductsScreen(),
-              ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-              CartScreen.routeName: (ctx) => CartScreen(),
-              OrdersScreen.routeName: (ctx) => OrdersScreen(),
-              UserProductScreen.routeName: (ctx) => const UserProductScreen(),
-              EditProductScreen.routeName: (ctx) => const EditProductScreen(),
+              ManageLotsScreen.routeName: (ctx) => const ManageLotsScreen(),
+              CreateProfileScreen.routeName: (ctx) => const CreateProfileScreen(),
             },
             // onUnknownRoute: (settings) {
             // // displays when flutter failed to find a the given route (404)

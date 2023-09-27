@@ -5,7 +5,7 @@ class EcartChip extends StatelessWidget {
   final double ecart;
   final int directionIndex;
 
-  EcartChip({
+  EcartChip({super.key, 
     required this.colorName,
     required this.ecart,
     required this.directionIndex,
@@ -43,7 +43,7 @@ class EcartChip extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "${ecart > 0 ? '+ $ecart' : '$ecart'}",
+            ecart > 0 ? '+ $ecart' : '$ecart',
             style: TextStyle(fontSize: 12, color: colors[colorName]),
           ),
           Icon(

@@ -499,7 +499,7 @@ class _LotFormState extends State<LotForm> {
                           width: 2,
                           color: Colors.green,
                         ),
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(9),
                         ),
@@ -509,7 +509,7 @@ class _LotFormState extends State<LotForm> {
                         children: [
                           Text(
                             creatingLot ? "Creation en cours   " : "Ajouter  ",
-                            style: TextStyle(color: Colors.green),
+                            style: const TextStyle(color: Colors.green),
                           ),
                           creatingLot
                               ? const SizedBox(

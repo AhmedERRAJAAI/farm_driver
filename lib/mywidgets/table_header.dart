@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TableHeader extends StatelessWidget {
   final List columns;
 
-  TableHeader({required this.columns});
+  const TableHeader({super.key, required this.columns});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ class LightWidget extends StatelessWidget {
   final String period;
   final String name;
   final int id;
-  LightWidget({
+  const LightWidget({super.key, 
     required this.name,
     required this.period,
     required this.id,
@@ -18,7 +18,7 @@ class LightWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.grey.shade200))),
       child: Row(
@@ -26,7 +26,7 @@ class LightWidget extends StatelessWidget {
         children: [
           Text(
             name,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Expanded(
             child: Row(

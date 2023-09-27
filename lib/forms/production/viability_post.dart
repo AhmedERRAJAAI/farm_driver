@@ -6,7 +6,7 @@ class ViabilityPost extends StatefulWidget {
   final bool closed;
   final Color postColor;
 
-  ViabilityPost({
+  const ViabilityPost({super.key, 
     required this.mortController,
     required this.sujetElimController,
     required this.closed,
@@ -23,7 +23,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return AnimatedContainer(
-      margin: EdgeInsets.only(bottom: 6),
+      margin: const EdgeInsets.only(bottom: 6),
       decoration: BoxDecoration(
         color: _viaIsExpanded ? Colors.white : widget.postColor,
         border: Border.all(
@@ -104,7 +104,7 @@ class _ViabilityPostState extends State<ViabilityPost> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 6.0),
+                  const SizedBox(height: 6.0),
                   Container(
                     height: deviceSize.height * 0.05,
                     padding: const EdgeInsets.symmetric(horizontal: 6),

@@ -13,7 +13,7 @@ class LotListItem extends StatelessWidget {
   final int? lAge;
   final int? id;
 
-  LotListItem({required this.name, required this.id, required this.batname, this.fAge, this.lAge, required this.effectif, required this.edp});
+  const LotListItem({super.key, required this.name, required this.id, required this.batname, this.fAge, this.lAge, required this.effectif, required this.edp});
 
   showReports(BuildContext ctx, lotId) {
     Navigator.of(ctx).pushNamed(DisplayDataScreen.routeName, arguments: {

@@ -11,7 +11,7 @@ class ProductionPost extends StatefulWidget {
   final Color postColor;
   final bool closed;
 
-  ProductionPost({
+  const ProductionPost({super.key, 
     required this.closed,
     required this.prodNormController,
     required this.prodDjController,
@@ -34,7 +34,7 @@ class _ProductionPostState extends State<ProductionPost> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return AnimatedContainer(
-      margin: EdgeInsets.only(bottom: 6),
+      margin: const EdgeInsets.only(bottom: 6),
       decoration: BoxDecoration(
         color: _prodIsExpanded ? Colors.white : widget.postColor,
         border: Border.all(
@@ -95,7 +95,7 @@ class _ProductionPostState extends State<ProductionPost> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 6.0),
+                  const SizedBox(height: 6.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: Column(

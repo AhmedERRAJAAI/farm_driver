@@ -30,6 +30,8 @@ class _LotsScreenState extends State<LotsScreen> {
     lotsData = Provider.of<SitesBatsProvider>(context, listen: false).lotsData;
     if (_isInit && lotsData.isEmpty) {
       fetchLots(siteData['siteId']);
+    } else if (siteData['siteId'] != lotsData[0].siteId) {
+      fetchLots(siteData['siteId']);
     }
     _isInit = false;
     super.didChangeDependencies();

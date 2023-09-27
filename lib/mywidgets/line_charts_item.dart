@@ -24,7 +24,7 @@ class _LineChartItemState extends State<LineChartItem> {
     return SfCartesianChart(
       primaryXAxis: CategoryAxis(),
       // Chart title
-      title: ChartTitle(text: 'Mortalité', textStyle: TextStyle(fontSize: 11)),
+      title: ChartTitle(text: 'Mortalité', textStyle: const TextStyle(fontSize: 11)),
       // Enable legend
       // legend: Legend(isVisible: true),
       // Enable tooltip
@@ -36,10 +36,9 @@ class _LineChartItemState extends State<LineChartItem> {
             yValueMapper: (_SalesData sales, _) => sales.sales,
             name: 'Sales',
             // Enable data label
-            dataLabelSettings: DataLabelSettings(isVisible: true))
+            dataLabelSettings: const DataLabelSettings(isVisible: true))
       ],
     );
-    ;
   }
 }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth.dart';
 // import '../screens/charts_screen.dart';
@@ -54,7 +53,7 @@ class SideDrawer extends StatelessWidget {
               // ),
               ListTile(
                 leading: const Icon(Icons.person),
-                title: Text(
+                title: const Text(
                   "LOGOUT",
                 ),
                 onTap: () {

@@ -65,7 +65,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: TableCalendar(
               headerStyle: const HeaderStyle(
                   formatButtonVisible: false,
@@ -84,7 +84,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               onDaySelected: _onDaySelected,
             ),
           ),
-          Container(
+          SizedBox(
             height: deviceSize.height * 0.5,
             child: SingleChildScrollView(
               child: ExpansionPanelList(
@@ -102,9 +102,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       );
                     },
                     body: ListTile(
-                      title: Text('Injection + NB'),
+                      title: const Text('Injection + NB'),
                       subtitle: const Text('R.Salm à j 1'),
-                      trailing: Container(
+                      trailing: SizedBox(
                         width: deviceSize.width * 0.25,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,8 +182,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
       // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.add),
         backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }

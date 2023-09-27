@@ -6,7 +6,7 @@ class ConsoWidget extends StatelessWidget {
   final double ratio;
   final String ratioColor;
   final int id;
-  ConsoWidget({
+  ConsoWidget({super.key, 
     required this.id,
     required this.aps,
     required this.eps,
@@ -23,7 +23,7 @@ class ConsoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -57,7 +57,7 @@ class ConsoWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Text('Ratio: '),
+              const Text('Ratio: '),
               Text(
                 '$ratio',
                 style: TextStyle(

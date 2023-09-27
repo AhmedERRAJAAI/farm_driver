@@ -25,9 +25,9 @@ class TableAndChartsProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
 
     try {
@@ -42,7 +42,9 @@ class TableAndChartsProvider with ChangeNotifier {
         for (var item in fetchedItems) {
           extractedData.add(
             LtableData(
+              lotId: item['lotId'],
               age: item['age'],
+              year: item['year'],
               altCumlPd: item['alt_cuml_pd'],
               altDistCuml: item['alt_dist_cuml'],
               altOeufCuml: item['alt_oeuf_cuml'],
@@ -68,6 +70,15 @@ class TableAndChartsProvider with ChangeNotifier {
               ponteCent: item['ponte_cent'],
               ponteVar: item['ponte_var'],
               ratio: item['ratio'],
+              coloration: item['coloration'],
+              coquille: item['coquille'],
+              ed: item['ed'],
+              ep: item['ep'],
+              semCivil: item['sem_civil'],
+              icSem: item['ic_sem'],
+              noppdSem: item['noppd_sem'],
+              nopppCuml: item['noppp_cuml'],
+              observs: item['observs'],
             ),
           );
         }
@@ -77,15 +88,21 @@ class TableAndChartsProvider with ChangeNotifier {
         throw Exception("ERROR  DURING FETCHING SITES");
       }
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
 }
 
 class LtableData {
+  final int lotId;
+  final int ep;
+  final int ed;
+  final int semCivil;
+  final int year;
   final int age;
-  final String light;
-  final String flash;
+  final Map light;
+  final Map flash;
   final int intensite;
   final bool isLux;
   final Map<String, dynamic> poidVif;
@@ -103,14 +120,25 @@ class LtableData {
   final Map<String, dynamic> massOeufCuml;
   final Map<String, dynamic> massOeufSem;
   final Map<String, dynamic> nopppSem;
+  final Map<String, dynamic> noppdSem;
   final Map<String, dynamic> noppdCuml;
+  final Map<String, dynamic> nopppCuml;
   final Map<String, dynamic> pmo;
   final Map<String, dynamic> ponteCent;
   final Map<String, dynamic> ponteVar;
   final Map<String, dynamic> ratio;
   final Map<String, dynamic> ic;
+  final Map<String, dynamic> icSem;
+  final List coloration;
+  final List coquille;
+  final List observs;
 
   LtableData({
+    required this.lotId,
+    required this.ep,
+    required this.ed,
+    required this.year,
+    required this.semCivil,
     required this.age,
     required this.light,
     required this.flash,
@@ -123,19 +151,25 @@ class LtableData {
     required this.eauDistCuml,
     required this.eps,
     required this.altDistCuml,
-    required this.aps,
     required this.nbrPonte,
+    required this.aps,
     required this.altCumlPd,
     required this.altOeufSem,
     required this.altOeufCuml,
     required this.massOeufCuml,
     required this.massOeufSem,
     required this.nopppSem,
+    required this.noppdSem,
     required this.noppdCuml,
+    required this.nopppCuml,
     required this.pmo,
     required this.ponteCent,
     required this.ponteVar,
     required this.ratio,
     required this.ic,
+    required this.icSem,
+    required this.coloration,
+    required this.coquille,
+    required this.observs,
   });
 }

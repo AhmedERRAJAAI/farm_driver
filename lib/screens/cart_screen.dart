@@ -10,6 +10,8 @@ import '../providers/orders.dart';
 class CartScreen extends StatelessWidget {
   static const routeName = 'cart/';
 
+  const CartScreen({super.key});
+
   seeOrders(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(OrdersScreen.routeName);
   }

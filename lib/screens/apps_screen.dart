@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../providers/sites_bats_provider.dart';
+import '../mywidgets/dashboard_button.dart';
+import './calendar_screen.dart';
+import './manage_lots_screen.dart';
 
-import '../screens/calendar_screen.dart';
-import '../mywidgets/site_list_item.dart';
-// import '../mywidgets/badge_widget.dart';
+class AppsScreen extends StatefulWidget {
+  static const routeName = 'apps-screen/';
 
-class RecordScreen extends StatefulWidget {
-  static const routeName = 'records-screen/';
+  const AppsScreen({super.key});
 
   @override
-  State<RecordScreen> createState() => _RecordScreenState();
+  State<AppsScreen> createState() => _AppsScreenState();
 }
 
-class _RecordScreenState extends State<RecordScreen> {
-  goToPage(BuildContext ctx, routeName) {
-    Navigator.of(ctx).pushNamed(routeName);
-  }
-
+class _AppsScreenState extends State<AppsScreen> {
   bool _isInit = true;
   bool isLoading = false;
   bool failedToFetch = false;
@@ -62,8 +59,15 @@ class _RecordScreenState extends State<RecordScreen> {
     super.didChangeDependencies();
   }
 
+  goToPage(BuildContext ctx, routeName) {
+    Navigator.of(ctx).pushNamed(routeName);
+  }
+
+  void placeHolder() {}
+
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     sites = Provider.of<SitesBatsProvider>(context).sitesData;
     return Scaffold(
       appBar: AppBar(
@@ -94,52 +98,54 @@ class _RecordScreenState extends State<RecordScreen> {
             itemBuilder: (_) => [
               const PopupMenuItem(
                 value: 0,
-                child: Text("Ajouter un site"),
+                child: Text("Creer un nouveau lot"),
               ),
               const PopupMenuItem(
                 value: 1,
-                child: Text("voir sites details"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
+                child: Text("Lot archivées"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
               )
             ],
           ),
         ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : failedToFetch
-              ? Center(
-                  child: Column(
-                  children: [
-                    const Text('Failed to fetch'),
-                    TextButton(
-                        onPressed: () {
-                          fetchSites();
-                        },
-                        child: const Text("Refresh"))
-                  ],
-                ))
-              : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8, left: 8, top: 12),
-                    child: Column(
-                      children: AnimateList(
-                        interval: 50.ms,
-                        effects: [
-                          FadeEffect(
-                            duration: 100.ms,
-                          )
-                        ],
-                        children: sites
-                            .map((site) => SiteListItem(
-                                  id: site.id,
-                                  lotNbr: site.lotNbr,
-                                  name: site.name,
-                                ))
-                            .toList(),
-                      ),
+      body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DashboardAppButton(
+                    route: ManageLotsScreen.routeName,
+                    title: "Mes lots",
+                    width: deviceSize.width * 0.46,
+                    height: 110,
+                    bgcolor: const Color(0xFFFFFFFF),
+                    toPage: goToPage,
+                    icon: Icon(
+                      MdiIcons.selectGroup,
+                      color: Colors.green.shade500,
+                      size: 35,
                     ),
                   ),
-                ),
+                  DashboardAppButton(
+                    route: '/',
+                    title: "Mes Rapports",
+                    width: deviceSize.width * 0.46,
+                    height: 110,
+                    bgcolor: const Color(0xFFFFFFFF),
+                    toPage: placeHolder,
+                    icon: Icon(
+                      Icons.description,
+                      color: Colors.blue.shade500,
+                      size: 35,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 7),
+            ],
+          )),
     );
   }
 }

@@ -5,7 +5,7 @@ import '../mywidgets/line_charts_item.dart';
 
 class DashChartsSlider extends StatefulWidget {
   final double height;
-  DashChartsSlider({required this.height});
+  DashChartsSlider({super.key, required this.height});
 
   final List sliderData = [
     1,
@@ -23,7 +23,7 @@ class _DashChartsSliderState extends State<DashChartsSlider> {
   Widget build(BuildContext context) {
     return CarouselSlider(
       items: widget.sliderData.map((e) {
-        return LineChartItem();
+        return const LineChartItem();
       }).toList(),
       options: CarouselOptions(
         // height: widget.height * 0.30,

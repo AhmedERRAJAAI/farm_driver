@@ -6,14 +6,17 @@ class DashboardAppButton extends StatelessWidget {
   final Color bgcolor;
   final Icon icon;
   final String title;
+  final String route;
   final Function toPage;
-  
-  DashboardAppButton({
+
+  const DashboardAppButton({
+    super.key,
     required this.width,
     required this.height,
     required this.bgcolor,
     required this.icon,
     required this.title,
+    required this.route,
     required this.toPage,
   });
 
@@ -33,7 +36,7 @@ class DashboardAppButton extends StatelessWidget {
           side: BorderSide.none, // Remove border
         ),
         onPressed: () {
-          toPage(context);
+          toPage(context, route);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

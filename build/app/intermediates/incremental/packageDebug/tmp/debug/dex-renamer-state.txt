@@ -1,4 +1,4 @@
-#Sun Sep 24 23:36:04 WEST 2023
+#Wed Sep 27 11:41:12 WEST 2023
 base.0=/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

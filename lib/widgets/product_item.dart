@@ -7,6 +7,8 @@ import '../screens/product_detail_screen.dart';
 import '../providers/products.dart';
 
 class ProductItem extends StatelessWidget {
+  const ProductItem({super.key});
+
   selectProduct(BuildContext ctx, productId) {
     // Navigator.of(ctx).pushReplacementNamed(ProductDetailScreen.routeName,
     //     arguments: productId);
@@ -23,7 +25,7 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         footer: GridTileBar(
-          backgroundColor: Color.fromRGBO(0, 0, 0, 0.541),
+          backgroundColor: const Color.fromRGBO(0, 0, 0, 0.541),
           title: Text(
             product.title,
             textAlign: TextAlign.center,

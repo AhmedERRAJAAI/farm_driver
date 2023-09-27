@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/sites_bats_provider.dart';
+import '../providers/forms_provider.dart';
 import '../screens/calendar_screen.dart';
 import 'production/selects.dart';
 import './production/viability_post.dart';
@@ -133,7 +134,7 @@ class _ProductionFromState extends State<ProductionFrom> {
       sendingReport = true;
     });
     try {
-      await Provider.of<SitesBatsProvider>(context, listen: false).sendReport(report).then((_) {
+      await Provider.of<FormsProvider>(context, listen: false).sendReport(report).then((_) {
         setState(() {
           sendingReport = false;
           sent = true;
@@ -414,7 +415,7 @@ class _ProductionFromState extends State<ProductionFrom> {
                       ),
                       if (preData.closed)
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.red.shade300),
                           child: const Text(
                             "remarque: report can't be filled now",
@@ -429,7 +430,7 @@ class _ProductionFromState extends State<ProductionFrom> {
                     sujetElimController: sujetElimController,
                     postColor: Colors.deepPurple.shade400,
                   ),
-                  ProductionPost(closed: preData.closed, prodNormController: prodNormController, prodDjController: prodDjController, prodBlancController: prodBlancController, prodCasseController: prodCasseController, prodFelesController: prodFelesController, prodElimnController: prodElimnController, pmoController: pmoController, postColor: Color.fromARGB(255, 216, 100, 58)),
+                  ProductionPost(closed: preData.closed, prodNormController: prodNormController, prodDjController: prodDjController, prodBlancController: prodBlancController, prodCasseController: prodCasseController, prodFelesController: prodFelesController, prodElimnController: prodElimnController, pmoController: pmoController, postColor: const Color.fromARGB(255, 216, 100, 58)),
                   ConsoPost(closed: preData.closed, consoAltController: consoAltController, consoEauController: consoEauController, consoFormuleController: consoFormuleController, postColor: Colors.green.shade700),
                   AmbiancePost(
                     ready: repDataIsReady,
@@ -554,7 +555,6 @@ class _ProductionFromState extends State<ProductionFrom> {
                             ),
                           );
                         }
-                        ;
                       },
                     ),
                   )

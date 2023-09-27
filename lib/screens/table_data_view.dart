@@ -26,12 +26,11 @@ class _TableDataViewState extends State<TableDataView> {
   Map lotData = {};
   List tableData = [];
 
-  void fetchSites(lotId, sAge, lAge) async {
+  void fetchLtableData(lotId, sAge, lAge) async {
     setState(() {
       isLoading = true;
     });
     try {
-      final lotData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       await Provider.of<TableAndChartsProvider>(context, listen: false).fetchLargeTableData(lotId, sAge, lAge).then((_) {
         setState(() {
           tableData = Provider.of<TableAndChartsProvider>(context, listen: false).getTableData;
@@ -58,7 +57,9 @@ class _TableDataViewState extends State<TableDataView> {
     tableData = Provider.of<TableAndChartsProvider>(context, listen: false).getTableData;
     lotData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     if (_isInit && tableData.isEmpty) {
-      fetchSites(lotData['lotId'], lotData['fage'], lotData['lage']);
+      fetchLtableData(lotData['lotId'], lotData['fage'], lotData['lage']);
+    } else if (lotData['lotId'] != tableData[0].lotId) {
+      fetchLtableData(lotData['lotId'], lotData['fage'], lotData['lage']);
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -71,19 +72,53 @@ class _TableDataViewState extends State<TableDataView> {
         backgroundColor: color,
         duration: const Duration(seconds: 4),
         content: Row(
-          // mainAxisAlignment: MainAxisAlignment.,
           children: [
             Icon(
               MdiIcons.chartAreaspline,
               color: Colors.white,
             ),
-            Text(msg),
+            Text('  $msg', style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         action: SnackBarAction(
-            label: 'Aller',
+            label: 'Go',
             onPressed: () {
               widget.goToPage(context, route);
+            },
+            textColor: color,
+            backgroundColor: Colors.white),
+      ),
+    );
+  }
+
+  void showDetailsSnack(String msg, route, Color color, LtableData data) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        duration: const Duration(seconds: 4),
+        content: Row(
+          // mainAxisAlignment: MainAxisAlignment.,
+          children: [
+            const Icon(
+              Icons.zoom_in,
+              color: Colors.white,
+            ),
+            Text(
+              msg,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        action: SnackBarAction(
+            label: 'Go',
+            onPressed: () {
+              Navigator.of(context).pushNamed(AgeDetailsScreen.routeName, arguments: {
+                'lotId': lotData['lotId'],
+                'lotCode': lotData['lotCode'],
+                'batiment': lotData['batiment'],
+                'weekReport': data
+              });
             },
             textColor: color,
             backgroundColor: Colors.white),
@@ -99,7 +134,10 @@ class _TableDataViewState extends State<TableDataView> {
           leading: IconButton(
             alignment: Alignment.centerLeft,
             icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).primaryColor),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              Navigator.of(context).pop();
+            },
           ),
           elevation: 1,
           title: Row(
@@ -111,6 +149,14 @@ class _TableDataViewState extends State<TableDataView> {
               ),
             ],
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                fetchLtableData(lotData['lotId'], lotData['fage'], lotData['lage']);
+              },
+              icon: Icon(Icons.refresh, color: Theme.of(context).primaryColor),
+            )
+          ],
         ),
         body: Padding(
           padding: EdgeInsets.zero,
@@ -123,7 +169,7 @@ class _TableDataViewState extends State<TableDataView> {
                         const Text('Failed to fetch'),
                         TextButton(
                             onPressed: () {
-                              fetchSites(lotData['lotId'], lotData['fage'], lotData['lage']);
+                              fetchLtableData(lotData['lotId'], lotData['fage'], lotData['lage']);
                             },
                             child: const Text("Refresh"))
                       ],
@@ -141,11 +187,12 @@ class _TableDataViewState extends State<TableDataView> {
                       dataRowHeight: 30,
                       isHorizontalScrollBarVisible: true,
                       isVerticalScrollBarVisible: true,
-                      dataTextStyle: TextStyle(color: Colors.black, fontSize: 15.5),
+                      dataTextStyle: const TextStyle(color: Colors.black, fontSize: 15.5),
+                      fixedColumnsColor: Colors.amber.shade700,
 
                       minWidth: 2550,
                       columns: [
-                        DataColumn2(
+                        const DataColumn2(
                           fixedWidth: 60,
                           label: Center(
                             child: Text(
@@ -158,7 +205,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 80,
-                          label: Text(
+                          label: const Text(
                             'Lumiére',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -169,7 +216,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 80,
-                          label: Text(
+                          label: const Text(
                             'Flash',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -179,7 +226,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Poids corporel',
                               style: TextStyle(color: Colors.white),
@@ -192,7 +239,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               ' Homogéniété',
                               style: TextStyle(color: Colors.white),
@@ -206,7 +253,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 86,
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Intensité',
                               style: TextStyle(color: Colors.white),
@@ -218,7 +265,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Mortalité',
                               style: TextStyle(color: Colors.white),
@@ -231,7 +278,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Σ Mortalité',
                               style: TextStyle(color: Colors.white),
@@ -245,7 +292,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 90,
-                          label: FittedBox(
+                          label: const FittedBox(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -272,7 +319,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 80,
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Eau (ml)',
                               style: TextStyle(color: Colors.white),
@@ -286,7 +333,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 100,
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Σ Aliment (T)',
                               style: TextStyle(color: Colors.white),
@@ -300,7 +347,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           // fixedWidth: 90,
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'APS (g)',
                               style: TextStyle(color: Colors.white),
@@ -314,7 +361,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 63,
-                          label: Text(
+                          label: const Text(
                             'Ratio',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -325,7 +372,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Σ APS (kg)',
                               style: TextStyle(color: Colors.white),
@@ -338,7 +385,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               'Ponte (oeuf)',
                               style: TextStyle(color: Colors.white),
@@ -352,7 +399,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 160,
-                          label: Center(
+                          label: const Center(
                             child: Text(
                               '    Ponte (%)',
                               style: TextStyle(color: Colors.white),
@@ -365,7 +412,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Text(
+                          label: const Text(
                             'Nombre d\'oeuf',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -376,7 +423,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Text(
+                          label: const Text(
                             'Σ Nombre d\'oeuf',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -388,7 +435,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 160,
-                          label: Text(
+                          label: const Text(
                             'Aliment/oeuf',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -399,7 +446,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Text(
+                          label: const Text(
                             'Poids d\'oeuf',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -410,7 +457,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Text(
+                          label: const Text(
                             'Masse d\'oeuf',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -421,7 +468,7 @@ class _TableDataViewState extends State<TableDataView> {
                           },
                         ),
                         DataColumn2(
-                          label: Text(
+                          label: const Text(
                             "Σ Masse d'oeuf",
                             style: TextStyle(color: Colors.white),
                           ),
@@ -433,7 +480,7 @@ class _TableDataViewState extends State<TableDataView> {
                         ),
                         DataColumn2(
                           fixedWidth: 130,
-                          label: Text(
+                          label: const Text(
                             'Indice de conversion',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -451,16 +498,34 @@ class _TableDataViewState extends State<TableDataView> {
                                 return i % 2 != 0 ? const Color.fromARGB(255, 240, 240, 240) : Colors.white;
                               }),
                               cells: [
-                                DataCell(onTap: () {
-                                  showChartSnack('Voir details de ${tableData[i].age}', AgeDetailsScreen.routeName, Colors.blue.shade800);
-                                },
-                                    Center(
-                                        child: Text(
-                                      '${tableData[i].age}',
-                                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue.shade800),
-                                    ))),
-                                DataCell(Center(child: Text("${tableData[i].light}"))),
-                                DataCell(Center(child: Text("${tableData[i].flash}"))),
+                                DataCell(
+                                  onTap: () {
+                                    showDetailsSnack(
+                                      ' Voir details, Age:  ${tableData[i].age}',
+                                      AgeDetailsScreen.routeName,
+                                      Colors.amber.shade700,
+                                      tableData[i],
+                                    );
+                                  },
+                                  Center(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '${tableData[i].age} ',
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                        ),
+                                        Icon(
+                                          Icons.expand_more,
+                                          size: 18,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                DataCell(Center(child: Text("${tableData[i].light['period']}"))),
+                                DataCell(Center(child: Text("${tableData[i].flash['period']}"))),
                                 DataCell(
                                   Center(
                                     child: Row(
@@ -583,7 +648,7 @@ class _TableDataViewState extends State<TableDataView> {
                                         ),
                                         Text(
                                           ' ${tableData[i].ponteCent['reel']}',
-                                          style: TextStyle(fontWeight: FontWeight.normal),
+                                          style: const TextStyle(fontWeight: FontWeight.normal),
                                         ),
                                         EcartChip(
                                           colorName: '${tableData[i].ponteCent['color']}',

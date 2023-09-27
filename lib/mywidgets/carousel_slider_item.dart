@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../screens/lots_screen.dart';
 
 class CarouselSliderItem extends StatelessWidget {
   final double width;
+  final int siteId;
   final String siteName;
   final String lastUpdated;
   final String temprature;
@@ -14,8 +16,10 @@ class CarouselSliderItem extends StatelessWidget {
   final bool siteIsGood;
   final String statusMsg;
 
-  CarouselSliderItem({
+  const CarouselSliderItem({
+    super.key,
     required this.width,
+    required this.siteId,
     required this.siteName,
     required this.lastUpdated,
     required this.temprature,
@@ -26,6 +30,13 @@ class CarouselSliderItem extends StatelessWidget {
     required this.siteIsGood,
     required this.statusMsg,
   });
+
+  showLots(BuildContext ctx, siteId, siteName) {
+    Navigator.of(ctx).pushNamed(LotsScreen.routeName, arguments: {
+      'siteId': siteId,
+      'siteName': siteName
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +118,6 @@ class CarouselSliderItem extends StatelessWidget {
                             Text('$humidity %', style: const TextStyle(fontSize: 12, color: Color(0xFFfbfafd))),
                           ],
                         ),
-                        
                       ],
                     ),
                   ],
@@ -185,7 +195,9 @@ class CarouselSliderItem extends StatelessWidget {
                     border: Border.all(color: const Color(0XFFFD8D14), width: 2),
                     borderRadius: BorderRadius.circular(60)),
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showLots(context, siteId, siteName);
+                  },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.zero, // Remove padding
                     backgroundColor: Colors.transparent,
@@ -203,7 +215,7 @@ class CarouselSliderItem extends StatelessWidget {
             ],
           ),
           Container(
-            padding: EdgeInsets.all(1),
+            padding: const EdgeInsets.all(1),
             width: width,
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
             child: Row(

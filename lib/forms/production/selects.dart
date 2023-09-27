@@ -6,7 +6,7 @@ class InitFormSelect extends StatefulWidget {
   final Function fetch;
   final Function selectedVal;
   final Color themeColor;
-  InitFormSelect({required this.inputsOptions, required this.fetch, required this.selectedVal, required this.selectName, required this.themeColor});
+  const InitFormSelect({super.key, required this.inputsOptions, required this.fetch, required this.selectedVal, required this.selectName, required this.themeColor});
 
   @override
   State<InitFormSelect> createState() => _InitFormSelectState();

@@ -8,7 +8,7 @@ class ConsoPost extends StatefulWidget {
   final Color postColor;
   final bool closed;
 
-  ConsoPost({
+  const ConsoPost({super.key, 
     required this.closed,
     required this.consoAltController,
     required this.consoEauController,
@@ -27,7 +27,7 @@ class _ConsoPostState extends State<ConsoPost> {
     final deviceSize = MediaQuery.of(context).size;
 
     return AnimatedContainer(
-      margin: EdgeInsets.only(bottom: 6),
+      margin: const EdgeInsets.only(bottom: 6),
       decoration: BoxDecoration(
         color: _consoIsExpanded ? Colors.white : widget.postColor,
         border: Border.all(
@@ -45,7 +45,7 @@ class _ConsoPostState extends State<ConsoPost> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -87,7 +87,7 @@ class _ConsoPostState extends State<ConsoPost> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 6.0),
+                  const SizedBox(height: 6.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: Column(

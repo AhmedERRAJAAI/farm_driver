@@ -7,7 +7,7 @@ class ConstatPost extends StatefulWidget {
   final Function observsGetter;
   final bool closed;
 
-  ConstatPost({
+  const ConstatPost({super.key, 
     required this.closed,
     required this.postColor,
     required this.colorGetter,
@@ -106,7 +106,7 @@ class _ConstatPostState extends State<ConstatPost> {
                     children: [
                       Container(
                         width: deviceSize.width * 0.43,
-                        padding: EdgeInsets.only(left: 6),
+                        padding: const EdgeInsets.only(left: 6),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.grey, // Border color
@@ -138,7 +138,7 @@ class _ConstatPostState extends State<ConstatPost> {
                       ),
                       Container(
                         width: deviceSize.width * 0.43,
-                        padding: EdgeInsets.only(left: 6),
+                        padding: const EdgeInsets.only(left: 6),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.grey, // Border color
@@ -176,7 +176,7 @@ class _ConstatPostState extends State<ConstatPost> {
                   ),
                   Container(
                     // height: deviceSize.height * 0.05,
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -247,7 +247,7 @@ class _ConstatPostState extends State<ConstatPost> {
                                 color: observUrgColors[obsrv['urg']] ??
                                     Colors.blue),
                             borderRadius: BorderRadius.circular(10)),
-                        margin: EdgeInsets.symmetric(vertical: 2),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
                         width: deviceSize.width * 0.9,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -255,7 +255,7 @@ class _ConstatPostState extends State<ConstatPost> {
                             SizedBox(
                               width: deviceSize.width * 0.7,
                               child: Text('${obsrv['value']}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12,
                                       overflow: TextOverflow.clip)),
                             ),
@@ -267,7 +267,7 @@ class _ConstatPostState extends State<ConstatPost> {
                                     widget.observsGetter(observs);
                                   });
                                 },
-                                icon: Icon(Icons.remove_circle,
+                                icon: const Icon(Icons.remove_circle,
                                     color: Colors.red, size: 23))
                           ],
                         ));

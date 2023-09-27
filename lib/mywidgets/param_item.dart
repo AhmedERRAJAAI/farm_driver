@@ -17,7 +17,7 @@ class ParamItem extends StatefulWidget {
   final int? isUp;
   final String color;
 
-  ParamItem({
+  const ParamItem({super.key, 
     required this.id,
     required this.age,
     required this.lotId,
@@ -79,7 +79,7 @@ class _ParamItemState extends State<ParamItem> {
                     ),
                   ),
                   daysData.isEmpty
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : SizedBox(
                           child: Column(
                             children: [

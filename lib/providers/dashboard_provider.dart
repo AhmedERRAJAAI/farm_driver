@@ -22,8 +22,8 @@ class DashboardProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
-    final headers = {'Authorization': 'Bearer $_accessToken'};
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {'Authorization': 'Bearer $accessToken'};
 
     try {
       final response = await http.get(
@@ -37,6 +37,7 @@ class DashboardProvider with ChangeNotifier {
         for (var item in fetchedProducts) {
           extractedData.add(
             _SliderItem(
+              siteId: item['site_id'],
               siteName: item['placeName'] ?? 'Non défini',
               ageMoy: item['ageMoy'],
               containsWeeklyLots: item['containsWeeklyLots'],
@@ -66,6 +67,7 @@ class DashboardProvider with ChangeNotifier {
 }
 
 class _SliderItem {
+  final int siteId;
   final String? siteName;
   final String? lastUpdate;
   final String? currentTemp;
@@ -81,6 +83,7 @@ class _SliderItem {
   final String? statusMsg;
 
   _SliderItem({
+    required this.siteId,
     this.siteName,
     this.ageMoy,
     this.containsWeeklyLots,

@@ -6,30 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SitesBatsProvider with ChangeNotifier {
-  Future<void> sendReport(data) async {
-    final url = Uri.parse('https://farmdriver.savas.ma/api/add-report-prod/');
 
-    final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('userdata')) {
-      return;
-    }
-    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
-    final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $accessToken'
-    };
-    final body = json.encode(data);
-    try {
-      final response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        notifyListeners();
-      } else {
-        throw Exception("ERROR  DURING SENDING REPORTS");
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
+
+
 
   Future<void> createLot(data) async {
     final url = Uri.parse('https://farmdriver.savas.ma/api/add-lot/');
@@ -56,23 +35,23 @@ class SitesBatsProvider with ChangeNotifier {
     }
   }
 
-  List<_Site> _sites = [
+  List<Site> Sites = [
     // FETCHED DATA ...
   ];
 
-  List<_Site> get sitesData {
+  List<Site> get sitesData {
     return [
-      ..._sites
+      ...Sites
     ];
   }
 
-  List<_Lot> _lots = [
+  List<Lot> lots = [
     // FETCHED DATA ...
   ];
 
-  List<_Lot> get lotsData {
+  List<Lot> get lotsData {
     return [
-      ..._lots
+      ...lots
     ];
   }
 
@@ -83,9 +62,9 @@ class SitesBatsProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
 
     try {
@@ -96,19 +75,18 @@ class SitesBatsProvider with ChangeNotifier {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedItems = json.decode(responseBody) as List;
-        final List<_Site> extractedData = [];
+        final List<Site> extractedData = [];
         for (var item in fetchedItems) {
           extractedData.add(
-            _Site(
+            Site(
               id: item['id'],
               name: item['name'],
               lotNbr: item['lot_nbr'],
               pouss: item['containsPouss'],
-              type: '',
             ),
           );
         }
-        _sites = extractedData;
+        Sites = extractedData;
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING FETCHING SITES");
@@ -125,10 +103,10 @@ class SitesBatsProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
     final body = json.encode(
       {
@@ -140,10 +118,11 @@ class SitesBatsProvider with ChangeNotifier {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedItems = json.decode(responseBody) as List;
-        final List<_Lot> extractedLots = [];
+        final List<Lot> extractedLots = [];
         for (var item in fetchedItems) {
           extractedLots.add(
-            _Lot(
+            Lot(
+              siteId: item['siteId'],
               id: item['id'],
               lotId: item['lot_id'],
               code: item['code'],
@@ -154,11 +133,10 @@ class SitesBatsProvider with ChangeNotifier {
               firstAge: item['firstAge'],
               lastAge: item['lastAge'],
               prod: item['isProd'],
-              type: '',
             ),
           );
         }
-        _lots = extractedLots;
+        lots = extractedLots;
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING FETCHING LOTS");
@@ -185,10 +163,10 @@ class SitesBatsProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
     final body = json.encode(
       {
@@ -286,9 +264,9 @@ class SitesBatsProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
     try {
       final response = await http.get(url, headers: headers);
@@ -324,10 +302,10 @@ class SitesBatsProvider with ChangeNotifier {
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
     final body = json.encode(
       {
@@ -355,23 +333,23 @@ class SitesBatsProvider with ChangeNotifier {
     return _daysData;
   }
 
-  Future<void> fetchDaysReports(lotId, age, param_id) async {
+  Future<void> fetchDaysReports(lotId, age, paramId) async {
     final url = Uri.parse('https://farmdriver.savas.ma/api/get-param-days/');
 
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
     }
-    final _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     };
     final body = json.encode(
       {
         "lotId": lotId,
         'age': age,
-        'param_id': param_id
+        'param_id': paramId
       },
     );
     try {
@@ -467,12 +445,12 @@ class _Bat {
   _Bat({required this.name, required this.id, required this.isEmpty, required this.type});
 }
 
-class _Lot {
+class Lot {
+  final int siteId;
   final int id;
   final int lotId;
   final String code;
   final String name;
-  final String type;
   final bool prod;
   final int? edp;
   final int? ep;
@@ -480,13 +458,13 @@ class _Lot {
   final int? firstAge;
   final int? lastAge;
 
-  _Lot({
+  Lot({
+    required this.siteId,
     required this.id,
     required this.lotId,
     required this.code,
     required this.name,
     required this.prod,
-    required this.type,
     this.firstAge,
     this.lastAge,
     this.edp,
@@ -495,31 +473,24 @@ class _Lot {
   });
 }
 
-class _Site {
+class Site {
   final int id;
   final String name;
   final int lotNbr;
   final bool pouss;
-  final String type;
 
-  _Site({
+  Site({
     required this.id,
     required this.name,
     required this.lotNbr,
     required this.pouss,
-    required this.type,
   });
 }
 
-class _Batiment {
-  final String? id;
-  final String? name;
-  final String? effectif;
-  final String? age;
-  _Batiment({
-    this.id,
-    this.name,
-    this.effectif,
-    this.age,
-  });
-}
+// class _Batiment {
+//   final String? id;
+//   final String? name;
+//   final String? effectif;
+//   final String? age;
+//   _Batiment();
+// }

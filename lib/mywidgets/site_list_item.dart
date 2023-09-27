@@ -7,7 +7,7 @@ class SiteListItem extends StatelessWidget {
   final String name;
   final int lotNbr;
   final int id;
-  SiteListItem({required this.name, required this.id, required this.lotNbr});
+  const SiteListItem({super.key, required this.name, required this.id, required this.lotNbr});
 
   showLots(BuildContext ctx, siteId) {
     Navigator.of(ctx).pushNamed(LotsScreen.routeName,
@@ -35,7 +35,7 @@ class SiteListItem extends StatelessWidget {
                 ),
                 child: Center(
                   child: Hero(
-                    tag: 'siteToLot${id}',
+                    tag: 'siteToLot$id',
                     child: Icon(MdiIcons.sitemapOutline,
                         size: 33, color: const Color(0xFF145da0)),
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/sites_bats_provider.dart';
+import '../providers/forms_provider.dart';
 import '../screens/calendar_screen.dart';
 import 'production/selects.dart';
 import './production/viability_post.dart';
@@ -26,7 +27,7 @@ class PoussForm extends StatefulWidget {
 }
 
 class _PoussFormState extends State<PoussForm> {
-  final prodFormKey = GlobalKey<FormState>();
+  final poussFormKey = GlobalKey<FormState>();
   bool isLoading = false;
   bool _isInit = true;
   bool failedToFetch = false;
@@ -45,7 +46,8 @@ class _PoussFormState extends State<PoussForm> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
+    sites = Provider.of<SitesBatsProvider>(context, listen: false).sitesData;
+    if (_isInit && sites.isEmpty) {
       fetchSites(null);
     }
     _isInit = false;
@@ -132,7 +134,7 @@ class _PoussFormState extends State<PoussForm> {
       sendingReport = true;
     });
     try {
-      await Provider.of<SitesBatsProvider>(context, listen: false).sendReport(report).then((_) {
+      await Provider.of<FormsProvider>(context, listen: false).sendPoussReport(report).then((_) {
         setState(() {
           sendingReport = false;
           sent = true;
@@ -342,7 +344,7 @@ class _PoussFormState extends State<PoussForm> {
         child: Padding(
           padding: const EdgeInsets.only(left: 6, right: 6, top: 6),
           child: Form(
-              key: prodFormKey,
+              key: poussFormKey,
               child: Column(
                 children: [
                   isLoading
@@ -405,7 +407,7 @@ class _PoussFormState extends State<PoussForm> {
                       ),
                       if (preData.closed)
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.red.shade300),
                           child: const Text(
                             "remarque: report can't be filled now",
@@ -484,7 +486,7 @@ class _PoussFormState extends State<PoussForm> {
                         ],
                       ),
                       onPressed: () {
-                        if (prodFormKey.currentState!.validate()) {
+                        if (poussFormKey.currentState!.validate()) {
                           repData["mort"] = mortController.text.isEmpty ? 0 : mortController.text;
                           repData["hensEliminated"] = sujetElimController.text.isEmpty ? 0 : sujetElimController.text;
                           repData["alimentDist"] = consoAltController.text.isEmpty ? 0 : consoAltController.text;
@@ -537,7 +539,6 @@ class _PoussFormState extends State<PoussForm> {
                             ),
                           );
                         }
-                        ;
                       },
                     ),
                   )
@@ -644,15 +645,6 @@ class EnteredDataDisplay extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.2,
               height: 3,
-            ),
-            Row(
-              children: [
-                Text(
-                  'Poids moyen d\'oeuf:',
-                  style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
-                ),
-                Text("${data['pmo']}")
-              ],
             ),
             const Divider(
               color: Colors.grey,

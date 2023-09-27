@@ -6,7 +6,7 @@ import './product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
   final bool onlyFavorites;
-  ProductsGrid(this.onlyFavorites);
+  const ProductsGrid(this.onlyFavorites, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ProductsGrid extends StatelessWidget {
         //whenever u reuse an exsting object use .value approach (like this case:grid)
         //when ever u create a new class instance (object use create) (main.dart case: instantiating the provider)
         value: products[i],
-        child: ProductItem(),
+        child: const ProductItem(),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

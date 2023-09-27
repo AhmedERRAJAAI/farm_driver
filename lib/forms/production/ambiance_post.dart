@@ -21,7 +21,7 @@ class AmbiancePost extends StatefulWidget {
   final bool ready;
   final Map<String, dynamic> prevData;
 
-  AmbiancePost({
+  const AmbiancePost({super.key, 
     required this.ready,
     required this.prevData,
     required this.closed,
@@ -47,12 +47,12 @@ class AmbiancePost extends StatefulWidget {
 }
 
 class _AmbiancePostState extends State<AmbiancePost> {
-  TimeOfDay lightOn = TimeOfDay(hour: 00, minute: 00);
-  TimeOfDay lightOff = TimeOfDay(hour: 00, minute: 00);
-  TimeOfDay lightDuration = TimeOfDay(hour: 00, minute: 00);
-  TimeOfDay flashOn = TimeOfDay(hour: 00, minute: 00);
-  TimeOfDay flashOff = TimeOfDay(hour: 00, minute: 00);
-  TimeOfDay flashDuration = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay lightOn = const TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay lightOff = const TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay lightDuration = const TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay flashOn = const TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay flashOff = const TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay flashDuration = const TimeOfDay(hour: 00, minute: 00);
   double intensite = 0.0;
   double _tempMin = 0.0;
   double _tempMax = 0.0;
@@ -77,7 +77,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
       final int minutes = durationMinutes % 60;
       duration = TimeOfDay(hour: hours, minute: minutes);
     } else {
-      duration = TimeOfDay(hour: 0, minute: 0);
+      duration = const TimeOfDay(hour: 0, minute: 0);
       // Same time, duration is 0.
     }
     return duration;
@@ -136,7 +136,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
       });
     }
     return AnimatedContainer(
-      margin: EdgeInsets.only(bottom: 6),
+      margin: const EdgeInsets.only(bottom: 6),
       decoration: BoxDecoration(
         color: _ambianceIsExpanded ? Colors.white : widget.postColor,
         border: Border.all(
@@ -213,14 +213,14 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
                                         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                                        child: child ?? Text(''),
+                                        child: child ?? const Text(''),
                                       );
                                     },
                                   );
                                   if (newTime == null) return;
                                   setState(() {
-                                    lightOn = TimeOfDay(hour: 00, minute: 00);
-                                    lightOff = TimeOfDay(hour: 00, minute: 00);
+                                    lightOn = const TimeOfDay(hour: 00, minute: 00);
+                                    lightOff = const TimeOfDay(hour: 00, minute: 00);
                                     lightDuration = newTime;
                                     widget.lOnGetter(lightOn);
                                     widget.lOffGetter(lightOff);
@@ -251,7 +251,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
                                         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                                        child: child ?? Text(''),
+                                        child: child ?? const Text(''),
                                       );
                                     },
                                   );
@@ -280,7 +280,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
                                         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                                        child: child ?? Text(''),
+                                        child: child ?? const Text(''),
                                       );
                                     },
                                   );
@@ -317,7 +317,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                       builder: (BuildContext context, Widget? child) {
                                         return MediaQuery(
                                           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                                          child: child ?? Text(''),
+                                          child: child ?? const Text(''),
                                         );
                                       },
                                     );
@@ -353,7 +353,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                     builder: (BuildContext context, Widget? child) {
                                       return MediaQuery(
                                         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                                        child: child ?? Text(''),
+                                        child: child ?? const Text(''),
                                       );
                                     },
                                   );
@@ -432,7 +432,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                                   color: isLux ? Colors.amber.shade900.withOpacity(intensite / 44) : Colors.yellow.shade800.withOpacity(intensite / 100), // Color of the shadow
                                                   spreadRadius: 10, // Spread radius
                                                   blurRadius: 10, // Blur radius
-                                                  offset: Offset(0, 0), // Offset of the shadow
+                                                  offset: const Offset(0, 0), // Offset of the shadow
                                                 ),
                                               ],
                                               color: isLux ? Colors.amber.shade900 : Colors.yellow.shade800,
@@ -443,7 +443,7 @@ class _AmbiancePostState extends State<AmbiancePost> {
                                             child: FittedBox(
                                               child: Text(
                                                 "${intensite.toStringAsFixed(0)} ${isLux ? 'Lx' : '%'}",
-                                                style: TextStyle(color: Colors.transparent),
+                                                style: const TextStyle(color: Colors.transparent),
                                               ),
                                             ),
                                           ),
@@ -732,7 +732,7 @@ class NumberPickerDialog extends StatefulWidget {
   final double initialValue;
   final Function(double) onChanged;
 
-  NumberPickerDialog({required this.initialValue, required this.onChanged});
+  const NumberPickerDialog({super.key, required this.initialValue, required this.onChanged});
 
   @override
   _NumberPickerDialogState createState() => _NumberPickerDialogState();
@@ -757,7 +757,7 @@ class _NumberPickerDialogState extends State<NumberPickerDialog> {
         minValue: -20,
         maxValue: 60,
         decimalPlaces: 1,
-        textStyle: TextStyle(color: Colors.blue),
+        textStyle: const TextStyle(color: Colors.blue),
         onChanged: (value) {
           setState(() {
             _coloration = value;

@@ -50,9 +50,8 @@ class _DisplayDataScreenState extends State<DisplayDataScreen> {
         });
       });
     } catch (e) {
-      print(e);
       setState(() {
-        failedMsg = '${e.toString()}';
+        failedMsg = e.toString();
         isLoading = false;
         failedToFecthReports = true;
       });
@@ -104,7 +103,7 @@ class _DisplayDataScreenState extends State<DisplayDataScreen> {
                               onPressed: () {
                                 fetchReports();
                               },
-                              child: Text("Refresh"))
+                              child: const Text("Refresh"))
                         ],
                       )
                     : Container(

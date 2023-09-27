@@ -9,7 +9,7 @@ class DashSlider extends StatefulWidget {
   final double width;
   final double height;
 
-  DashSlider({required this.width, required this.height});
+  const DashSlider({super.key, required this.width, required this.height});
 
   @override
   State<DashSlider> createState() => _DashSliderState();
@@ -29,6 +29,7 @@ class _DashSliderState extends State<DashSlider> {
           ? CarouselSlider(
               items: sliderData.map((e) {
                 return CarouselSliderItem(
+                  siteId: e.siteId,
                   width: widget.width * 0.96,
                   siteName: e.siteName ?? "Non défini",
                   temprature: e.currentTemp ?? '--',
@@ -48,6 +49,7 @@ class _DashSliderState extends State<DashSlider> {
                   ),
             )
           : CarouselSliderItem(
+              siteId: sliderData.last.siteId,
               humidity: sliderData.last.humidity ?? '--',
               width: widget.width * 0.96,
               siteName: sliderData.last.siteName ?? "Non défini",
