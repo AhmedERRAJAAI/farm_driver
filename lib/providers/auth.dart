@@ -12,6 +12,7 @@ class Auth with ChangeNotifier {
   String? userSecondName;
   bool? isAdmin;
   bool? isMaster;
+  late bool isInit;
   DateTime? expiryDate;
 
   // late Timer _authTimer;
@@ -19,6 +20,12 @@ class Auth with ChangeNotifier {
   bool get isAuth {
     return _accessToken != null;
   }
+
+
+  bool get isInitialized {
+    return isInit;
+  }
+
 
   // String? get token {
   //   if (expiryDate != null &&
@@ -55,6 +62,7 @@ class Auth with ChangeNotifier {
           'isAdmin': userDecodedData['isAdmin'],
           'isMaster':userDecodedData['isMaster'],
           'isTechnicien':userDecodedData['isTechnicien'],
+          'isInit':userDecodedData['isInit'],
         });
         prefs.setString('userdata', userData);
       } else {
@@ -75,6 +83,7 @@ class Auth with ChangeNotifier {
       return false;
     }
     _accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    isInit = jsonDecode(prefs.getString('userdata') ?? '')['isInit'];
     notifyListeners();
     return true;
   }

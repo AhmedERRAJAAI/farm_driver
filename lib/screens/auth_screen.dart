@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './create_profile_screen.dart';
+import '../forms/create_master_user.dart';
 
 import '../providers/auth.dart';
 
@@ -92,11 +92,8 @@ class _LoginFormState extends State<LoginForm> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), // Set the border radius
+        borderRadius: BorderRadius.circular(10),
       ),
-      // constraints: const BoxConstraints(
-      //   maxHeight: 325, // Set the maximum height you want
-      // ),
       child: Column(
         children: [
           Form(
@@ -139,11 +136,11 @@ class _LoginFormState extends State<LoginForm> {
               login(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0071ce), // Button background color
-              foregroundColor: Colors.white, // Button text color
-              elevation: 2, // Elevation for the button
+              backgroundColor: const Color(0xFF0071ce),
+              foregroundColor: Colors.white,
+              elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5), // Rounded corners
+                borderRadius: BorderRadius.circular(5),
               ),
             ),
             child: isLoading
@@ -166,14 +163,14 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 100),
           ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(CreateProfileScreen.routeName);
+                Navigator.of(context).pushNamed(CreateMasterUser.routeName);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber.shade700, // Button background color
-                foregroundColor: Colors.white, // Button text color
-                elevation: 0, // Elevation for the button
+                backgroundColor: Colors.amber.shade700,
+                foregroundColor: Colors.white,
+                elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5), // Rounded corners
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
               child: const SizedBox(

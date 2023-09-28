@@ -18,8 +18,7 @@ class DashSlider extends StatefulWidget {
 class _DashSliderState extends State<DashSlider> {
   @override
   Widget build(BuildContext context) {
-    final initSliders = Provider.of<DashboardProvider>(context);
-    final sliderData = initSliders.slidesData;
+    final sliderData = Provider.of<DashboardProvider>(context).slidesData;
 
     return Container(
       //Slider

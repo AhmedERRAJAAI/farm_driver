@@ -23,10 +23,11 @@ import './screens/display_data_screen.dart';
 import './screens/before_add_screen.dart';
 import './screens/age_details_screen.dart';
 import './screens/manage_lots_screen.dart';
-import './screens/create_profile_screen.dart';
+import 'forms/create_master_user.dart';
 import './forms/production_form.dart';
 import './forms/lotForm.dart';
 import './forms/poussForm.dart';
+import './forms/create_eleveur.dart';
 // import './screens/charts_screen.dart';
 
 void main() {
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (ctx) => SettingsAppsProvider(),
           ),
+          ChangeNotifierProvider(
+            create: (ctx) => Auth(),
+          ),
         ],
         //when ever u create a new class instance (object use create) (like this case: instantiating the provider)
         //whenever u reuse an exsting object use .value approach (products_grid.dart case:grid)
@@ -79,9 +83,6 @@ class MyApp extends StatelessWidget {
               colorScheme: ThemeData().colorScheme.copyWith(secondary: const Color.fromARGB(255, 255, 110, 7)),
               canvasColor: const Color(0xFFF0F0F3),
               fontFamily: 'Raleway',
-
-              // Define the default `TextTheme`. Use this to specify the default
-              // text styling for headlines, titles, bodies of text, and more.
               textTheme: const TextTheme(
                 displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
                 titleLarge: TextStyle(fontSize: 36, fontStyle: FontStyle.italic),
@@ -109,7 +110,8 @@ class MyApp extends StatelessWidget {
               AppsScreen.routeName: (ctx) => const AppsScreen(),
               CalendarScreen.routeName: (ctx) => const CalendarScreen(),
               ManageLotsScreen.routeName: (ctx) => const ManageLotsScreen(),
-              CreateProfileScreen.routeName: (ctx) => const CreateProfileScreen(),
+              CreateMasterUser.routeName: (ctx) => const CreateMasterUser(),
+              CreateEleveurForm.routeName: (ctx) => const CreateEleveurForm(),
             },
             // onUnknownRoute: (settings) {
             // // displays when flutter failed to find a the given route (404)

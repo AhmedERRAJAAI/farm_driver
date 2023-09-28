@@ -35,6 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _isInit = true;
   bool isLoading = false;
   bool failedToFetch = false;
+  List sliderData = [];
 
   @override
   void initState() {
@@ -77,6 +78,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    sliderData = Provider.of<DashboardProvider>(context).slidesData;
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -134,126 +136,132 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       drawer: const SideDrawer(),
       body: RefreshIndicator(
-        onRefresh: () => _refreshPage(context),
-        child: SingleChildScrollView(
-          child: SafeArea(
-            bottom: false,
-            child: Column(children: <Widget>[
-              isLoading
-                  ? SizedBox(
-                      height: deviceSize.height * 0.28,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : failedToFetch
-                      ? SizedBox(
-                          height: deviceSize.height * 0.28,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('Check your internet connection and refresh'),
-                                TextButton(
-                                    onPressed: () {
-                                      fetchSliderData();
-                                    },
-                                    child: const Text('Refresh'))
-                              ],
+          onRefresh: () => _refreshPage(context),
+          child: SingleChildScrollView(
+            child: SafeArea(
+              bottom: false,
+              child: Column(children: <Widget>[
+                isLoading
+                    ? SizedBox(
+                        height: deviceSize.height * 0.28,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : failedToFetch
+                        ? SizedBox(
+                            height: deviceSize.height * 0.28,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text('Check your internet connection and refresh'),
+                                  TextButton(
+                                      onPressed: () {
+                                        fetchSliderData();
+                                      },
+                                      child: const Text('Refresh'))
+                                ],
+                              ),
+                            ),
+                          )
+                        : sliderData.isEmpty
+                            ? Column(
+                                children: [
+                                  const Text("aucun site trouvé"),
+                                  OutlinedButton(onPressed: () {}, child: const Text("Créer site")),
+                                ],
+                              )
+                            : DashSlider(
+                                height: deviceSize.height,
+                                width: deviceSize.width,
+                              ),
+                Container(
+                  width: deviceSize.width * 1,
+                  color: Colors.transparent,
+                  margin: const EdgeInsets.only(top: 4, bottom: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          DashboardAppButton(
+                            route: BeforeAddingScreen.routeName,
+                            title: "Ajouter",
+                            width: deviceSize.width * 0.45,
+                            height: 110,
+                            bgcolor: const Color(0xFFFFFFFF),
+                            toPage: goToPage,
+                            icon: const Icon(
+                              Icons.app_registration,
+                              color: Color(0xFF90bc29),
+                              size: 35,
                             ),
                           ),
-                        )
-                      : DashSlider(
-                          height: deviceSize.height,
-                          width: deviceSize.width,
-                        ),
-              Container(
-                width: deviceSize.width * 1,
-                color: Colors.transparent,
-                margin: const EdgeInsets.only(top: 4, bottom: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        DashboardAppButton(
-                          route: BeforeAddingScreen.routeName,
-                          title: "Ajouter",
-                          width: deviceSize.width * 0.45,
-                          height: 110,
-                          bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToPage,
-                          icon: const Icon(
-                            Icons.app_registration,
-                            color: Color(0xFF90bc29),
-                            size: 35,
+                          DashboardAppButton(
+                            route: "/",
+                            title: "Charts",
+                            width: deviceSize.width * 0.45,
+                            height: 110,
+                            bgcolor: const Color(0xFFFFFFFF),
+                            toPage: goToPage,
+                            icon: const Icon(
+                              Icons.query_stats_outlined,
+                              color: Color(0xFFf1a741),
+                              size: 35,
+                            ),
                           ),
-                        ),
-                        DashboardAppButton(
-                          route: "/",
-                          title: "Charts",
-                          width: deviceSize.width * 0.45,
-                          height: 110,
-                          bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToPage,
-                          icon: const Icon(
-                            Icons.query_stats_outlined,
-                            color: Color(0xFFf1a741),
-                            size: 35,
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          DashboardAppButton(
+                            route: "/",
+                            title: "supplémentation",
+                            width: deviceSize.width * 0.45,
+                            height: 110,
+                            bgcolor: const Color(0xFFFFFFFF),
+                            toPage: goToPage,
+                            icon: const Icon(
+                              Icons.vaccines_outlined,
+                              color: Color(0xFFf87878),
+                              size: 35,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        DashboardAppButton(
-                          route: "/",
-                          title: "supplémentation",
-                          width: deviceSize.width * 0.45,
-                          height: 110,
-                          bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToPage,
-                          icon: const Icon(
-                            Icons.vaccines_outlined,
-                            color: Color(0xFFf87878),
-                            size: 35,
+                          DashboardAppButton(
+                            route: AppsScreen.routeName,
+                            title: "Plus",
+                            width: deviceSize.width * 0.45,
+                            height: 110,
+                            bgcolor: const Color(0xFFFFFFFF),
+                            toPage: goToPage,
+                            icon: const Icon(
+                              Icons.apps,
+                              color: Color(0xFF40a8ea),
+                              size: 35,
+                            ),
                           ),
-                        ),
-                        DashboardAppButton(
-                          route: AppsScreen.routeName,
-                          title: "Plus",
-                          width: deviceSize.width * 0.45,
-                          height: 110,
-                          bgcolor: const Color(0xFFFFFFFF),
-                          toPage: goToPage,
-                          icon: const Icon(
-                            Icons.apps,
-                            color: Color(0xFF40a8ea),
-                            size: 35,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                // height: deviceSize.height * 0.3,
-                width: deviceSize.width,
-                margin: const EdgeInsets.only(bottom: 60, top: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFFFFFFFF),
-                ),
-                child: DashChartsSlider(height: deviceSize.height),
-              )
-            ]),
-          ),
-        ),
-      ),
+                Container(
+                  // height: deviceSize.height * 0.3,
+                  width: deviceSize.width,
+                  margin: const EdgeInsets.only(bottom: 60, top: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFFFFFFFF),
+                  ),
+                  child: DashChartsSlider(height: deviceSize.height),
+                )
+              ]),
+            ),
+          )),
     );
   }
 }
