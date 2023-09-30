@@ -17,7 +17,7 @@ import './screens/dashboard_screen.dart';
 import './screens/calendar_screen.dart';
 import 'screens/apps_screen.dart';
 import './screens/table_data_view.dart';
-import './screens/charts_screen.dart';
+import 'screens/table_charts_screen.dart';
 import './screens/lots_screen.dart';
 import './screens/display_data_screen.dart';
 import './screens/before_add_screen.dart';
@@ -28,7 +28,6 @@ import './forms/production_form.dart';
 import './forms/lotForm.dart';
 import './forms/poussForm.dart';
 import './forms/create_eleveur.dart';
-// import './screens/charts_screen.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -106,7 +105,7 @@ class MyApp extends StatelessWidget {
               DisplayDataScreen.routeName: (ctx) => const DisplayDataScreen(),
               PoussForm.routeName: (ctx) => const PoussForm(),
               LotsScreen.routeName: (ctx) => const LotsScreen(),
-              ChartsScreen.routeName: (ctx) => const ChartsScreen(),
+              ChartsScreen.routeName: (ctx) => ChartsScreen(),
               AppsScreen.routeName: (ctx) => const AppsScreen(),
               CalendarScreen.routeName: (ctx) => const CalendarScreen(),
               ManageLotsScreen.routeName: (ctx) => const ManageLotsScreen(),

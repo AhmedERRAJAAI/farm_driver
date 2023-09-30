@@ -92,6 +92,47 @@ class TableAndChartsProvider with ChangeNotifier {
       rethrow;
     }
   }
+
+  // ------ FETCH GUIDE --------
+  late PvGuidesData _guideData;
+  PvGuidesData get getGuide {
+    return _guideData;
+  }
+
+  Future<void> fetchGuide(lotId, paramId) async {
+    final url = Uri.parse('$_base_url/get-param-guide-data-mob/?lotId=$lotId&paramId=$paramId');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Authorization': 'Bearer $accessToken'
+    };
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseBody = utf8.decode(response.bodyBytes);
+        final fetchedGuide = json.decode(responseBody) as Map;
+        _guideData = PvGuidesData(params: fetchedGuide['data']);
+      } else {
+        throw Exception("ERROR  DURING FETCHING GUIDE");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+class PvGuidesData {
+  final List params;
+
+  PvGuidesData({required this.params});
+
+  // [{paramName: xxx, values: [1,2,3,4]}, {paramName: xxx, values: [1,2,3,4]}, ]
 }
 
 class LtableData {

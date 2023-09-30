@@ -166,11 +166,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           )
                         : sliderData.isEmpty
-                            ? Column(
-                                children: [
-                                  const Text("aucun site trouvé"),
-                                  OutlinedButton(onPressed: () {}, child: const Text("Créer site")),
-                                ],
+                            ? SizedBox(
+                                height: deviceSize.height * 0.28,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text("aucun site trouvé"),
+                                    OutlinedButton(onPressed: () {}, child: const Text("Créer site")),
+                                  ],
+                                ),
                               )
                             : DashSlider(
                                 height: deviceSize.height,

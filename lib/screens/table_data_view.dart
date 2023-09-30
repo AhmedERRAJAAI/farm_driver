@@ -4,14 +4,13 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../providers/table_charts_provider.dart';
 import 'package:data_table_2/data_table_2.dart';
 import '../mywidgets/chip_widget.dart';
-import './charts_screen.dart';
+import 'table_charts_screen.dart';
 import './age_details_screen.dart';
+import '../charts/charts_provider.dart';
+// import 'package:flutter/services.dart';
 
 class TableDataView extends StatefulWidget {
   static const routeName = "table-data-screen/";
-  goToPage(BuildContext ctx, routeName) {
-    Navigator.of(ctx).pushNamed(routeName);
-  }
 
   const TableDataView({super.key});
 
@@ -46,8 +45,33 @@ class _TableDataViewState extends State<TableDataView> {
     }
   }
 
+  bool fetchingGuide = false;
+  bool failedToFetchGuide = false;
+  Future<void> fetchGuideData(int lotId, int paramId) async {
+    setState(() {
+      fetchingGuide = true;
+    });
+    try {
+      await Provider.of<TableAndChartsProvider>(context, listen: false).fetchGuide(lotId, paramId).then((_) {
+        setState(() {
+          fetchingGuide = false;
+          failedToFetchGuide = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        fetchingGuide = false;
+        failedToFetchGuide = true;
+      });
+    }
+  }
+
   @override
   void initState() {
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    // ]);
     Future.delayed(Duration.zero).then((value) {});
     super.initState();
   }
@@ -65,7 +89,43 @@ class _TableDataViewState extends State<TableDataView> {
     super.didChangeDependencies();
   }
 
-  void showChartSnack(String msg, route, Color color) {
+  Future<void> lightChartsDataSetter(List data) async {
+    List<LightFlash> dataHolder = [];
+    for (var row in data) {
+      dataHolder.add(
+        LightFlash(
+          age: row.age,
+          light: convertTimeToDouble(row.light['period']),
+          flash: convertTimeToDouble(row.flash['period']),
+          intensite: row.intensite,
+        ),
+      );
+    }
+    ChartsDataLocalProvider().setFlashLight = dataHolder;
+  }
+
+  Future<void> pvHomogDataSetter(List data) async {
+    PvGuidesData guide = Provider.of<TableAndChartsProvider>(context, listen: false).getGuide;
+    List<PvHomog> dataHolder = [];
+    for (var row in guide.params) {
+      dataHolder.add(
+        PvHomog(
+          age: row['G_age'],
+          pvReel: null,
+          pvGuide: row['G_poidVif'],
+          homogReel: null,
+          homogGuide: row['G_homog'],
+        ),
+      );
+    }
+    for (int i = 0; i < dataHolder.length && i < data.length; i++) {
+      dataHolder[i].pvReel = data[i].poidVif['reel'];
+      dataHolder[i].homogReel = data[i].homog['reel'];
+    }
+    ChartsDataLocalProvider().setPvLight = dataHolder;
+  }
+
+  void showChartSnack(String msg, Color color, int paramId) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -82,8 +142,25 @@ class _TableDataViewState extends State<TableDataView> {
         ),
         action: SnackBarAction(
             label: 'Go',
-            onPressed: () {
-              widget.goToPage(context, route);
+            onPressed: () async {
+              switch (paramId) {
+                case 1:
+                  await lightChartsDataSetter(tableData).then((_) {
+                    Navigator.of(context).pushNamed(ChartsScreen.routeName, arguments: {
+                      "chartId": paramId
+                    });
+                  });
+                  break;
+                case 2:
+                  await fetchGuideData(lotData['lotId'], 2).then((_) {
+                    pvHomogDataSetter(tableData);
+                    Navigator.of(context).pushNamed(ChartsScreen.routeName, arguments: {
+                      "chartId": paramId
+                    });
+                  });
+                  break;
+                default:
+              }
             },
             textColor: color,
             backgroundColor: Colors.white),
@@ -124,6 +201,27 @@ class _TableDataViewState extends State<TableDataView> {
             backgroundColor: Colors.white),
       ),
     );
+  }
+
+  // List<Map<String, dynamic>> newList = tableData.map((map) {
+  //   return {
+  //     "age": map["age"],
+  //     "light": map["light"],
+  //     "flash": map["flash"],
+  //   };
+  // }).toList();
+
+  double convertTimeToDouble(String timeString) {
+    List<String> parts = timeString.split(':');
+    if (parts.length == 2) {
+      int hours = int.tryParse(parts[0]) ?? 0;
+      int minutes = int.tryParse(parts[1]) ?? 0;
+
+      double result = hours.toDouble() + (minutes.toDouble() / 60.0);
+      return result;
+    } else {
+      throw FormatException('Invalid time format: $timeString');
+    }
   }
 
   @override
@@ -211,7 +309,7 @@ class _TableDataViewState extends State<TableDataView> {
                           ),
                           tooltip: "Durée de lumiére",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Eclairage", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Éclairage", Colors.amber, 1);
                           },
                         ),
                         DataColumn2(
@@ -222,33 +320,7 @@ class _TableDataViewState extends State<TableDataView> {
                           ),
                           tooltip: "Durée de flash",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Eclairage", ChartsScreen.routeName, Colors.green);
-                          },
-                        ),
-                        DataColumn2(
-                          label: const Center(
-                            child: Text(
-                              'Poids corporel',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          size: ColumnSize.S,
-                          tooltip: "Poids corporel (g)",
-                          onSort: (columnIndex, ascending) {
-                            showChartSnack("Poids corporel", ChartsScreen.routeName, Colors.green);
-                          },
-                        ),
-                        DataColumn2(
-                          label: const Center(
-                            child: Text(
-                              ' Homogéniété',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          size: ColumnSize.S,
-                          tooltip: "Homogéniété",
-                          onSort: (columnIndex, ascending) {
-                            showChartSnack("Homogéniété", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Eclairage", Colors.amber, 1);
                           },
                         ),
                         DataColumn2(
@@ -261,7 +333,33 @@ class _TableDataViewState extends State<TableDataView> {
                           ),
                           tooltip: "Intensité (Lux)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Eclairage", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Eclairage", Colors.amber, 1);
+                          },
+                        ),
+                        DataColumn2(
+                          label: const Center(
+                            child: Text(
+                              'Poids corporel',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          size: ColumnSize.S,
+                          tooltip: "Poids corporel (g)",
+                          onSort: (columnIndex, ascending) {
+                            showChartSnack("Poids corporel", Colors.green, 2);
+                          },
+                        ),
+                        DataColumn2(
+                          label: const Center(
+                            child: Text(
+                              ' Homogéniété',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          size: ColumnSize.S,
+                          tooltip: "Homogéniété",
+                          onSort: (columnIndex, ascending) {
+                            showChartSnack("Homogéniété", Colors.green, 2);
                           },
                         ),
                         DataColumn2(
@@ -274,7 +372,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Mortalité par semaine (%)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Mortalité", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Mortalité", Colors.green, 3);
                           },
                         ),
                         DataColumn2(
@@ -287,7 +385,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Mortalité par semaine (%)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Mortalité", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Mortalité", Colors.green, 3);
                           },
                         ),
                         DataColumn2(
@@ -314,7 +412,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Eau consommé",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Consommation", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Consommation", Colors.green, 4);
                           },
                         ),
                         DataColumn2(
@@ -328,7 +426,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Eau par sujet/jour",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Consommation", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Consommation", Colors.green, 5);
                           },
                         ),
                         DataColumn2(
@@ -342,7 +440,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Alimet distribué",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Consommation", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Consommation", Colors.green, 4);
                           },
                         ),
                         DataColumn2(
@@ -356,7 +454,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Aliment par sujet/jour",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Consommation", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Consommation", Colors.green, 5);
                           },
                         ),
                         DataColumn2(
@@ -368,7 +466,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Ratio de Eau/Aliment (ml/g)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Consommation", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Consommation", Colors.green, 5);
                           },
                         ),
                         DataColumn2(
@@ -381,7 +479,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Aliment cumulé par PD",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Consommation", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Consommation", Colors.green, 6);
                           },
                         ),
                         DataColumn2(
@@ -394,7 +492,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Nombre d'œufs pondus",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Production", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Production", Colors.green, 7);
                           },
                         ),
                         DataColumn2(
@@ -408,7 +506,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Pourcentage de ponte",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Production", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Production", Colors.green, 7);
                           },
                         ),
                         DataColumn2(
@@ -419,7 +517,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Nombre d'oeuf par PP / sem",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Production", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Production", Colors.green, 8);
                           },
                         ),
                         DataColumn2(
@@ -430,7 +528,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Nombre d'oeuf par PD cumulée",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Production", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Production", Colors.green, 8);
                           },
                         ),
                         DataColumn2(
@@ -442,7 +540,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Pourcentage de variation de ponte",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Aliment/oeuf", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Aliment/oeuf", Colors.green, 8);
                           },
                         ),
                         DataColumn2(
@@ -453,7 +551,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Poids moyen d'oeuf (g)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Poids moyen d'oeuf", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Poids moyen d'oeuf", Colors.green, 8);
                           },
                         ),
                         DataColumn2(
@@ -464,7 +562,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Masse d'oeuf par PP/sem (g)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Masse d'oeuf", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Masse d'oeuf", Colors.green, 8);
                           },
                         ),
                         DataColumn2(
@@ -475,7 +573,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Masse d'oeuf par PD cumulée (kg)",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Masse d'oeuf", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Masse d'oeuf", Colors.green, 8);
                           },
                         ),
                         DataColumn2(
@@ -487,7 +585,7 @@ class _TableDataViewState extends State<TableDataView> {
                           size: ColumnSize.S,
                           tooltip: "Indice de conversion",
                           onSort: (columnIndex, ascending) {
-                            showChartSnack("Indice de convertion", ChartsScreen.routeName, Colors.green);
+                            showChartSnack("Indice de convertion", Colors.green, 8);
                           },
                         ),
                       ],
@@ -513,9 +611,9 @@ class _TableDataViewState extends State<TableDataView> {
                                       children: [
                                         Text(
                                           '${tableData[i].age} ',
-                                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                                         ),
-                                        Icon(
+                                        const Icon(
                                           Icons.expand_more,
                                           size: 18,
                                           color: Colors.white,
@@ -526,6 +624,7 @@ class _TableDataViewState extends State<TableDataView> {
                                 ),
                                 DataCell(Center(child: Text("${tableData[i].light['period']}"))),
                                 DataCell(Center(child: Text("${tableData[i].flash['period']}"))),
+                                DataCell(Text("${tableData[i].intensite} ${tableData[i].isLux ? 'lux' : '%'}")),
                                 DataCell(
                                   Center(
                                     child: Row(
@@ -556,7 +655,6 @@ class _TableDataViewState extends State<TableDataView> {
                                     ),
                                   ),
                                 ),
-                                DataCell(Text("${tableData[i].intensite} ${tableData[i].isLux ? 'lux' : '%'}")),
                                 DataCell(
                                   Center(
                                     child: Row(

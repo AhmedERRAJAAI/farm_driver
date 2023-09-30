@@ -33,7 +33,7 @@ class _InitFormSelectState extends State<InitFormSelect> {
         items: widget.inputsOptions.map((option) {
           return DropdownMenuItem<String>(
             value: option.id.toString(),
-            child: Text("${option.name} - ${option.type}"),
+            child: Text("${option.name}"),
           );
         }).toList(),
         onChanged: (newValue) {

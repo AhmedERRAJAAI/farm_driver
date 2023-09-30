@@ -1,0 +1,1 @@
+1- To display event flap, use column chart with a diamand marker
