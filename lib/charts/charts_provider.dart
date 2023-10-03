@@ -7,10 +7,22 @@ class ChartsDataLocalProvider {
 
   ChartsDataLocalProvider._internal();
 
+// --------- Mortalité ---------------
+  List<Mortality> mortData = [];
+
+  set setMortality(List<Mortality> data) {
+    mortData = data;
+  }
+
+  List<Mortality> get getMortData {
+    return mortData;
+  }
+
+
 // --------- PV HOMOG ---------------
   List<PvHomog> pvHomogData = [];
 
-  set setPvLight(List<PvHomog> data) {
+  set setPvHomog(List<PvHomog> data) {
     pvHomogData = data;
   }
 
@@ -29,6 +41,23 @@ class ChartsDataLocalProvider {
     return lightData;
   }
 }
+
+class Mortality {
+  double? sem_reel;
+  final int sem_guide;
+  double? cuml_reel;
+  final double cuml_guide;
+  final int age;
+
+  Mortality({
+    required this.sem_reel,
+    required this.sem_guide,
+    required this.cuml_reel,
+    required this.cuml_guide,
+    required this.age,
+  });
+}
+
 
 class PvHomog {
   double? pvReel;

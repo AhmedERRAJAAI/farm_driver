@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class TableAndChartsProvider with ChangeNotifier {
   static const String _base_url = "https://farmdriver.savas.ma/api";
@@ -122,6 +124,46 @@ class TableAndChartsProvider with ChangeNotifier {
         throw Exception("ERROR  DURING FETCHING GUIDE");
       }
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> downloadPDF(String fileName, lotId, age) async {
+    final url = Uri.parse('$_base_url/pdf-week/?lot_id=$lotId&age=$age');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Authorization': 'Bearer $accessToken'
+    };
+
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        // Get the application documents directory where the PDF will be saved
+        final directory = await getApplicationDocumentsDirectory();
+        final filePath = '${directory.path}/$fileName';
+
+        // Write the PDF to the file
+        File pdfFile = File(filePath);
+        await pdfFile.writeAsBytes(response.bodyBytes);
+
+        // Show a snackbar to indicate the download is complete
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   content: Text('PDF downloaded to $filePath'),
+        // ));
+        print("pdf downloaded to: $filePath");
+      } else {
+        // Handle any errors that occurred during the HTTP request
+        print('Error downloading PDF: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
       rethrow;
     }
   }

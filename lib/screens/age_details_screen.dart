@@ -52,6 +52,27 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
     }
   }
 
+  bool pdfLoading = false;
+  bool failedPdf = false;
+  Future<void> fetchWeekPdf(BuildContext context, age, lotId) async {
+    setState(() {
+      pdfLoading = true;
+    });
+    try {
+      Provider.of<TableAndChartsProvider>(context, listen: false).downloadPDF("Raport age $age", lotId, age).then((_) {
+        setState(() {
+          pdfLoading = false;
+          failedPdf = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        pdfLoading = false;
+        failedPdf = true;
+      });
+    }
+  }
+
   void _showModalBottomSheet(context, daysData) {
     List head = daysData.header;
     List body = daysData.body;
@@ -107,11 +128,23 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
     );
   }
 
-
-  DataRow buildDataRow(BuildContext context, String name, String unity, double? variation, double mortCumlReel, String mortCumlColor, int mortCumlIsUp, double mortCumlEcart, Function fetchData) {
+  DataRow buildDataRow(
+    BuildContext context,
+    String name,
+    String unity,
+    double? variation,
+    double mortCumlReel,
+    String mortCumlColor,
+    int mortCumlIsUp,
+    double mortCumlEcart,
+    int paramId,
+    int age,
+    int lotId,
+    Function fetchData,
+  ) {
     return DataRow(
       onLongPress: () {
-        fetchData();
+        fetchData(context, age, paramId, lotId);
       },
       cells: <DataCell>[
         DataCell(
@@ -170,8 +203,6 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
     );
   }
 
-  void placeHolder() {}
-
   bool? isSortedAsc;
   late LtableData paramsData;
 
@@ -198,6 +229,32 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
             ),
           ],
         ),
+        actions: [
+          PopupMenuButton(
+            onSelected: (selectedVal) {
+              switch (selectedVal) {
+                case 0:
+                  fetchWeekPdf(context, paramsData.age, repData['lotId']);
+                  break;
+                default:
+              }
+            },
+            icon: Icon(
+              Icons.more_vert,
+              color: Theme.of(context).primaryColor,
+            ),
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                value: 0,
+                child: Text("Telecharger PDF"),
+              ),
+              const PopupMenuItem(
+                value: 1,
+                child: Text("Ajouter un lot"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
+              )
+            ],
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -208,6 +265,7 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
             ),
             child: Column(
               children: [
+                pdfLoading ? LinearProgressIndicator() : SizedBox(),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   width: deviceSize.width,
@@ -299,7 +357,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.mortSem['color'] ?? '',
                       paramsData.mortSem['isUp'] ?? 1,
                       paramsData.mortSem['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.mortSem['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -310,7 +371,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.mortCuml['color'] ?? '',
                       paramsData.mortCuml['isUp'] ?? 1,
                       paramsData.mortCuml['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.mortCuml['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -321,7 +385,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.poidVif['color'] ?? '',
                       paramsData.poidVif['isUp'] ?? 1,
                       paramsData.poidVif['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.poidVif['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -332,7 +399,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.homog['color'] ?? '',
                       paramsData.homog['isUp'] ?? 1,
                       paramsData.homog['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.homog['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -343,7 +413,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.ponteCent['color'] ?? '',
                       paramsData.ponteCent['isUp'] ?? 1,
                       paramsData.ponteCent['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.ponteCent['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -354,7 +427,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.nopppSem['color'] ?? '',
                       paramsData.nopppSem['isUp'] ?? 1,
                       paramsData.nopppSem['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.nopppSem['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -365,7 +441,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.noppdSem['color'] ?? '',
                       paramsData.noppdSem['isUp'] ?? 1,
                       paramsData.noppdSem['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.noppdSem['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -376,7 +455,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.nopppCuml['color'] ?? '',
                       paramsData.nopppCuml['isUp'] ?? 1,
                       paramsData.nopppCuml['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.nopppCuml['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -387,7 +469,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.noppdCuml['color'] ?? '',
                       paramsData.noppdCuml['isUp'] ?? 1,
                       paramsData.noppdCuml['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.noppdCuml['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -398,7 +483,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.pmo['color'] ?? '',
                       paramsData.pmo['isUp'] ?? 1,
                       paramsData.pmo['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.pmo['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -409,7 +497,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.massOeufSem['color'] ?? '',
                       paramsData.massOeufSem['isUp'] ?? 1,
                       paramsData.massOeufSem['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.massOeufSem['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -420,7 +511,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.massOeufCuml['color'] ?? '',
                       paramsData.massOeufCuml['isUp'] ?? 1,
                       paramsData.massOeufCuml['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.massOeufCuml['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -431,7 +525,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.aps['color'] ?? '',
                       paramsData.aps['isUp'] ?? 1,
                       paramsData.aps['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.aps['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                     buildDataRow(
                       context,
@@ -442,7 +539,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                       paramsData.altCumlPd['color'] ?? '',
                       paramsData.altCumlPd['isUp'] ?? 1,
                       paramsData.altCumlPd['ecart'] ?? 0,
-                      placeHolder,
+                      paramsData.altCumlPd['id'] ?? 0,
+                      paramsData.age,
+                      repData['lotId'],
+                      fetchData,
                     ),
                   ],
                 ),

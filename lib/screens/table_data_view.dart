@@ -122,7 +122,28 @@ class _TableDataViewState extends State<TableDataView> {
       dataHolder[i].pvReel = data[i].poidVif['reel'];
       dataHolder[i].homogReel = data[i].homog['reel'];
     }
-    ChartsDataLocalProvider().setPvLight = dataHolder;
+    ChartsDataLocalProvider().setPvHomog = dataHolder;
+  }
+
+  Future<void> mortalityDataSetter(List data) async {
+    PvGuidesData guide = Provider.of<TableAndChartsProvider>(context, listen: false).getGuide;
+    List<Mortality> dataHolder = [];
+    for (var row in guide.params) {
+      dataHolder.add(
+        Mortality(
+          age: row['G_age'],
+          sem_reel: null,
+          sem_guide: row['G_mortSem'],
+          cuml_reel: null,
+          cuml_guide: row['G_mortCumlPD'],
+        ),
+      );
+    }
+    for (int i = 0; i < dataHolder.length && i < data.length; i++) {
+      dataHolder[i].sem_reel = data[i].mortSem['reel'];
+      dataHolder[i].cuml_reel = data[i].mortCuml['reel'];
+    }
+    ChartsDataLocalProvider().setMortality = dataHolder;
   }
 
   void showChartSnack(String msg, Color color, int paramId) {
@@ -159,6 +180,14 @@ class _TableDataViewState extends State<TableDataView> {
                     });
                   });
                   break;
+                case 3:
+                  await fetchGuideData(lotData['lotId'], 3).then((_) {
+                    mortalityDataSetter(tableData);
+                    Navigator.of(context).pushNamed(ChartsScreen.routeName, arguments: {
+                      "chartId": paramId
+                    });
+                  });
+                  break;
                 default:
               }
             },
@@ -175,7 +204,6 @@ class _TableDataViewState extends State<TableDataView> {
         backgroundColor: color,
         duration: const Duration(seconds: 4),
         content: Row(
-          // mainAxisAlignment: MainAxisAlignment.,
           children: [
             const Icon(
               Icons.zoom_in,
@@ -290,12 +318,17 @@ class _TableDataViewState extends State<TableDataView> {
 
                       minWidth: 2550,
                       columns: [
-                        const DataColumn2(
+                        DataColumn2(
                           fixedWidth: 60,
                           label: Center(
-                            child: Text(
-                              'Age',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  '  Age ',
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(width: 10, height: 10, child: fetchingGuide ? CircularProgressIndicator(color: Colors.white) : null),
+                              ],
                             ),
                           ),
                           size: ColumnSize.S,

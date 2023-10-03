@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import '../charts/light_charts.dart';
 import '../charts/pv_homog_chart.dart';
+import '../charts/mortality_chart.dart';
 
 class ChartsScreen extends StatefulWidget {
   ChartsScreen({super.key});
@@ -21,6 +22,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
         return const LightChart();
       case 2:
         return const PvHomogChart();
+      case 3:
+        return const MortChart();
       default:
         return const LightChart();
     }
@@ -36,7 +39,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
   Widget build(BuildContext context) {
     final inCommingData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     chartId = inCommingData['chartId'];
-    final deviceSize = MediaQuery.of(context).size;
+    // final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -48,7 +51,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                 // height: isLandscape ? deviceSize.height : deviceSize.width * 1.2,
                 color: Colors.white,
                 padding: const EdgeInsets.only(top: 17),
-                child: Transform.rotate(angle: 0 * 3.1415927 / 180, child: chartLoader(chartId)),
+                child: chartLoader(chartId),
               ),
               SizedBox(
                 height: 50,

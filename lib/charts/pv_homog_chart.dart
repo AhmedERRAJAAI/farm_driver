@@ -107,7 +107,7 @@ class _PvHomogChartState extends State<PvHomogChart> {
       tooltipBehavior: TooltipBehavior(enable: true),
 
       series: <ChartSeries>[
-        FastLineSeries<PvHomog, int>(
+        AreaSeries<PvHomog, int>(
           dataSource: pvHomogData,
           xValueMapper: (PvHomog param, _) => param.age,
           yValueMapper: (PvHomog param, _) => param.homogReel,
@@ -115,10 +115,10 @@ class _PvHomogChartState extends State<PvHomogChart> {
           enableTooltip: true,
           name: 'Réel homog',
           dataLabelSettings: const DataLabelSettings(isVisible: false),
-          color: Colors.deepOrange.shade400.withOpacity(0.8),
+          color: Colors.green.shade100,
           legendItemText: 'Réel homog',
         ),
-        AreaSeries<PvHomog, int>(
+        LineSeries<PvHomog, int>(
           dataSource: pvHomogData,
           xValueMapper: (PvHomog param, _) => param.age,
           yValueMapper: (PvHomog param, _) => param.homogGuide,
@@ -126,17 +126,8 @@ class _PvHomogChartState extends State<PvHomogChart> {
           enableTooltip: true,
           name: 'Guide homog',
           dataLabelSettings: const DataLabelSettings(isVisible: false),
-          color: Colors.orange.shade100.withOpacity(0.6),
+          color: Colors.green,
           legendItemText: 'Guide homog',
-        ),
-        FastLineSeries<PvHomog, int>(
-          dataSource: pvHomogData,
-          xValueMapper: (PvHomog param, _) => param.age,
-          yValueMapper: (PvHomog param, _) => param.pvReel,
-          enableTooltip: true,
-          name: 'Réel PV',
-          color: Colors.green.shade700,
-          dataLabelSettings: const DataLabelSettings(isVisible: false, borderColor: Colors.black, borderWidth: 0.9),
         ),
         LineSeries<PvHomog, int>(
           dataSource: pvHomogData,
@@ -144,10 +135,19 @@ class _PvHomogChartState extends State<PvHomogChart> {
           yValueMapper: (PvHomog param, _) => param.pvGuide,
           enableTooltip: true,
           name: 'Guide PV',
-          color: Colors.green.shade100,
+          color: Colors.deepPurple.shade100,
           width: 5,
           dataLabelSettings: const DataLabelSettings(isVisible: false),
-        )
+        ),
+        FastLineSeries<PvHomog, int>(
+          dataSource: pvHomogData,
+          xValueMapper: (PvHomog param, _) => param.age,
+          yValueMapper: (PvHomog param, _) => param.pvReel,
+          enableTooltip: true,
+          name: 'Réel PV',
+          color: Colors.deepPurple,
+          dataLabelSettings: const DataLabelSettings(isVisible: false, borderColor: Colors.black, borderWidth: 0.9),
+        ),
       ],
     );
   }

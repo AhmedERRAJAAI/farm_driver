@@ -27,6 +27,7 @@ dependencies:
   numberpicker: ^2.1.2
   url_launcher: ^6.1.14
   data_table_2: ^2.5.8
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
