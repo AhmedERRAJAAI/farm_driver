@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-hi/values-hi.xml",
+            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-hi/values-hi.xml",
             "map": [
                 {
                     "source": "/Users/ahmed/.gradle/caches/transforms-3/214da2af7000628f5d75e14776a1b456/transformed/browser-1.5.0/res/values-hi/values-hi.xml",

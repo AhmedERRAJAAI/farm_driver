@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/url_launcher_android/intermediates/incremental/mergeReleaseResources/merged.dir/values-sl/values-sl.xml",
+            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/incremental/mergeReleaseResources/merged.dir/values-sl/values-sl.xml",
             "map": [
                 {
                     "source": "/Users/ahmed/.gradle/caches/transforms-3/214da2af7000628f5d75e14776a1b456/transformed/browser-1.5.0/res/values-sl/values-sl.xml",
@@ -40,7 +40,7 @@
             ]
         },
         {
-            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/url_launcher_android/intermediates/merged_res/release/values-sl/values-sl.xml",
+            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_res/release/values-sl/values-sl.xml",
             "map": [
                 {
                     "source": "/Users/ahmed/.gradle/caches/transforms-3/214da2af7000628f5d75e14776a1b456/transformed/browser-1.5.0/res/values-sl/values-sl.xml",

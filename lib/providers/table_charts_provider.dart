@@ -4,7 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 
 class TableAndChartsProvider with ChangeNotifier {
@@ -96,8 +97,8 @@ class TableAndChartsProvider with ChangeNotifier {
   }
 
   // ------ FETCH GUIDE --------
-  late PvGuidesData _guideData;
-  PvGuidesData get getGuide {
+  late GuidesData _guideData;
+  GuidesData get getGuide {
     return _guideData;
   }
 
@@ -119,13 +120,19 @@ class TableAndChartsProvider with ChangeNotifier {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedGuide = json.decode(responseBody) as Map;
-        _guideData = PvGuidesData(params: fetchedGuide['data']);
+        _guideData = GuidesData(params: fetchedGuide['data']);
       } else {
         throw Exception("ERROR  DURING FETCHING GUIDE");
       }
     } catch (e) {
+      print(e);
       rethrow;
     }
+  }
+
+  late PdfData _pdfPath;
+  PdfData get getPdfPath {
+    return _pdfPath;
   }
 
   Future<void> downloadPDF(String fileName, lotId, age) async {
@@ -145,34 +152,26 @@ class TableAndChartsProvider with ChangeNotifier {
         headers: headers,
       );
       if (response.statusCode == 200) {
-        // Get the application documents directory where the PDF will be saved
-        final directory = await getApplicationDocumentsDirectory();
-        final filePath = '${directory.path}/$fileName';
-
-        // Write the PDF to the file
-        File pdfFile = File(filePath);
+        final path = "/storage/emulated/0/Download/rapport_age_$age.pdf";
+        File pdfFile = File(path);
+        _pdfPath = PdfData(path: path);
         await pdfFile.writeAsBytes(response.bodyBytes);
-
-        // Show a snackbar to indicate the download is complete
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //   content: Text('PDF downloaded to $filePath'),
-        // ));
-        print("pdf downloaded to: $filePath");
-      } else {
-        // Handle any errors that occurred during the HTTP request
-        print('Error downloading PDF: ${response.statusCode}');
-      }
+      } else {}
     } catch (e) {
-      print(e);
       rethrow;
     }
   }
 }
 
-class PvGuidesData {
+class PdfData {
+  final String path;
+  PdfData({required this.path});
+}
+
+class GuidesData {
   final List params;
 
-  PvGuidesData({required this.params});
+  GuidesData({required this.params});
 
   // [{paramName: xxx, values: [1,2,3,4]}, {paramName: xxx, values: [1,2,3,4]}, ]
 }

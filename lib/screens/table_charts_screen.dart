@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../charts/light_charts.dart';
 import '../charts/pv_homog_chart.dart';
 import '../charts/mortality_chart.dart';
+import '../charts/range_charts_test.dart';
 
 class ChartsScreen extends StatefulWidget {
   ChartsScreen({super.key});
@@ -25,7 +26,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
       case 3:
         return const MortChart();
       default:
-        return const LightChart();
+        return const RangeChartTester();
     }
   }
 

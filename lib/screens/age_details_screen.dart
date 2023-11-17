@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../providers/sites_bats_provider.dart';
 import '../providers/table_charts_provider.dart';
 import 'package:provider/provider.dart';
 import '../mywidgets/chip_widget.dart';
+import '../services/notification_services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import './pdf_viewer_screen.dart';
 
 class AgeDetailsScreen extends StatefulWidget {
   static const routeName = "age-details";
@@ -59,7 +63,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
       pdfLoading = true;
     });
     try {
-      Provider.of<TableAndChartsProvider>(context, listen: false).downloadPDF("Raport age $age", lotId, age).then((_) {
+      Provider.of<TableAndChartsProvider>(context, listen: false).downloadPDF("Rapport_age_$age", lotId, age).then((_) {
+        NotificationService().showNotification(title: "Downloaded", body: "Telechargement fini");
+        Navigator.of(context).pushNamed(PdfViewerScreen.routeName);
+        // openPDF("/storage/emulated/0/Download/rapport_age_$age.pdf");
         setState(() {
           pdfLoading = false;
           failedPdf = false;
@@ -70,6 +77,20 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
         pdfLoading = false;
         failedPdf = true;
       });
+    }
+  }
+
+  void openPDF(String filePath) async {
+    File file = File(filePath);
+    if (await file.exists()) {
+      print("yessss");
+      if (await launchUrl(Uri.parse(filePath))) {
+        await launchUrl(Uri.parse(filePath));
+      } else {
+        print("Cant be opened");
+      }
+    } else {
+      print("does not exists");
     }
   }
 
@@ -236,6 +257,10 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
                 case 0:
                   fetchWeekPdf(context, paramsData.age, repData['lotId']);
                   break;
+                case 1:
+                  // Navigator.of(context).pushNamed(PdfViewerScreen.routeName);
+                  NotificationService().showNotification(title: "Hellooo", body: "Hellooo Agaaaaain");
+                  break;
                 default:
               }
             },
@@ -250,7 +275,7 @@ class _AgeDetailsScreenState extends State<AgeDetailsScreen> {
               ),
               const PopupMenuItem(
                 value: 1,
-                child: Text("Ajouter un lot"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
+                child: Text("Trigger notif"), //this road should lead to a page where all the sites are listed, and could be accessed one by one to see info about the selected site
               )
             ],
           ),

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/incremental/mergeReleaseResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/incremental/mergeReleaseResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/ahmed/developement/mobile/PROJECTS/farm_driver/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

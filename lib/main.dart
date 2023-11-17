@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+import './services/notification_services.dart';
 
 import './providers/dashboard_provider.dart';
 import './providers/sites_bats_provider.dart';
@@ -28,8 +29,25 @@ import './forms/production_form.dart';
 import './forms/lotForm.dart';
 import './forms/poussForm.dart';
 import './forms/create_eleveur.dart';
+import './screens/pdf_viewer_screen.dart';
+
+// EGGS SELLING PART
+import './eggs_selling/screens/dashboard_eggs_screen.dart';
+import './eggs_selling/screens/operation_details.dart';
+import './eggs_selling/screens/egg_calendar_screen.dart';
+import 'eggs_selling/screens/EggsOperationFormScreen.dart';
+import './eggs_selling/screens/egg_clients_screen.dart';
+import './eggs_selling/screens/egg_single_client_screen.dart';
+import './eggs_selling/screens/egg_all_operations_screen.dart';
+import './eggs_selling/screens/eggAddDayPrice.dart';
+import './eggs_selling/screens/egg_stock_screen.dart';
+import './eggs_selling/screens/egg_gestion_clients.dart';
+import './eggs_selling/screens/eggs_records_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
+
   HttpOverrides.global = MyHttpOverrides();
   initializeDateFormatting().then((_) {
     runApp(const MyApp());
@@ -78,9 +96,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor: Colors.blue.shade800,
-              appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFF0F0F3)),
+              appBarTheme: const AppBarTheme(backgroundColor: Color.fromARGB(255, 248, 247, 247)),
               colorScheme: ThemeData().colorScheme.copyWith(secondary: const Color.fromARGB(255, 255, 110, 7)),
-              canvasColor: const Color(0xFFF0F0F3),
+              canvasColor: Color.fromARGB(255, 251, 251, 251),
               fontFamily: 'Raleway',
               textTheme: const TextTheme(
                 displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
@@ -88,9 +106,8 @@ class MyApp extends StatelessWidget {
                 bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
               ),
             ),
-
             home: auth.isAuth
-                ? const DashboardScreen()
+                ? const EggsDashboard()
                 : FutureBuilder(
                     future: auth.tryAutoLogin(),
                     builder: (ctx, authResultSnapshot) => authResultSnapshot.connectionState == ConnectionState.waiting ? SplashScreen() : AuthScreen(),
@@ -111,11 +128,21 @@ class MyApp extends StatelessWidget {
               ManageLotsScreen.routeName: (ctx) => const ManageLotsScreen(),
               CreateMasterUser.routeName: (ctx) => const CreateMasterUser(),
               CreateEleveurForm.routeName: (ctx) => const CreateEleveurForm(),
+              PdfViewerScreen.routeName: (ctx) => const PdfViewerScreen(),
+
+              // EGGS SELLING
+              EggsDashboard.routeName: (ctx) => const EggsDashboard(),
+              OperationDetailsScreen.routeName: (ctx) => const OperationDetailsScreen(),
+              EggCalendarScreen.routeName: (ctx) => const EggCalendarScreen(),
+              EggOperationForm.routeName: (ctx) => const EggOperationForm(),
+              EggClientScreen.routeName: (ctx) => const EggClientScreen(),
+              EggClientDetailScreen.routeName: (ctx) => const EggClientDetailScreen(),
+              EggAllOperations.routeName: (ctx) => const EggAllOperations(),
+              EggDayPrice.routeName: (ctx) => const EggDayPrice(),
+              EggStockScreen.routeName: (ctx) => const EggStockScreen(),
+              EggGestionClients.routeName: (ctx) => const EggGestionClients(),
+              EggMouvementRecords.routeName: (ctx) => const EggMouvementRecords(),
             },
-            // onUnknownRoute: (settings) {
-            // // displays when flutter failed to find a the given route (404)
-            // return MaterialPageRoute(builder: (ctx) => MyHomePage());
-            // },
           ),
         ));
   }

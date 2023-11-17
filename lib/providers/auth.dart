@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import '../urls.dart';
 
 class Auth with ChangeNotifier {
   String? _accessToken;
@@ -21,11 +22,9 @@ class Auth with ChangeNotifier {
     return _accessToken != null;
   }
 
-
   bool get isInitialized {
     return isInit;
   }
-
 
   // String? get token {
   //   if (expiryDate != null &&
@@ -37,7 +36,7 @@ class Auth with ChangeNotifier {
   // }
 
   Future<void> login(String username, String password) async {
-    final url = Uri.parse('https://farmdriver.savas.ma/api/token');
+    final url = Uri.parse('${Urls.url}/api/token');
     final headers = {
       'Content-Type': 'application/json',
     };
@@ -47,7 +46,10 @@ class Auth with ChangeNotifier {
         url,
         headers: headers,
         body: json.encode(
-          {'username': username, 'password': password},
+          {
+            'username': username,
+            'password': password
+          },
         ),
       );
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -60,16 +62,15 @@ class Auth with ChangeNotifier {
           'first_name': userDecodedData['first_name'],
           'last_name': userDecodedData['last_name'],
           'isAdmin': userDecodedData['isAdmin'],
-          'isMaster':userDecodedData['isMaster'],
-          'isTechnicien':userDecodedData['isTechnicien'],
-          'isInit':userDecodedData['isInit'],
+          'isMaster': userDecodedData['isMaster'],
+          'isTechnicien': userDecodedData['isTechnicien'],
+          'isInit': userDecodedData['isInit'],
         });
         prefs.setString('userdata', userData);
       } else {
         if (response.statusCode == 401) {
           logout();
-          throw Exception(
-              "désolé, aucun utilisateur trouvé avec ces informations d'identification");
+          throw Exception("désolé, aucun utilisateur trouvé avec ces informations d'identification");
         }
       }
     } catch (e) {

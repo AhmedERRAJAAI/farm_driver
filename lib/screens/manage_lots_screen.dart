@@ -317,21 +317,21 @@ class _ManageLotsScreenState extends State<ManageLotsScreen> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "${lot.lotCode}",
+                                                    "Code: ${lot.lotCode}",
                                                     style: TextStyle(color: Colors.blueGrey.shade800, fontWeight: FontWeight.bold),
                                                   ),
                                                   Text(
                                                     "Age: ${lot.age}",
                                                     style: TextStyle(color: Colors.blueGrey.shade800, fontWeight: FontWeight.bold),
                                                   ),
-                                                  Text(
-                                                    "ED: ${lot.edp}",
-                                                    style: TextStyle(color: Colors.blueGrey.shade800),
-                                                  ),
-                                                  Text(
-                                                    "EP: ${lot.ep ?? '-'}",
-                                                    style: TextStyle(color: Colors.blueGrey.shade800),
-                                                  ),
+                                                  // Text(
+                                                  //   "ED: ${lot.edp}",
+                                                  //   style: TextStyle(color: Colors.blueGrey.shade800),
+                                                  // ),
+                                                  // Text(
+                                                  //   "EP: ${lot.ep ?? '-'}",
+                                                  //   style: TextStyle(color: Colors.blueGrey.shade800),
+                                                  // ),
                                                 ],
                                               ),
                                               Expanded(

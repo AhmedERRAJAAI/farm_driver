@@ -10,21 +10,23 @@ class RangeChartTester extends StatefulWidget {
 
 class _RangeChartTesterState extends State<RangeChartTester> {
   final chartData = <ChartData>[
-    ChartData(x: 1, y: 10),
-    ChartData(x: 2, y: 20),
-    ChartData(x: 3, y: 30),
-    ChartData(x: 4, y: 40),
-    ChartData(x: 5, y: 50),
+    ChartData(x: DateTime(2021, 1, 20), high: 1400, low: 10),
+    ChartData(x: DateTime(2021, 2, 20), high: 1222, low: 9),
+    ChartData(x: DateTime(2021, 3, 20), high: 16, low: 10),
+    ChartData(x: DateTime(2021, 4, 20), high: 18, low: 14),
+    ChartData(x: DateTime(2021, 5, 20), high: 20, low: 15),
   ];
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-      primaryXAxis: NumericAxis(),
-      series: <ChartSeries>[
-        AreaSeries<ChartData, double>(
+      primaryXAxis: DateTimeAxis(),
+      series: <RangeAreaSeries>[
+        RangeAreaSeries<ChartData, DateTime>(
           dataSource: chartData,
-          xValueMapper: (ChartData data, int index) => data.x,
-          yValueMapper: (ChartData data, int index) => data.y,
+          name: "NAME",
+          xValueMapper: (ChartData data, _) => data.x,
+          highValueMapper: (ChartData data, _) => data.high,
+          lowValueMapper: (ChartData data, _) => data.low,
         ),
       ],
     );
@@ -32,8 +34,9 @@ class _RangeChartTesterState extends State<RangeChartTester> {
 }
 
 class ChartData {
-  final double x;
-  final double y;
+  DateTime x;
+  final double high;
+  final double low;
 
-  ChartData({required this.x, required this.y});
+  ChartData({required this.high, required this.low, required this.x});
 }

@@ -44,7 +44,7 @@ class ChartsDataLocalProvider {
 
 class Mortality {
   double? sem_reel;
-  final int sem_guide;
+  final double sem_guide;
   double? cuml_reel;
   final double cuml_guide;
   final int age;

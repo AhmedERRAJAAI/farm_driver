@@ -11,7 +11,7 @@ class SitesBatsProvider with ChangeNotifier {
 
 
   Future<void> createLot(data) async {
-    final url = Uri.parse('https://farmdriver.savas.ma/api/add-lot/');
+    final url = Uri.parse('http://localhost:8000/api/add-lot/');
 
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
@@ -97,7 +97,7 @@ class SitesBatsProvider with ChangeNotifier {
   }
 
   Future<void> fetchLots(siteId) async {
-    final url = Uri.parse('https://farmdriver.savas.ma/api/get-lots-mob/');
+    final url = Uri.parse('http://localhost:8000/api/get-lots-mob/');
 
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {

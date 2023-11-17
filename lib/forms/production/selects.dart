@@ -31,7 +31,7 @@ class _InitFormSelectState extends State<InitFormSelect> {
         dropdownColor: Colors.white,
         value: selected.toString(),
         items: widget.inputsOptions.map((option) {
-          return DropdownMenuItem<String>(
+          return DropdownMenuItem<String>(  
             value: option.id.toString(),
             child: Text("${option.name}"),
           );

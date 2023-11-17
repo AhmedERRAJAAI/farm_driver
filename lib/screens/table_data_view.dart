@@ -105,7 +105,7 @@ class _TableDataViewState extends State<TableDataView> {
   }
 
   Future<void> pvHomogDataSetter(List data) async {
-    PvGuidesData guide = Provider.of<TableAndChartsProvider>(context, listen: false).getGuide;
+    GuidesData guide = Provider.of<TableAndChartsProvider>(context, listen: false).getGuide;
     List<PvHomog> dataHolder = [];
     for (var row in guide.params) {
       dataHolder.add(
@@ -126,7 +126,7 @@ class _TableDataViewState extends State<TableDataView> {
   }
 
   Future<void> mortalityDataSetter(List data) async {
-    PvGuidesData guide = Provider.of<TableAndChartsProvider>(context, listen: false).getGuide;
+    GuidesData guide = Provider.of<TableAndChartsProvider>(context, listen: false).getGuide;
     List<Mortality> dataHolder = [];
     for (var row in guide.params) {
       dataHolder.add(
@@ -143,6 +143,7 @@ class _TableDataViewState extends State<TableDataView> {
       dataHolder[i].sem_reel = data[i].mortSem['reel'];
       dataHolder[i].cuml_reel = data[i].mortCuml['reel'];
     }
+    print(dataHolder);
     ChartsDataLocalProvider().setMortality = dataHolder;
   }
 
@@ -185,6 +186,14 @@ class _TableDataViewState extends State<TableDataView> {
                     mortalityDataSetter(tableData);
                     Navigator.of(context).pushNamed(ChartsScreen.routeName, arguments: {
                       "chartId": paramId
+                    });
+                  });
+                  break;
+                case 4:
+                  await fetchGuideData(lotData['lotId'], 3).then((_) {
+                    mortalityDataSetter(tableData);
+                    Navigator.of(context).pushNamed(ChartsScreen.routeName, arguments: {
+                      "chartId": 33
                     });
                   });
                   break;

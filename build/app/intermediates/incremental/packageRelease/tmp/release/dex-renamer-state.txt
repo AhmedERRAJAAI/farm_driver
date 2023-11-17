@@ -1,4 +1,4 @@
-#Sun Oct 01 20:07:02 WEST 2023
-base.0=/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+#Wed Nov 08 01:23:14 WEST 2023
+base.0=/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

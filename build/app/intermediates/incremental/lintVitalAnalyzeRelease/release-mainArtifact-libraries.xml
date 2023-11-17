@@ -1,13 +1,13 @@
 <libraries>
   <library
-      name="__local_aars__:/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/flutter/release/libs.jar:unspecified@jar"
-      jars="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/flutter/release/libs.jar"
-      resolved="__local_aars__:/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/app/intermediates/flutter/release/libs.jar:unspecified"/>
+      name="__local_aars__:/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/flutter/release/libs.jar:unspecified@jar"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/flutter/release/libs.jar"
+      resolved="__local_aars__:/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/flutter/release/libs.jar:unspecified"/>
   <library
-      name="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/android@@:shared_preferences_android::release"
-      jars="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/shared_preferences_android/.transforms/b42da5cf15b3704ea008c3f60406495c/transformed/out/jars/classes.jar"
+      name="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android@@:shared_preferences_android::release"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/shared_preferences_android/.transforms/10068fc48040a6640b3a632a4e7f0548/transformed/out/jars/classes.jar"
       resolved="io.flutter.plugins.sharedpreferences:shared_preferences_android:unspecified"
-      folder="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/shared_preferences_android/.transforms/b42da5cf15b3704ea008c3f60406495c/transformed/out"
+      folder="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/shared_preferences_android/.transforms/10068fc48040a6640b3a632a4e7f0548/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -17,10 +17,36 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/android@@:url_launcher_android::release"
-      jars="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/url_launcher_android/.transforms/44594965d98108e99309ac1ae033677a/transformed/out/jars/classes.jar"
+      name="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android@@:syncfusion_flutter_pdfviewer::release"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/syncfusion_flutter_pdfviewer/.transforms/996813a8b78f0d7154f66441a3967d4c/transformed/out/jars/classes.jar"
+      resolved="com.syncfusion.flutter.pdfviewer:syncfusion_flutter_pdfviewer:unspecified"
+      folder="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/syncfusion_flutter_pdfviewer/.transforms/996813a8b78f0d7154f66441a3967d4c/transformed/out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android@@:flutter_local_notifications::release"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/.transforms/cef0d62e3f505f288fcca67f5f9c16a5/transformed/out/jars/classes.jar"
+      resolved="com.dexterous.flutterlocalnotifications:flutter_local_notifications:unspecified"
+      folder="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/.transforms/cef0d62e3f505f288fcca67f5f9c16a5/transformed/out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android@@:url_launcher_android::release"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/.transforms/3e66a633819423db043d2641a354236f/transformed/out/jars/classes.jar"
       resolved="io.flutter.plugins.urllauncher:url_launcher_android:unspecified"
-      folder="/Users/ahmed/developement/mobile/PROJECTS/farm_driver/build/url_launcher_android/.transforms/44594965d98108e99309ac1ae033677a/transformed/out"
+      folder="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/.transforms/3e66a633819423db043d2641a354236f/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -30,9 +56,35 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="io.flutter:flutter_embedding_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d@jar"
-      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d/7b78fb4a8a09dd69a2d68d998b9a034ec2895610/flutter_embedding_release-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar"
-      resolved="io.flutter:flutter_embedding_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d"/>
+      name="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android@@:device_info_plus::release"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/device_info_plus/.transforms/b54b7500273841875d29d55d7c9f98ba/transformed/out/jars/classes.jar"
+      resolved="dev.fluttercommunity.plus.device_info:device_info_plus:unspecified"
+      folder="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/device_info_plus/.transforms/b54b7500273841875d29d55d7c9f98ba/transformed/out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/android@@:path_provider_android::release"
+      jars="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/path_provider_android/.transforms/94c1ea5d0a4531b6d395c4f00f311fc6/transformed/out/jars/classes.jar"
+      resolved="io.flutter.plugins.pathprovider:path_provider_android:unspecified"
+      folder="/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/path_provider_android/.transforms/94c1ea5d0a4531b6d395c4f00f311fc6/transformed/out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="io.flutter:flutter_embedding_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b@jar"
+      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/flutter_embedding_release/1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b/625ab2d9b2a61586c9d5fb689e42c83634d33562/flutter_embedding_release-1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b.jar"
+      resolved="io.flutter:flutter_embedding_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b"/>
   <library
       name="androidx.window:window-java:1.0.0-beta04@aar"
       jars="/Users/ahmed/.gradle/caches/transforms-3/efd5dd5474a6b52ac9be3a32afbe67a1/transformed/jetified-window-java-1.0.0-beta04/jars/classes.jar"
@@ -76,17 +128,17 @@
       jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.9.0/f320478990d05e0cfaadd74f9619fd6027adbf37/kotlin-stdlib-jdk7-1.9.0.jar"
       resolved="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"/>
   <library
-      name="io.flutter:armeabi_v7a_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d@jar"
-      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/armeabi_v7a_release/1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d/8cebf6bec1dd3b9a46b26522897068fd3f014a71/armeabi_v7a_release-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar"
-      resolved="io.flutter:armeabi_v7a_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d"/>
+      name="io.flutter:armeabi_v7a_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b@jar"
+      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/armeabi_v7a_release/1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b/d484e6572afe908e5546f3a7ef32877bbdb44753/armeabi_v7a_release-1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b.jar"
+      resolved="io.flutter:armeabi_v7a_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b"/>
   <library
-      name="io.flutter:arm64_v8a_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d@jar"
-      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/arm64_v8a_release/1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d/6ad6f1c534926dad1192df4bd77e9897f69e3d9e/arm64_v8a_release-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar"
-      resolved="io.flutter:arm64_v8a_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d"/>
+      name="io.flutter:arm64_v8a_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b@jar"
+      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/arm64_v8a_release/1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b/7cffed1f9f7dd5e31fa6395dedc29a123705df2e/arm64_v8a_release-1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b.jar"
+      resolved="io.flutter:arm64_v8a_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b"/>
   <library
-      name="io.flutter:x86_64_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d@jar"
-      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/x86_64_release/1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d/b3c83546f39a6946b19d1b3d9b538472e46870b2/x86_64_release-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar"
-      resolved="io.flutter:x86_64_release:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d"/>
+      name="io.flutter:x86_64_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b@jar"
+      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/io.flutter/x86_64_release/1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b/cf5ac61c06ae175921cb70d0d4f9b0fe16befbd/x86_64_release-1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b.jar"
+      resolved="io.flutter:x86_64_release:1.0.0-a794cf2681c6c9fe7b260e0e84de96298dc9c18b"/>
   <library
       name="androidx.lifecycle:lifecycle-common-java8:2.2.0@jar"
       jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-java8/2.2.0/cd3478503da69b1a7e0319bd2d1389943db9b364/lifecycle-common-java8-2.2.0.jar"
@@ -315,6 +367,19 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
+      name="androidx.media:media:1.1.0@aar"
+      jars="/Users/ahmed/.gradle/caches/transforms-3/da2f7e1cc80fd39e5d8f4d2d19d18af0/transformed/media-1.1.0/jars/classes.jar"
+      resolved="androidx.media:media:1.1.0"
+      folder="/Users/ahmed/.gradle/caches/transforms-3/da2f7e1cc80fd39e5d8f4d2d19d18af0/transformed/media-1.1.0"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
       name="androidx.browser:browser:1.5.0@aar"
       jars="/Users/ahmed/.gradle/caches/transforms-3/214da2af7000628f5d75e14776a1b456/transformed/browser-1.5.0/jars/classes.jar"
       resolved="androidx.browser:browser:1.5.0"
@@ -327,6 +392,10 @@
       symbolFile="R.txt"
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
+  <library
+      name="com.google.code.gson:gson:2.8.9@jar"
+      jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.9/8a432c1d6825781e21a02db2e2c33c5fde2833b9/gson-2.8.9.jar"
+      resolved="com.google.code.gson:gson:2.8.9"/>
   <library
       name="androidx.concurrent:concurrent-futures:1.0.0@jar"
       jars="/Users/ahmed/.gradle/caches/modules-2/files-2.1/androidx.concurrent/concurrent-futures/1.0.0/c1e77e3ee6f4643b77496a1ddf7a2eef1aefdaa1/concurrent-futures-1.0.0.jar"
