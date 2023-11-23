@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './egg_single_client_screen.dart';
 import './egg_gestion_clients.dart';
+import 'package:provider/provider.dart';
+import '../providers/clients_provider.dart';
 
 class EggClientScreen extends StatefulWidget {
   const EggClientScreen({super.key});
@@ -11,13 +13,52 @@ class EggClientScreen extends StatefulWidget {
 }
 
 class _EggClientScreenState extends State<EggClientScreen> {
+  bool isLoading = false;
+  bool requestFailed = false;
+  bool _isInit = true;
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) {});
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      getClients();
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  void getClients() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<ClientProvider>(context, listen: false).fetchClients().then((_) {
+        setState(() {
+          isLoading = false;
+          requestFailed = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        requestFailed = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final clientProv = Provider.of<ClientProvider>(context);
+    final clientList = clientProv.clientList;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pushNamed("egg-dashboard/"),
         ),
         elevation: 2,
         title: const Text(
@@ -44,56 +85,58 @@ class _EggClientScreenState extends State<EggClientScreen> {
         ],
       ),
       body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 8),
-          child: ListView(
-            primary: false,
-            padding: const EdgeInsets.all(5),
-            children: <Widget>[
-              ClientListItem(),
-              SizedBox(height: 3),
-              ClientListItem(),
-              SizedBox(height: 3),
-              ClientListItem(),
-            ],
-          )),
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 8),
+        child: ListView.builder(
+          itemCount: clientList.length,
+          itemBuilder: (context, i) {
+            return ClientListItem(
+              name: "${clientList[i].fname} ${clientList[i].lname}",
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
 class ClientListItem extends StatelessWidget {
-  const ClientListItem({super.key});
+  final String name;
+  const ClientListItem({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
-          Colors.white,
-        ),
-        // side: MaterialStateProperty.all<BorderSide>(
-        //   BorderSide(
-        //     color: Colors.purple.shade300, // Change the border color to blue.
-        //     width: 0.0, // Change the border width to 2.0.
-        //   ),
-        // ),
-      ),
-      onPressed: () {
-        Navigator.of(context).pushNamed(EggClientDetailScreen.routeName);
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Icon(
-            Icons.person,
-            size: 45,
-            color: Colors.blue.shade800,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: OutlinedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Colors.white,
           ),
-          Text(
-            "Prenom NOM",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.blue.shade800, fontSize: 16),
-          )
-        ]),
+          // side: MaterialStateProperty.all<BorderSide>(
+          //   BorderSide(
+          //     color: Colors.purple.shade300, // Change the border color to blue.
+          //     width: 2.0, // Change the border width to 2.0.
+          //   ),
+          // ),
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed(EggClientDetailScreen.routeName);
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Icon(
+              Icons.person,
+              size: 45,
+              color: Colors.blue.shade800,
+            ),
+            Text(
+              name,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.blue.shade800, fontSize: 16),
+            )
+          ]),
+        ),
       ),
     );
   }

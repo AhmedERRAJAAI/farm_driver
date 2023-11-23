@@ -18,9 +18,10 @@ class OperationSelect extends StatefulWidget {
 }
 
 class _OperationSelectState extends State<OperationSelect> {
-  int? dropdownValue;
   @override
   Widget build(BuildContext context) {
+    int? dropdownValue;
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -48,7 +49,7 @@ class _OperationSelectState extends State<OperationSelect> {
         onChanged: (int? newValue) {
           setState(() {
             dropdownValue = newValue!;
-            widget.getter(newValue);
+            widget.getter(dropdownValue);
           });
         },
         decoration: InputDecoration(

@@ -12,6 +12,8 @@ import './providers/init_account_provider.dart';
 import './providers/forms_provider.dart';
 import './providers/cart.dart';
 import './providers/auth.dart';
+
+
 import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/dashboard_screen.dart';
@@ -35,7 +37,7 @@ import './screens/pdf_viewer_screen.dart';
 import './eggs_selling/screens/dashboard_eggs_screen.dart';
 import './eggs_selling/screens/operation_details.dart';
 import './eggs_selling/screens/egg_calendar_screen.dart';
-import 'eggs_selling/screens/EggsOperationFormScreen.dart';
+import 'eggs_selling/screens/egg_mouvement_form_screen.dart';
 import './eggs_selling/screens/egg_clients_screen.dart';
 import './eggs_selling/screens/egg_single_client_screen.dart';
 import './eggs_selling/screens/egg_all_operations_screen.dart';
@@ -43,6 +45,11 @@ import './eggs_selling/screens/eggAddDayPrice.dart';
 import './eggs_selling/screens/egg_stock_screen.dart';
 import './eggs_selling/screens/egg_gestion_clients.dart';
 import './eggs_selling/screens/eggs_records_screen.dart';
+// // PROVIDERS -----
+import 'eggs_selling/providers/daily_price_provider.dart';
+import 'eggs_selling/providers/clients_provider.dart';
+import 'eggs_selling/providers/mouvements_provider.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +68,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(
+            create: (ctx) => EggPrice(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => ClientProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => MouvementProvider(),
+          ),
+
+
           ChangeNotifierProvider(
             create: (ctx) => DashboardProvider(),
           ),

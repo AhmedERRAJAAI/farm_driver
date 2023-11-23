@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import './egg_all_operations_screen.dart';
+import '../widgets/dates_filter.dart';
 import '../widgets/drop_down_select.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EggClientDetailScreen extends StatefulWidget {
   const EggClientDetailScreen({super.key});
@@ -30,14 +32,14 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return OperationsFilter(
-                      clientsOptions: null,
-                      clientGetter: null,
-                    );
-                  });
+              // showModalBottomSheet(
+              //     context: context,
+              //     builder: (context) {
+              //       return OperationsFilter(
+              //         clientsOptions: null,
+              //         clientGetter: null,
+              //       );
+              //     });
             },
             icon: const Icon(
               Icons.tune,
@@ -52,7 +54,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Column(children: [
             Container(
-              height: 140,
+              height: 70,
               margin: EdgeInsets.symmetric(vertical: 10),
               padding: EdgeInsets.symmetric(vertical: 7, horizontal: 5),
               width: double.infinity,
@@ -69,12 +71,8 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Vendu: 1200000",
-                    style: TextStyle(fontSize: 16, color: const Color(0xFF145da0)),
-                  ),
-                  Text(
-                    "Payé: 1200000",
-                    style: TextStyle(fontSize: 16, color: const Color(0xFF145da0)),
+                    "Solde = paiement - ventes",
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -91,7 +89,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
                 children: {
                   0: Text('Transactions'),
                   1: Text('Ventes'),
-                  2: Text('Paiements'),
+                  2: Text('Encaissements'),
                 },
                 groupValue: selectedPage,
                 onValueChanged: (value) {
@@ -101,7 +99,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
                 },
               ),
             ),
-            for (int i = 0; i <= 20; i++) PaymentListItem(),
+            for (int i = 0; i <= 20; i++) PaymentListItem(isIn: i % 2 == 0 ? true : false),
             SizedBox(height: 90),
           ]),
         ),
@@ -125,7 +123,8 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
 }
 
 class PaymentListItem extends StatelessWidget {
-  const PaymentListItem({super.key});
+  final bool isIn;
+  const PaymentListItem({super.key, required this.isIn});
 
   @override
   Widget build(BuildContext context) {
@@ -145,10 +144,15 @@ class PaymentListItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  "12000000",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                isIn
+                    ? Text(
+                        "+120 000",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.lightGreen),
+                      )
+                    : Text(
+                        "-120 000",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.deepOrange),
+                      ),
                 SizedBox(
                   width: 20,
                   child: IconButton(
@@ -209,13 +213,30 @@ class _AddPaymentState extends State<AddPayment> {
 
   List<SelectOption> paymentMethod = [
     SelectOption(id: 0, value: "Chéque"),
-    SelectOption(id: 1, value: "Éspéce"),
+    SelectOption(id: 1, value: "Chéque"),
+    SelectOption(id: 2, value: "Traite bancaire"),
+    SelectOption(id: 3, value: "Versement déplacé"),
+    SelectOption(id: 4, value: "Virement"),
   ];
+
   void payMethodGetter() {}
+
+  // File? image;
+  // Future pickImage() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (image == null) return;
+  //     final imageTemp = File(image.path);
+  //     setState(() => this.image = imageTemp);
+  //   } catch (e) {
+  //     print('Failed to pick image: $e');
+  //   }
+  // }
+  bool img = false;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 500,
       color: Colors.grey.shade100,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -227,12 +248,12 @@ class _AddPaymentState extends State<AddPayment> {
                 widget.id == null ? "Nouveau payment" : "Modifier 23/12/2023 payment",
                 style: TextStyle(color: const Color(0xFF145da0), fontSize: 16),
               ),
-              SizedBox(height: 4),
+              SizedBox(height: 15),
               OutlinedButton(
                 onPressed: () => _showDialog(
                   CupertinoDatePicker(
                     initialDateTime: operationDate,
-                    mode: CupertinoDatePickerMode.date,
+                    mode: CupertinoDatePickerMode.dateAndTime,
                     use24hFormat: true,
                     onDateTimeChanged: (DateTime newDate) {
                       setState(() => operationDate = newDate);
@@ -240,7 +261,7 @@ class _AddPaymentState extends State<AddPayment> {
                   ),
                 ),
                 child: Text(
-                  '${operationDate.day}/${operationDate.month}/${operationDate.year}',
+                  "$operationDate".substring(0, 16),
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                     fontSize: 15.0,
@@ -253,7 +274,7 @@ class _AddPaymentState extends State<AddPayment> {
                 child: TextFormField(
                   textInputAction: TextInputAction.next,
                   // controller: quantityController,
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Montant payé'),
+                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Montant encaissé'),
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -263,6 +284,22 @@ class _AddPaymentState extends State<AddPayment> {
                 name: "Mode de paiement",
                 getter: payMethodGetter,
                 borderColor: Colors.blue,
+              ),
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+                      img = !img;
+                    });
+                  },
+                  child: Text("IMAGE")),
+              SizedBox(
+                height: 100,
+                width: 300,
+                child: img
+                    ? Image(
+                        image: AssetImage('assets/images/cheque.jpg'),
+                      )
+                    : Text("selectioner une image"),
               )
             ],
           ),

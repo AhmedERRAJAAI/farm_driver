@@ -125,7 +125,6 @@ class TableAndChartsProvider with ChangeNotifier {
         throw Exception("ERROR  DURING FETCHING GUIDE");
       }
     } catch (e) {
-      print(e);
       rethrow;
     }
   }

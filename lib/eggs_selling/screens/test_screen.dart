@@ -1,113 +1,73 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-/// Flutter code sample for [CupertinoPicker].
+void main() {
+  runApp(MyApp());
+}
 
-const double _kItemExtent = 32.0;
-const List<String> _fruitNames = <String>[
-  'Apple',
-  'Mango',
-  'Banana',
-  'Orange',
-  'Pineapple',
-  'Strawberry',
-];
-
-void main() => runApp(const CupertinoPickerApp());
-
-class CupertinoPickerApp extends StatelessWidget {
-  const CupertinoPickerApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
-      theme: CupertinoThemeData(brightness: Brightness.light),
-      home: CupertinoPickerExample(),
+    return MaterialApp(
+      title: "Date Picker",
+      home: HomePage(),
     );
   }
 }
 
-class CupertinoPickerExample extends StatefulWidget {
-  const CupertinoPickerExample({super.key});
-
+class HomePage extends StatefulWidget {
   @override
-  State<CupertinoPickerExample> createState() => _CupertinoPickerExampleState();
+  State<StatefulWidget> createState() {
+    return _HomePage();
+  }
 }
 
-class _CupertinoPickerExampleState extends State<CupertinoPickerExample> {
-  int _selectedFruit = 0;
+class _HomePage extends State<HomePage> {
+  TextEditingController dateInput = TextEditingController();
 
-  // This shows a CupertinoModalPopup with a reasonable fixed height which hosts CupertinoPicker.
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        // The Bottom margin is provided to align the popup above the system navigation bar.
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        // Provide a background color for the popup.
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        // Use a SafeArea widget to avoid system overlaps.
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    dateInput.text = ""; //set the initial value of text field
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('CupertinoPicker Sample'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("DatePicker in Flutter"),
+        backgroundColor: Colors.redAccent, //background color of app bar
       ),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: CupertinoColors.label.resolveFrom(context),
-          fontSize: 22.0,
-        ),
+      body: Container(
+        padding: EdgeInsets.all(15),
+        height: MediaQuery.of(context).size.width / 3,
         child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('Selected fruit: '),
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                // Display a CupertinoPicker with list of fruits.
-                onPressed: () => _showDialog(
-                  CupertinoPicker(
-                    magnification: 1.22,
-                    squeeze: 1.2,
-                    useMagnifier: true,
-                    itemExtent: _kItemExtent,
-                    // This sets the initial item.
-                    scrollController: FixedExtentScrollController(
-                      initialItem: _selectedFruit,
-                    ),
-                    // This is called when selected item is changed.
-                    onSelectedItemChanged: (int selectedItem) {
-                      setState(() {
-                        _selectedFruit = selectedItem;
-                      });
-                    },
-                    children:
-                        List<Widget>.generate(_fruitNames.length, (int index) {
-                      return Center(child: Text(_fruitNames[index]));
-                    }),
-                  ),
+          child: TextField(
+            controller: dateInput,
+            //editing controller of this TextField
+            decoration: InputDecoration(
+                icon: Icon(Icons.calendar_today), //icon of text field
+                labelText: "Enter Date" //label text of field
                 ),
-                // This displays the selected fruit name.
-                child: Text(
-                  _fruitNames[_selectedFruit],
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                ),
-              ),
-            ],
+            readOnly: true,
+            //set it true, so that user will not able to edit text
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1950),
+                  //DateTime.now() - not to allow to choose before today.
+                  lastDate: DateTime(2100));
+
+              if (pickedDate != null) {
+                print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                setState(() {
+                  dateInput.text = formattedDate; //set output date to TextField value.
+                });
+              } else {}
+            },
           ),
         ),
       ),

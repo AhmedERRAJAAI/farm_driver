@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import './egg_single_client_screen.dart';
 import '../widgets/operation_list_item.dart';
 import '../widgets/drop_down_select.dart';
-import '../widgets/ios_date_picker.dart';
+import '../widgets/dates_filter.dart';
 
 class EggAllOperations extends StatefulWidget {
   const EggAllOperations({super.key});
@@ -40,14 +39,14 @@ class _EggAllOperationsState extends State<EggAllOperations> {
         actions: [
           IconButton(
             onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return OperationsFilter(
-                      clientsOptions: clientsOptions,
-                      clientGetter: clientGetter,
-                    );
-                  });
+              // showModalBottomSheet(
+              //     context: context,
+              //     builder: (context) {
+              //       return OperationsFilter(
+              //         clientsOptions: clientsOptions,
+              //         clientGetter: clientGetter,
+              //       );
+              //     });
             },
             icon: const Icon(
               Icons.tune,
@@ -108,153 +107,3 @@ class ClientListItem extends StatelessWidget {
   }
 }
 
-class OperationsFilter extends StatefulWidget {
-  final List<SelectOption>? clientsOptions;
-  final Function? clientGetter;
-  const OperationsFilter({super.key, required this.clientsOptions, required this.clientGetter});
-
-  @override
-  State<OperationsFilter> createState() => _OperationsFilterState();
-}
-
-class _OperationsFilterState extends State<OperationsFilter> {
-  DateTime operationDate = DateTime.now();
-  DateTime start_date = DateTime.now();
-  DateTime end_date = DateTime.now();
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 6, right: 6, top: 12),
-      child: SizedBox(
-        height: 300,
-        child: Column(
-          children: [
-            if (widget.clientsOptions != null)
-              OperationSelect(
-                inputsOptions: widget.clientsOptions ?? [],
-                name: "Clients",
-                getter: widget.clientGetter ?? () {},
-                borderColor: Colors.orange,
-              ),
-            DatePickerItem(
-              children: <Widget>[
-                const Text('Date'),
-                CupertinoButton(
-                  onPressed: () => _showDialog(
-                    CupertinoDatePicker(
-                      initialDateTime: operationDate,
-                      mode: CupertinoDatePickerMode.date,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        setState(() => operationDate = newDate);
-                      },
-                    ),
-                  ),
-                  child: Text(
-                    '${operationDate.day}/${operationDate.month}/${operationDate.year}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "séléctioner une plage",
-              ),
-            ),
-            SizedBox(height: 3),
-            DatePickerItem(
-              children: <Widget>[
-                const Text('De'),
-                CupertinoButton(
-                  onPressed: () => _showDialog(
-                    CupertinoDatePicker(
-                      initialDateTime: start_date,
-                      mode: CupertinoDatePickerMode.date,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        setState(() => start_date = newDate);
-                      },
-                    ),
-                  ),
-                  child: Text(
-                    '${start_date.day}/${start_date.month}/${start_date.year}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            DatePickerItem(
-              children: <Widget>[
-                const Text('à'),
-                CupertinoButton(
-                  onPressed: () => _showDialog(
-                    CupertinoDatePicker(
-                      initialDateTime: end_date,
-                      mode: CupertinoDatePickerMode.date,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        setState(() => end_date = newDate);
-                      },
-                    ),
-                  ),
-                  child: Text(
-                    '${end_date.day}/${end_date.month}/${end_date.year}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 90,
-              child: OutlinedButton(
-                onPressed: () {},
-                child: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    Colors.orange,
-                  ),
-                  side: MaterialStateProperty.all<BorderSide>(
-                    BorderSide(
-                      color: Colors.orange.shade800,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

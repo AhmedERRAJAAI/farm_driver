@@ -3,7 +3,7 @@ import '../../mywidgets/side_drawer.dart';
 import '../charts/dashboard_chart.dart';
 import './eggAddDayPrice.dart';
 import './egg_calendar_screen.dart';
-import 'EggsOperationFormScreen.dart';
+import 'egg_mouvement_form_screen.dart';
 import './egg_clients_screen.dart';
 import './egg_all_operations_screen.dart';
 import './egg_stock_screen.dart';
@@ -93,48 +93,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 280, child: EggsDashCharts()),
-                    SizedBox(
-                      height: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "30j",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              )),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "1 an",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              )),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "max",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
+                    SizedBox(height: 320, child: EggsDashCharts()),
                   ],
                 ),
               ),

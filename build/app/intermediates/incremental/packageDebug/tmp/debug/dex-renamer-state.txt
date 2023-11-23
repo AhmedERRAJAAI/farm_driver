@@ -1,4 +1,4 @@
-#Wed Nov 15 13:28:42 WEST 2023
+#Thu Nov 23 03:39:58 WEST 2023
 base.0=/Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

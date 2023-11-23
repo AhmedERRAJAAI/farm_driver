@@ -91,62 +91,134 @@
 67            android:name="flutterEmbedding"
 68            android:value="2" />
 69
-70        <receiver
-70-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:16:9-18:40
-71            android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
-71-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:17:13-91
-72            android:exported="false" />
-72-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:18:13-37
-73        <receiver
-73-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:19:9-21:40
-74            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
-74-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:20:13-97
-75            android:exported="false" />
-75-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:21:13-37
-76        <receiver
-76-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:22:9-31:20
-77            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
-77-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:23:13-101
-78            android:exported="false" >
-78-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:24:13-37
-79            <intent-filter>
-79-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:25:13-30:29
-80                <action android:name="android.intent.action.BOOT_COMPLETED" />
-80-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:26:17-79
-80-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:26:25-76
-81                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-81-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:27:17-84
-81-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:27:25-81
-82                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-82-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:28:17-82
-82-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:28:25-79
-83                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-83-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:29:17-82
-83-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:29:25-79
-84            </intent-filter>
-85        </receiver>
-86
-87        <activity
-87-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
-88            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-88-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
-89            android:exported="false"
-89-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
-90            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-90-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
-91
-92        <uses-library
-92-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
-93            android:name="androidx.window.extensions"
-93-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
-94            android:required="false" />
-94-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
-95        <uses-library
-95-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
-96            android:name="androidx.window.sidecar"
-96-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
-97            android:required="false" />
-97-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
-98    </application>
-99
-100</manifest>
+70        <provider
+70-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-18:20
+71            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+71-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-82
+72            android:authorities="com.example.my_shop.flutter.image_provider"
+72-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-74
+73            android:exported="false"
+73-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
+74            android:grantUriPermissions="true" >
+74-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-47
+75            <meta-data
+75-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-17:75
+76                android:name="android.support.FILE_PROVIDER_PATHS"
+76-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:16:17-67
+77                android:resource="@xml/flutter_image_picker_file_paths" />
+77-->[:image_picker_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:17:17-72
+78        </provider>
+79
+80        <receiver
+80-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:16:9-18:40
+81            android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
+81-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:17:13-91
+82            android:exported="false" />
+82-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:18:13-37
+83        <receiver
+83-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:19:9-21:40
+84            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+84-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:20:13-97
+85            android:exported="false" />
+85-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:21:13-37
+86        <receiver
+86-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:22:9-31:20
+87            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+87-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:23:13-101
+88            android:exported="false" >
+88-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:24:13-37
+89            <intent-filter>
+89-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:25:13-30:29
+90                <action android:name="android.intent.action.BOOT_COMPLETED" />
+90-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:26:17-79
+90-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:26:25-76
+91                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+91-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:27:17-84
+91-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:27:25-81
+92                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+92-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:28:17-82
+92-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:28:25-79
+93                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+93-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:29:17-82
+93-->[:flutter_local_notifications] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/flutter_local_notifications/intermediates/merged_manifest/debug/AndroidManifest.xml:29:25-79
+94            </intent-filter>
+95        </receiver>
+96
+97        <activity
+97-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
+98            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+98-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
+99            android:exported="false"
+99-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
+100            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+100-->[:url_launcher_android] /Users/ahmed/developement/mobile/PROJECTS/eggs_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
+101
+102        <uses-library
+102-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+103            android:name="androidx.window.extensions"
+103-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+104            android:required="false" />
+104-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+105        <uses-library
+105-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+106            android:name="androidx.window.sidecar"
+106-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+107            android:required="false" />
+107-->[androidx.window:window:1.0.0-beta04] /Users/ahmed/.gradle/caches/transforms-3/9e91c662af8148517c13d994fd342e7d/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+108
+109        <provider
+109-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:24:9-32:20
+110            android:name="androidx.startup.InitializationProvider"
+110-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:25:13-67
+111            android:authorities="com.example.my_shop.androidx-startup"
+111-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:26:13-68
+112            android:exported="false" >
+112-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:27:13-37
+113            <meta-data
+113-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+114                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+114-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+115                android:value="androidx.startup" />
+115-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+116        </provider>
+117
+118        <receiver
+118-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+119            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+119-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+120            android:directBootAware="false"
+120-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+121            android:enabled="true"
+121-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+122            android:exported="true"
+122-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+123            android:permission="android.permission.DUMP" >
+123-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+124            <intent-filter>
+124-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+125                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+125-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+125-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+126            </intent-filter>
+127            <intent-filter>
+127-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+128                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+128-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+128-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+129            </intent-filter>
+130            <intent-filter>
+130-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+131                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+132            </intent-filter>
+133            <intent-filter>
+133-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+134                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ahmed/.gradle/caches/transforms-3/a8c0cb7be97b8308c08b92d9e5bb4812/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+135            </intent-filter>
+136        </receiver>
+137    </application>
+138
+139</manifest>
