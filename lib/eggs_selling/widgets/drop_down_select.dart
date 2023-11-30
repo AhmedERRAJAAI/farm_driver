@@ -5,12 +5,14 @@ class OperationSelect extends StatefulWidget {
   final String name;
   final Function getter;
   final Color borderColor;
+  final int? initValue;
   const OperationSelect({
     super.key,
     required this.inputsOptions,
     required this.name,
     required this.getter,
     required this.borderColor,
+    this.initValue,
   });
 
   @override
@@ -20,7 +22,7 @@ class OperationSelect extends StatefulWidget {
 class _OperationSelectState extends State<OperationSelect> {
   @override
   Widget build(BuildContext context) {
-    int? dropdownValue;
+    int? dropdownValue = widget.initValue;
 
     return Container(
       height: 50,

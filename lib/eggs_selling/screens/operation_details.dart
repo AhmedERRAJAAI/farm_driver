@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import '../providers/mouvements_provider.dart';
 
 class OperationDetailsScreen extends StatefulWidget {
   const OperationDetailsScreen({super.key});
@@ -10,8 +12,48 @@ class OperationDetailsScreen extends StatefulWidget {
 }
 
 class _OperationDetailsScreenState extends State<OperationDetailsScreen> {
+  bool isLoading = false;
+  bool requestFailed = false;
+  bool _isInit = true;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) {});
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      getMouvementDetails(30);
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  void getMouvementDetails(period) async {
+    final clientObj = ModalRoute.of(context)!.settings.arguments as Map;
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<MouvementProvider>(context, listen: false).fetchMouvments(count: 100, isEntree: false).then((_) {
+        setState(() {
+          isLoading = false;
+          requestFailed = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        requestFailed = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final clientObj = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -19,7 +61,7 @@ class _OperationDetailsScreenState extends State<OperationDetailsScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 1,
-        backgroundColor: Color(0xFF145da0),
+        backgroundColor: const Color(0xFF145da0),
         title: const Text(
           "Operation details",
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
@@ -136,8 +178,7 @@ class _OperationDetailsScreenState extends State<OperationDetailsScreen> {
             ),
             Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
             // ===============
-            OperationListItem(title: "Mode de paiement", value: "Espéce", titleICon: MdiIcons.autoMode, listColor: Colors.blue.shade700),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+
             OperationListItem(title: "Source", value: "TIFLET (T1)", titleICon: MdiIcons.sourceBranch, listColor: Colors.yellow.shade800),
             Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
             OperationListItem(title: "Stock initial", value: "40000", titleICon: MdiIcons.warehouse, listColor: Colors.yellow.shade800),

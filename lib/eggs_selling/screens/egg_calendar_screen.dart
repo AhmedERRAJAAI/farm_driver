@@ -75,13 +75,13 @@ class _EggCalendarScreenState extends State<EggCalendarScreen> {
               ),
               Column(
                 children: [
- OperationListOneItem(batiment: "T1", name: "AZIZ", date: "09/11/2023", id: 0, operType: 0, pu: "0.95", qty: 90000),
+                  OperationListOneItem(batiment: "T1", name: "AZIZ", date: "09/11/2023", id: 0, operType: 0, pu: 0.95, qty: 90000),
                   OperationListOneItem(batiment: "T1", name: "T1", date: "09/11/2023", id: 0, operType: 1, pu: null, qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 2, pu: "0.95", qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 3, pu: "0.95", qty: 90000),
+                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 2, pu: 0.95, qty: 90000),
+                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 3, pu: 0.95, qty: 90000),
                   OperationListOneItem(batiment: "T1", name: "T2", date: "09/11/2023", id: 0, operType: 1, pu: null, qty: 100000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 4, pu: "0.95", qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 0, pu: "0.95", qty: 90000),
+                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 4, pu: 0.95, qty: 90000),
+                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 0, pu: 0.95, qty: 90000),
                 ],
               ),
             ],

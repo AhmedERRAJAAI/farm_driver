@@ -271,7 +271,7 @@ ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/
 		ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:24:9-44
 	android:name
 		ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:23:9-81
-permission#com.example.my_shop.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+permission#com.example.farm_driver_eggs.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
 		ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:24:9-44
@@ -281,7 +281,7 @@ uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:26:5-97
 	android:name
 		ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:26:22-94
-uses-permission#com.example.my_shop.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+uses-permission#com.example.farm_driver_eggs.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:26:5-97
 	android:name
 		ADDED from [androidx.core:core:1.10.1] /Users/ahmed/.gradle/caches/transforms-3/12d099ea686a1c4551cfcd3b667543a1/transformed/core-1.10.1/AndroidManifest.xml:26:22-94

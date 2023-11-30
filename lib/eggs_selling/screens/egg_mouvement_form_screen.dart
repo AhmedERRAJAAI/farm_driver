@@ -228,7 +228,7 @@ class _EntreeMovementState extends State<EntreeMovement> {
     }
     return Container(
       height: widget.id == null ? null : 500,
-      padding: widget.id == null ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 10),
+      padding: widget.id == null ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 10),
       child: Form(
         key: entreeForm,
         child: Column(
@@ -309,6 +309,15 @@ class _EntreeMovementState extends State<EntreeMovement> {
                       "eggsClass": eggClass,
                       "batiment": batimentId,
                     });
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        duration: const Duration(seconds: 3),
+                        content: const Text('Données envoyées'),
+                      ),
+                    );
+                    entreeForm.currentState!.reset();
                   }
                 },
                 child: Row(
@@ -556,20 +565,6 @@ class _SortieMovementState extends State<SortieMovement> {
                     color: Colors.grey.shade400,
                     backgroundColor: Colors.grey.shade200,
                   )
-                : OperationSelect(
-                    inputsOptions: batsOptions,
-                    name: "Bâtiment",
-                    getter: batimentGetter,
-                    borderColor: Colors.blue,
-                  ),
-            SizedBox(height: 6),
-            isLoading
-                ? LinearProgressIndicator(
-                    minHeight: 50,
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey.shade400,
-                    backgroundColor: Colors.grey.shade200,
-                  )
                 : operId == 0
                     ? OperationSelect(
                         inputsOptions: clientsOptions,
@@ -587,6 +582,21 @@ class _SortieMovementState extends State<SortieMovement> {
                         ),
                       ),
             const SizedBox(height: 6),
+            isLoading
+                ? LinearProgressIndicator(
+                    minHeight: 50,
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.grey.shade400,
+                    backgroundColor: Colors.grey.shade200,
+                  )
+                : OperationSelect(
+                    inputsOptions: batsOptions,
+                    name: "Bâtiment",
+                    getter: batimentGetter,
+                    borderColor: Colors.blue,
+                    initValue: clientId != null ? mouvement.formClients.where((element) => element.id == clientId).last.batId : null,
+                  ),
+            SizedBox(height: 6),
             SizedBox(
               height: 50,
               child: TextFormField(
@@ -609,21 +619,23 @@ class _SortieMovementState extends State<SortieMovement> {
               getter: classGetter,
               borderColor: Colors.blue,
             ),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                controller: unitPriceController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'P.U. (DH)'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Champs requis";
-                  }
-                  return null;
-                },
-              ),
-            ),
+            operId == 0
+                ? SizedBox(
+                    height: 50,
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      controller: unitPriceController,
+                      decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'P.U. (DH)'),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Champs requis";
+                        }
+                        return null;
+                      },
+                    ),
+                  )
+                : SizedBox(),
             SizedBox(height: 8),
             Align(alignment: Alignment.centerLeft, child: Text("Immatriculation")),
             SizedBox(height: 3),
@@ -729,7 +741,7 @@ class _SortieMovementState extends State<SortieMovement> {
               height: 45,
               child: OutlinedButton(
                 onPressed: () {
-                  if (batimentId == null || classId == null || clientId == null || operId == null) {
+                  if (batimentId == null || classId == null || (operId == 0 && clientId == null) || operId == null) {
                     alertMsg("Champs requis:", "Bâtiment, Classe des oeufs, Client, Operation", context);
                   }
                   if (sortieForm.currentState!.validate()) {
@@ -739,7 +751,7 @@ class _SortieMovementState extends State<SortieMovement> {
                         "outType": operId,
                         "eggsQty": quantityController.text,
                         "remarque": remarqueController.text.isEmpty ? "" : remarqueController.text,
-                        "pu": unitPriceController.text,
+                        "pu": unitPriceController.text.isEmpty ? 0 : unitPriceController.text,
                         "immNbr": immNbrController.text,
                         "immLetter": selectedLetter,
                         "immCity": immCityController.text,
@@ -751,6 +763,15 @@ class _SortieMovementState extends State<SortieMovement> {
                         "client": clientId,
                       },
                     );
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        duration: const Duration(seconds: 3),
+                        content: const Text('Données envoyées'),
+                      ),
+                    );
+                    sortieForm.currentState!.reset();
                   }
                   ;
                 },

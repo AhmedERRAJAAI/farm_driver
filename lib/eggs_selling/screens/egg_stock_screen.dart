@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import '../providers/stock_provider.dart';
 
 class EggStockScreen extends StatefulWidget {
   const EggStockScreen({super.key});
@@ -11,27 +13,52 @@ class EggStockScreen extends StatefulWidget {
 }
 
 class _EggStockScreenState extends State<EggStockScreen> {
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
-      ),
-    );
+  DateTime stockDate = DateTime.now();
+
+  bool isLoading = false;
+  bool requestFailed = false;
+  bool _isInit = true;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) {});
+    super.initState();
   }
 
-  DateTime stockDate = DateTime.now();
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      getStockStatus();
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  void getStockStatus() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<StockProvider>(context, listen: false).fetchStockData(date: stockDate.toString()).then((_) {
+        setState(() {
+          isLoading = false;
+          requestFailed = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        requestFailed = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    final stocks = Provider.of<StockProvider>(context).stocks;
+    final globalStock = stocks.where((element) => element.bat == null).last;
+    final batsStock = stocks.where((element) => element.bat != null);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -39,7 +66,7 @@ class _EggStockScreenState extends State<EggStockScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0,
-        title: Text(
+        title: const Text(
           "STOCK",
           style: TextStyle(
             color: Colors.white,
@@ -49,6 +76,13 @@ class _EggStockScreenState extends State<EggStockScreen> {
           ),
         ),
         backgroundColor: Colors.indigo,
+        actions: [
+          IconButton(
+              onPressed: () {
+                getStockStatus();
+              },
+              icon: Icon(Icons.refresh))
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -57,7 +91,7 @@ class _EggStockScreenState extends State<EggStockScreen> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 20),
-                height: 200,
+                height: deviceSize.height * 0.23,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -69,83 +103,28 @@ class _EggStockScreenState extends State<EggStockScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                Icon(
-                                  MdiIcons.weatherSunny,
-                                  color: Colors.yellow.shade700,
-                                  size: 25,
-                                ),
-                                Text(
-                                  "120993849",
-                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.yellow.shade700),
-                                ),
-                              ]),
-                              Row(children: [
-                                Icon(
-                                  MdiIcons.weatherNight,
-                                  color: Colors.blue.shade800,
-                                  size: 22,
-                                ),
-                                Text(
-                                  "120993849",
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
-                                ),
-                              ]),
-                            ],
-                          ),
-                          FittedBox(
-                            child: Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.orange,
-                              ),
-                              child: Center(
-                                child: TextButton(
-                                  onPressed: () => _showDialog(
-                                    CupertinoDatePicker(
-                                      initialDateTime: stockDate,
-                                      mode: CupertinoDatePickerMode.date,
-                                      use24hFormat: true,
-                                      onDateTimeChanged: (DateTime newDate) {
-                                        setState(() => stockDate = newDate);
-                                      },
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '${stockDate.day}/${stockDate.month}/${stockDate.year}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        backgroundColor: Colors.orange,
-                                        fontSize: 15.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      Row(children: [
+                        Icon(
+                          MdiIcons.weatherNight,
+                          color: Colors.blue.shade800,
+                          size: 22,
+                        ),
+                        Text(
+                          "${globalStock.total}",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
+                        ),
+                      ]),
                       SizedBox(height: 30),
-                      StockClassList(),
+                      StockClassList(globalStock: globalStock),
                     ],
                   ),
                 ),
               ),
               Column(
-                children: [
-                  StockByBat(),
-                ],
-              ),
+                  children: batsStock.map((batStock) {
+                return StockByBat(stock: batStock);
+              }).toList()),
+              SizedBox(height: 10)
             ],
           ),
         ),
@@ -155,7 +134,8 @@ class _EggStockScreenState extends State<EggStockScreen> {
 }
 
 class StockClassList extends StatelessWidget {
-  const StockClassList({super.key});
+  final Stock globalStock;
+  const StockClassList({super.key, required this.globalStock});
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +151,7 @@ class StockClassList extends StatelessWidget {
                   "Normaux",
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
                 ),
-                Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+                Text("${globalStock.normaux}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
               ],
             ),
             Column(
@@ -181,7 +161,7 @@ class StockClassList extends StatelessWidget {
                   "Double jaune",
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
                 ),
-                Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+                Text("${globalStock.dj}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
               ],
             ),
             Column(
@@ -191,7 +171,7 @@ class StockClassList extends StatelessWidget {
                   "Congelés",
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
                 ),
-                Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+                Text("${globalStock.congeles}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
               ],
             ),
           ],
@@ -207,7 +187,7 @@ class StockClassList extends StatelessWidget {
                   "Cassés",
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
                 ),
-                Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+                Text("${globalStock.casse}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
               ],
             ),
             Column(
@@ -217,7 +197,7 @@ class StockClassList extends StatelessWidget {
                   "Blancs",
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
                 ),
-                Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+                Text("${globalStock.blancs}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
               ],
             ),
             Column(
@@ -227,7 +207,17 @@ class StockClassList extends StatelessWidget {
                   "Fêlés",
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
                 ),
-                Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+                Text("${globalStock.feles}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "Sale",
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
+                ),
+                Text("${globalStock.sale}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 16))
               ],
             ),
           ],
@@ -238,7 +228,8 @@ class StockClassList extends StatelessWidget {
 }
 
 class StockByBat extends StatefulWidget {
-  const StockByBat({super.key});
+  final Stock stock;
+  const StockByBat({super.key, required this.stock});
 
   @override
   State<StockByBat> createState() => _StockByBatState();
@@ -251,6 +242,7 @@ class _StockByBatState extends State<StockByBat> {
       margin: const EdgeInsets.only(top: 10),
       width: double.infinity,
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
           width: 1,
@@ -275,21 +267,11 @@ class _StockByBatState extends State<StockByBat> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "T1",
+                      widget.stock.bat ?? "",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (context) {
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                  child: ModifyStock(),
-                                );
-                              });
-                        },
+                        onTap: () {},
                         child: Icon(
                           Icons.settings,
                           size: 20,
@@ -309,7 +291,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Normaux",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.normaux}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -319,7 +301,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Double jaune",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.dj}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -329,7 +311,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Congelés (Kg)",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("12", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.congeles}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                 ],
@@ -345,7 +327,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Cassés",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.casse}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -355,7 +337,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Blancs",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.blancs}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -365,115 +347,23 @@ class _StockByBatState extends State<StockByBat> {
                         "Fêlés",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("120000", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.feles}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Sale",
+                        style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                      ),
+                      Text("${widget.stock.sale}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                 ],
               ),
             ],
           )),
-    );
-  }
-}
-
-class ModifyStock extends StatefulWidget {
-  const ModifyStock({super.key});
-
-  @override
-  State<ModifyStock> createState() => _ModifyStockState();
-}
-
-class _ModifyStockState extends State<ModifyStock> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 380,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Form(
-            child: Column(
-          children: [
-            // const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Annuler"),
-                ),
-                Text(
-                  "Corriger stock (T1)",
-                  style: TextStyle(color: Color(0xFF145da0), fontSize: 16, decoration: TextDecoration.underline),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Effectuer"),
-                ),
-              ],
-            ),
-            // const SizedBox(height: 6),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                // controller: quantityController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Normaux'),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                // controller: quantityController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Cassés'),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                // controller: quantityController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Double jaune'),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                // controller: quantityController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Congelés (Kg)'),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                // controller: quantityController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Blancs'),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                // controller: quantityController,
-                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Fêlés'),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-          ],
-        )),
-      ),
     );
   }
 }

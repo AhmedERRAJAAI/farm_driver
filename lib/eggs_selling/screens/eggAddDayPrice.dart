@@ -7,6 +7,8 @@ import '../providers/daily_price_provider.dart';
 import '../widgets/ios_date_picker.dart';
 import '../widgets/dates_filter.dart';
 
+// import '../widgets/errorAlert.dart';
+
 class EggDayPrice extends StatefulWidget {
   const EggDayPrice({super.key});
   static const routeName = "egg-day-price/";
@@ -73,6 +75,7 @@ class _EggDayPriceState extends State<EggDayPrice> {
       setState(() {
         isLoading = false;
         requestFailed = true;
+        // errorAlert("Echéc de récupérer les clients et les bâtiments", "vérifiez la connexion Internet et réessayez");
       });
     }
   }

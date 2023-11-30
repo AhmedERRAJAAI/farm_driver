@@ -7,7 +7,7 @@ class OperationListOneItem extends StatelessWidget {
   final String date;
   final int operType;
   final String? name;
-  final String? pu;
+  final double? pu;
   final int? qty;
   final String batiment;
   const OperationListOneItem({
@@ -39,11 +39,8 @@ class OperationListOneItem extends StatelessWidget {
     ];
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
-      margin: EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0)),
-      ),
+      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+      decoration: BoxDecoration(border: Border.all(width: 1, color: Colors.grey.shade300), borderRadius: BorderRadius.circular(6)),
       child: ListTile(
         onTap: () {
           Navigator.of(context).pushNamed(OperationDetailsScreen.routeName, arguments: {

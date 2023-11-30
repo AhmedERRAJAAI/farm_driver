@@ -414,25 +414,27 @@ class _ClientDataModalState extends State<ClientDataModal> {
                                 "firstName": fname.text,
                                 "lastName": lname.text,
                                 "phone": phone.text,
-                                "initSolde": int.parse(initSolde.text),
+                                "initSolde": double.parse(initSolde.text),
                                 "isActive": widget.client.isActive
                               });
                             }
                           },
-                          child: Row(
-                            children: [
-                              Text(
-                                "Effectuer  ",
-                                style: TextStyle(color: Colors.orange),
-                              ),
-                              isLoading
-                                  ? SizedBox(
-                                      height: 10,
-                                      width: 10,
-                                      child: CircularProgressIndicator(color: Colors.orange),
-                                    )
-                                  : SizedBox()
-                            ],
+                          child: FittedBox(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Effectuer  ",
+                                  style: TextStyle(color: Colors.orange),
+                                ),
+                                isLoading
+                                    ? SizedBox(
+                                        height: 10,
+                                        width: 10,
+                                        child: CircularProgressIndicator(color: Colors.orange),
+                                      )
+                                    : SizedBox()
+                              ],
+                            ),
                           ),
                         )
                       : SizedBox()

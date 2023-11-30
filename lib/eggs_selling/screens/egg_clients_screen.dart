@@ -91,6 +91,7 @@ class _EggClientScreenState extends State<EggClientScreen> {
           itemBuilder: (context, i) {
             return ClientListItem(
               name: "${clientList[i].fname} ${clientList[i].lname}",
+              id: clientList[i].id,
             );
           },
         ),
@@ -101,7 +102,8 @@ class _EggClientScreenState extends State<EggClientScreen> {
 
 class ClientListItem extends StatelessWidget {
   final String name;
-  const ClientListItem({super.key, required this.name});
+  final int id;
+  const ClientListItem({super.key, required this.name, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +122,7 @@ class ClientListItem extends StatelessWidget {
           // ),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(EggClientDetailScreen.routeName);
+          Navigator.of(context).pushNamed(EggClientDetailScreen.routeName, arguments: {"id": id, "name": name});
         },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 8),

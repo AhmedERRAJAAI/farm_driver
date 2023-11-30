@@ -7,8 +7,7 @@ import 'egg_mouvement_form_screen.dart';
 import './egg_clients_screen.dart';
 import './egg_all_operations_screen.dart';
 import './egg_stock_screen.dart';
-// WIDGETS
-import '../widgets/operation_list_item.dart';
+import '../widgets/dashboard_mouvements.dart';
 
 class EggsDashboard extends StatefulWidget {
   static const routeName = "egg-dashboard/";
@@ -71,6 +70,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
           child: Column(
             children: [
               Container(
+                height: deviceSize.height * 0.43,
                 child: Column(
                   children: [
                     SizedBox(
@@ -96,9 +96,6 @@ class _EggsDashboardState extends State<EggsDashboard> {
                     SizedBox(height: 320, child: EggsDashCharts()),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -135,16 +132,6 @@ class _EggsDashboardState extends State<EggsDashboard> {
                       )),
                 ],
               ),
-              // GestureDetector(
-              //     onTap: () {
-              //       Navigator.of(context).pushNamed(EggOperationForm.routeName);
-              //     },
-              //     child: DashBtn(
-              //       title: "Mouvement",
-              //       btnIcon: Icons.add,
-              //       width: deviceSize.width * 0.92,
-              //       btnColor: Colors.lightGreen.shade600,
-              //     )),
               SizedBox(
                 height: 10,
               ),
@@ -178,21 +165,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
                         ),
                       ),
                     ),
-                    Container(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            OperationListOneItem(batiment: "T1", name: "AZIZ", date: "09/11/2023", id: 0, operType: 0, pu: "0.95", qty: 90000),
-                            OperationListOneItem(batiment: "T1", name: "T1", date: "09/11/2023", id: 0, operType: 1, pu: null, qty: 90000),
-                            OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 2, pu: "0.95", qty: 90000),
-                            OperationListOneItem(batiment: "T1", name: "EXPLICATION ...", date: "09/11/2023", id: 0, operType: 3, pu: null, qty: 1000),
-                            OperationListOneItem(batiment: "T1", name: "T2", date: "09/11/2023", id: 0, operType: 1, pu: null, qty: 100000),
-                            OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 4, pu: "0.95", qty: 90000),
-                            OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 0, pu: "0.95", qty: 90000),
-                          ],
-                        ),
-                      ),
-                    ),
+                    SizedBox(height: deviceSize.height * 0.5, child: EggDashMouvments())
                   ],
                 ),
               ),

@@ -13,7 +13,6 @@ import './providers/forms_provider.dart';
 import './providers/cart.dart';
 import './providers/auth.dart';
 
-
 import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/dashboard_screen.dart';
@@ -49,7 +48,8 @@ import './eggs_selling/screens/eggs_records_screen.dart';
 import 'eggs_selling/providers/daily_price_provider.dart';
 import 'eggs_selling/providers/clients_provider.dart';
 import 'eggs_selling/providers/mouvements_provider.dart';
-
+import 'eggs_selling/providers/payment_provider.dart';
+import 'eggs_selling/providers/stock_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,8 +77,14 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (ctx) => MouvementProvider(),
           ),
-
-
+          ChangeNotifierProvider(
+            create: (ctx) => PaymentProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => StockProvider(),
+          ),
+          // #
+          // #
           ChangeNotifierProvider(
             create: (ctx) => DashboardProvider(),
           ),

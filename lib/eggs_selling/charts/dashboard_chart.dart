@@ -87,45 +87,54 @@ class _EggsDashChartsState extends State<EggsDashCharts> {
                 gradient: gradientColors,
               ),
             ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    getDaysPrices(7);
-                  },
-                  child: Text(
-                    "7j",
-                    style: TextStyle(color: Colors.blue, fontSize: 12),
+            SizedBox(
+              height: 14,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      getDaysPrices(30);
+                    },
+                    child: Text(
+                      "7j",
+                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                    ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    getDaysPrices(365);
-                  },
-                  child: Text(
-                    "1An",
-                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                  GestureDetector(
+                    onTap: () {
+                      getDaysPrices(365);
+                    },
+                    child: Text(
+                      "1An",
+                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                    ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    getDaysPrices(0);
-                  },
-                  child: Text(
-                    "Max",
-                    style: TextStyle(color: Colors.blue, fontSize: 12),
-                  ),
-                )
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      getDaysPrices(0);
+                    },
+                    child: Text(
+                      "Max",
+                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
         isLoading
-            ? Container(
-                color: Colors.white.withOpacity(0.6),
-                child: Center(child: CircularProgressIndicator()),
-              )
+            ? requestFailed
+                ? IconButton(
+                    onPressed: () {
+                      getDaysPrices(30);
+                    },
+                    icon: Icon(Icons.refresh))
+                : Container(
+                    color: Colors.white.withOpacity(0.6),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
             : SizedBox(),
       ],
     )));

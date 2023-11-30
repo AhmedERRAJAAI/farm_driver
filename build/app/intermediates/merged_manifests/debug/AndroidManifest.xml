@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.my_shop"
+    package="com.example.farm_driver_eggs"
     android:versionCode="1"
     android:versionName="1.0.0" >
 
@@ -23,10 +23,10 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <permission
-        android:name="com.example.my_shop.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.example.farm_driver_eggs.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.example.my_shop.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.example.farm_driver_eggs.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:name="android.app.Application"
@@ -69,7 +69,7 @@
 
         <provider
             android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-            android:authorities="com.example.my_shop.flutter.image_provider"
+            android:authorities="com.example.farm_driver_eggs.flutter.image_provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -108,7 +108,7 @@
 
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.example.my_shop.androidx-startup"
+            android:authorities="com.example.farm_driver_eggs.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.profileinstaller.ProfileInstallerInitializer"

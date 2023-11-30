@@ -31,6 +31,7 @@ dependencies:
   flutter_local_notifications: ^15.1.1
   syncfusion_flutter_pdfviewer: ^23.1.38
   image_picker: ^1.0.4
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:
