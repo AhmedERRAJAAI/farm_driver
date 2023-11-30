@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import './egg_single_client_screen.dart';
 import '../widgets/operation_list_item.dart';
 import '../widgets/drop_down_select.dart';
-import '../widgets/dates_filter.dart';
+// import '../widgets/dates_filter.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 

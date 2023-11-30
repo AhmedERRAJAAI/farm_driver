@@ -76,59 +76,78 @@ class _EggStockScreenState extends State<EggStockScreen> {
           ),
         ),
         backgroundColor: Colors.indigo,
-        actions: [
-          IconButton(
-              onPressed: () {
-                getStockStatus();
-              },
-              icon: Icon(Icons.refresh))
-        ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                height: deviceSize.height * 0.23,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.indigo, width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Icon(
-                          MdiIcons.weatherNight,
-                          color: Colors.blue.shade800,
-                          size: 22,
+      body: isLoading
+          ? requestFailed
+              ? Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: TextButton(
+                            onPressed: () {
+                              getStockStatus();
+                            },
+                            child: Text("Tap to refresh"))),
+                  ],
+                )
+              : Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(6),
+                        minHeight: deviceSize.height * 0.23,
+                      ),
+                    ),
+                  ],
+                )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      height: deviceSize.height * 0.23,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.indigo, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [
+                              Icon(
+                                MdiIcons.weatherNight,
+                                color: Colors.blue.shade800,
+                                size: 22,
+                              ),
+                              Text(
+                                "${globalStock.total}",
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
+                              ),
+                            ]),
+                            SizedBox(height: 30),
+                            StockClassList(globalStock: globalStock),
+                          ],
                         ),
-                        Text(
-                          "${globalStock.total}",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
-                        ),
-                      ]),
-                      SizedBox(height: 30),
-                      StockClassList(globalStock: globalStock),
-                    ],
-                  ),
+                      ),
+                    ),
+                    Column(
+                        children: batsStock.map((batStock) {
+                      return StockByBat(stock: batStock);
+                    }).toList()),
+                    SizedBox(height: 10)
+                  ],
                 ),
               ),
-              Column(
-                  children: batsStock.map((batStock) {
-                return StockByBat(stock: batStock);
-              }).toList()),
-              SizedBox(height: 10)
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

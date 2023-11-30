@@ -62,6 +62,40 @@ class Mouvement {
   });
 }
 
+class OperDetails {
+  final String? client;
+  final double? qty;
+  final String? eggClass;
+  final double? pu;
+  final double? amount;
+  final String? batSource;
+  final String? livDate;
+  final String? livTime;
+  final String? immNbr;
+  final String? immCity;
+  final String? immletter;
+  final String? driverfName;
+  final String? driverlName;
+  final String? driverCin;
+
+  OperDetails({
+    required this.client,
+    required this.qty,
+    required this.eggClass,
+    required this.pu,
+    required this.amount,
+    required this.batSource,
+    required this.livDate,
+    required this.livTime,
+    required this.immNbr,
+    required this.immCity,
+    required this.immletter,
+    required this.driverfName,
+    required this.driverlName,
+    required this.driverCin,
+  });
+}
+
 class MouvementProvider with ChangeNotifier {
   List<FormClient> _formClients = [];
   List<FormClient> get formClients {
@@ -82,6 +116,11 @@ class MouvementProvider with ChangeNotifier {
     return [
       ..._mouvements
     ];
+  }
+
+  OperDetails? _operation;
+  OperDetails? get operation {
+    return _operation;
   }
 
   Future<void> fetchFormClients() async {
@@ -236,8 +275,8 @@ class MouvementProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchMouvementDetails(int id) async {
-    final url = Uri.parse('${Urls.url}/egg-sell/get-oper-details/');
+  Future<void> fetchSortieDetails({int? id}) async {
+    final url = Uri.parse('${Urls.url}/egg-sell/get-oper-details/?id=$id');
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
@@ -258,32 +297,22 @@ class MouvementProvider with ChangeNotifier {
         final responseBody = utf8.decode(response.bodyBytes);
         final fetchedData = json.decode(responseBody) as Map;
 
-        final List<FormClient> gotClients = [];
-        final List<Batiment> gotBatiments = [];
-        for (var item in fetchedData['clients']) {
-          gotClients.add(
-            FormClient(
-              id: item['id'],
-              firstName: item['firstName'],
-              lastName: item['lastName'],
-              batName: item['batName'],
-              batId: item['batId'],
-              immNbr: item['immNbr'],
-              immLetter: item['immLetter'],
-              immCity: item['immCity'],
-              transfName: item['transfName'],
-              translName: item['translName'],
-              transCin: item['transCin'],
-            ),
-          );
-        }
-        for (var item in fetchedData['batiments']) {
-          gotBatiments.add(
-            Batiment(id: item['id'], name: item['name']),
-          );
-        }
-        _formClients = gotClients;
-        _Batiment = gotBatiments;
+        _operation = OperDetails(
+          client: fetchedData["client"],
+          qty: fetchedData["qty"],
+          eggClass: fetchedData["eggClass"],
+          pu: fetchedData["pu"],
+          amount: fetchedData["amount"],
+          batSource: fetchedData["batSource"],
+          livDate: fetchedData["livDate"],
+          livTime: fetchedData["livTime"],
+          immNbr: fetchedData["immNbr"],
+          immCity: fetchedData["immCity"],
+          immletter: fetchedData["immletter"],
+          driverfName: fetchedData["driverfName"],
+          driverlName: fetchedData["driverlName"],
+          driverCin: fetchedData["driverCin"],
+        );
         notifyListeners();
       } else {
         throw Exception("ERROR  DURING FETCHING CODE: ${response.statusCode}");

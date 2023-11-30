@@ -3,15 +3,15 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 
-class OperationDetailsScreen extends StatefulWidget {
-  const OperationDetailsScreen({super.key});
+class SortieDetailsScreen extends StatefulWidget {
+  const SortieDetailsScreen({super.key});
   static const routeName = "operation-details/";
 
   @override
-  State<OperationDetailsScreen> createState() => _OperationDetailsScreenState();
+  State<SortieDetailsScreen> createState() => _SortieDetailsScreenState();
 }
 
-class _OperationDetailsScreenState extends State<OperationDetailsScreen> {
+class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
   bool isLoading = false;
   bool requestFailed = false;
   bool _isInit = true;
@@ -32,12 +32,12 @@ class _OperationDetailsScreenState extends State<OperationDetailsScreen> {
   }
 
   void getMouvementDetails(period) async {
-    final clientObj = ModalRoute.of(context)!.settings.arguments as Map;
+    final operId = ModalRoute.of(context)!.settings.arguments as Map;
     setState(() {
       isLoading = true;
     });
     try {
-      await Provider.of<MouvementProvider>(context, listen: false).fetchMouvments(count: 100, isEntree: false).then((_) {
+      await Provider.of<MouvementProvider>(context, listen: false).fetchSortieDetails(id: operId["id"]).then((_) {
         setState(() {
           isLoading = false;
           requestFailed = false;

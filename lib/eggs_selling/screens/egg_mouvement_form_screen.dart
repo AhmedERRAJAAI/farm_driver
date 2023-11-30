@@ -37,7 +37,7 @@ class _EggOperationFormState extends State<EggOperationForm> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushNamed("egg-dashboard/"),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: isEntree == 1
             ? const Text(

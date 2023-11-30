@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'egg_mouvement_form_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 import '../constants.dart';
-import '../widgets/errorAlert.dart';
-import '../widgets/dates_filter.dart';
+// import '../widgets/dates_filter.dart';
 
 class EggMouvementRecords extends StatefulWidget {
   const EggMouvementRecords({super.key});
@@ -188,6 +186,7 @@ class RecordListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (isEntree) return;
         Navigator.of(context).pushNamed(
           "operation-details/",
           arguments: {

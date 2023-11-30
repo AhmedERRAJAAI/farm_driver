@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/operation_details.dart';
+import '../screens/sortie_details.dart';
 import '../widgets/drop_down_select.dart';
 
 class OperationListOneItem extends StatelessWidget {
@@ -43,7 +43,7 @@ class OperationListOneItem extends StatelessWidget {
       decoration: BoxDecoration(border: Border.all(width: 1, color: Colors.grey.shade300), borderRadius: BorderRadius.circular(6)),
       child: ListTile(
         onTap: () {
-          Navigator.of(context).pushNamed(OperationDetailsScreen.routeName, arguments: {
+          Navigator.of(context).pushNamed(SortieDetailsScreen.routeName, arguments: {
             'operation_id': id,
           });
         },

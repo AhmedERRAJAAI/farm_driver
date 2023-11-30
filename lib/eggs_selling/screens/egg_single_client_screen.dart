@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../providers/payment_provider.dart';
-import '../widgets/dates_filter.dart';
+// import '../widgets/dates_filter.dart';
 import '../widgets/drop_down_select.dart';
 import 'dart:io';
 import 'dart:async';
@@ -351,7 +351,6 @@ class _AddPaymentState extends State<AddPayment> {
   bool img = false;
   @override
   Widget build(BuildContext context) {
-    final paymentInstance = Provider.of<PaymentProvider>(context);
     return Container(
       height: 500,
       color: Colors.grey.shade100,
@@ -362,7 +361,7 @@ class _AddPaymentState extends State<AddPayment> {
             children: [
               SizedBox(height: 6),
               Text(
-                widget.id == null ? "Nouveau paiement" : "Modifier 23/12/2023 payment",
+                "Nouveau paiement",
                 style: TextStyle(color: const Color(0xFF145da0), fontSize: 16, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 15),

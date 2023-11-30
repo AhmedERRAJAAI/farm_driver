@@ -34,7 +34,7 @@ import './screens/pdf_viewer_screen.dart';
 
 // EGGS SELLING PART
 import './eggs_selling/screens/dashboard_eggs_screen.dart';
-import './eggs_selling/screens/operation_details.dart';
+import 'eggs_selling/screens/sortie_details.dart';
 import './eggs_selling/screens/egg_calendar_screen.dart';
 import 'eggs_selling/screens/egg_mouvement_form_screen.dart';
 import './eggs_selling/screens/egg_clients_screen.dart';
@@ -156,7 +156,7 @@ class MyApp extends StatelessWidget {
 
               // EGGS SELLING
               EggsDashboard.routeName: (ctx) => const EggsDashboard(),
-              OperationDetailsScreen.routeName: (ctx) => const OperationDetailsScreen(),
+              SortieDetailsScreen.routeName: (ctx) => const SortieDetailsScreen(),
               EggCalendarScreen.routeName: (ctx) => const EggCalendarScreen(),
               EggOperationForm.routeName: (ctx) => const EggOperationForm(),
               EggClientScreen.routeName: (ctx) => const EggClientScreen(),

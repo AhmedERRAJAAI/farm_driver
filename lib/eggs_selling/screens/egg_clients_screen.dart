@@ -58,7 +58,7 @@ class _EggClientScreenState extends State<EggClientScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushNamed("egg-dashboard/"),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 2,
         title: const Text(
@@ -122,7 +122,10 @@ class ClientListItem extends StatelessWidget {
           // ),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(EggClientDetailScreen.routeName, arguments: {"id": id, "name": name});
+          Navigator.of(context).pushNamed(EggClientDetailScreen.routeName, arguments: {
+            "id": id,
+            "name": name
+          });
         },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 8),
