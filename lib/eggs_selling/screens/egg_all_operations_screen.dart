@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/operation_list_item.dart';
 import '../widgets/drop_down_select.dart';
-// import '../widgets/dates_filter.dart';
+import '../widgets/dates_filter.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 
@@ -27,7 +27,7 @@ class _EggAllOperationsState extends State<EggAllOperations> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      getDaysPrices(30);
+      getDaysPrices(100);
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -38,7 +38,7 @@ class _EggAllOperationsState extends State<EggAllOperations> {
       isLoading = true;
     });
     try {
-      await Provider.of<MouvementProvider>(context, listen: false).fetchMouvments(count: 100, isEntree: false).then((_) {
+      await Provider.of<MouvementProvider>(context, listen: false).fetchMouvments(count: period, isEntree: false).then((_) {
         setState(() {
           isLoading = false;
           requestFailed = false;
@@ -50,6 +50,28 @@ class _EggAllOperationsState extends State<EggAllOperations> {
         requestFailed = true;
       });
     }
+  }
+
+  String? filterFisrtDate;
+  String? filterLastDate;
+  void filterFirstDateGetter(String date) {
+    setState(() {
+      filterFisrtDate = date;
+    });
+  }
+
+  void filterLastDateGetter(String date) {
+    setState(() {
+      filterLastDate = date;
+    });
+  }
+
+  void clearFilter() {
+    setState(() {
+      filterFisrtDate = null;
+      filterLastDate = null;
+      getDaysPrices(100);
+    });
   }
 
   List<SelectOption> clientsOptions = [
@@ -77,23 +99,27 @@ class _EggAllOperationsState extends State<EggAllOperations> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              // showModalBottomSheet(
-              //     context: context,
-              //     builder: (context) {
-              //       return OperationsFilter(
-              //         clientsOptions: clientsOptions,
-              //         clientGetter: clientGetter,
-              //       );
-              //     });
-            },
-            icon: const Icon(
-              Icons.tune,
-              size: 24,
-            ),
-            color: Colors.white,
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     showModalBottomSheet(
+          //         context: context,
+          //         builder: (context) {
+          //           return OperationsFilter(
+          //             clientsOptions: null,
+          //             clientGetter: null,
+          //             clearFilter: clearFilter,
+          //             firstDateGetter: filterFirstDateGetter,
+          //             lastDateGetter: filterLastDateGetter,
+          //             submitter: getDaysPrices,
+          //           );
+          //         });
+          //   },
+          //   icon: const Icon(
+          //     Icons.tune,
+          //     size: 24,
+          //   ),
+          //   color: Colors.white,
+          // ),
         ],
         backgroundColor: Color(0xFF145da0),
       ),

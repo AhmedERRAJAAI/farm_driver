@@ -40,7 +40,7 @@ import 'eggs_selling/screens/egg_mouvement_form_screen.dart';
 import './eggs_selling/screens/egg_clients_screen.dart';
 import './eggs_selling/screens/egg_single_client_screen.dart';
 import './eggs_selling/screens/egg_all_operations_screen.dart';
-import './eggs_selling/screens/eggAddDayPrice.dart';
+import 'eggs_selling/screens/egg_add_day_price.dart';
 import './eggs_selling/screens/egg_stock_screen.dart';
 import './eggs_selling/screens/egg_gestion_clients.dart';
 import './eggs_selling/screens/eggs_records_screen.dart';
@@ -68,21 +68,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (ctx) => EggPrice(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => ClientProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => MouvementProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => PaymentProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => StockProvider(),
-          ),
           // #
           // #
           ChangeNotifierProvider(
@@ -111,6 +96,12 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (ctx) => Auth(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => EggPrice(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => MouvementProvider(),
           ),
         ],
         //when ever u create a new class instance (object use create) (like this case: instantiating the provider)

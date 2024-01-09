@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
+import '../constants.dart';
 
 class SortieDetailsScreen extends StatefulWidget {
   const SortieDetailsScreen({super.key});
@@ -37,7 +38,7 @@ class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
       isLoading = true;
     });
     try {
-      await Provider.of<MouvementProvider>(context, listen: false).fetchSortieDetails(id: operId["id"]).then((_) {
+      await Provider.of<MouvementProvider>(context, listen: false).fetchSortieDetails(id: operId["operation_id"]).then((_) {
         setState(() {
           isLoading = false;
           requestFailed = false;
@@ -53,7 +54,9 @@ class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final clientObj = ModalRoute.of(context)!.settings.arguments as Map;
+    final operation = Provider.of<MouvementProvider>(context).operation;
+    final deviceSize = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -85,129 +88,158 @@ class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: Column(children: [
-            SizedBox(
-              height: 30,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    Chip(
-                        padding: EdgeInsets.zero,
-                        labelPadding: EdgeInsets.symmetric(horizontal: 7),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+          child: isLoading
+              ? SizedBox(
+                  height: deviceSize.height,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : requestFailed
+                  ? SizedBox(
+                      height: deviceSize.height,
+                      child: Center(
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.refresh),
                         ),
-                        backgroundColor: Colors.blue.shade700,
-                        label: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 17,
-                        )),
-                    Text(
-                      "Destinataire",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-                Text("AHMED ERRAJAAI", style: TextStyle(fontWeight: FontWeight.bold)),
-              ]),
-            ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            //  ===============
-            SizedBox(
-              height: 30,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    Chip(
-                        padding: EdgeInsets.zero,
-                        labelPadding: EdgeInsets.symmetric(horizontal: 7),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        backgroundColor: Colors.blue.shade700,
-                        label: Icon(
-                          MdiIcons.dotsGrid,
-                          color: Colors.white,
-                          size: 17,
-                        )),
-                    Text(
-                      "Quantité (oeuf)",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-                Text("Normaux", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("1200000", style: TextStyle(fontWeight: FontWeight.bold)),
-              ]),
-            ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            // ===============
-            SizedBox(
-              height: 30,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    Chip(
-                        padding: EdgeInsets.zero,
-                        labelPadding: EdgeInsets.symmetric(horizontal: 6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        backgroundColor: Colors.blue.shade700,
-                        label: Icon(
-                          MdiIcons.cash,
-                          color: Colors.white,
-                          size: 20,
-                        )),
-                    Text(
-                      "Prix (MAD)",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-                Chip(
-                    label: Row(
-                  children: [
-                    Text("PU= "),
-                    Text("1.20")
-                  ],
-                )),
-                Text("189276", style: TextStyle(fontWeight: FontWeight.bold)),
-              ]),
-            ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            // ===============
+                      ),
+                    )
+                  : Column(children: [
+                      SizedBox(
+                        height: 30,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Row(
+                            children: [
+                              Chip(
+                                  padding: EdgeInsets.zero,
+                                  labelPadding: EdgeInsets.symmetric(horizontal: 7),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  backgroundColor: Colors.blue.shade700,
+                                  label: Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                    size: 17,
+                                  )),
+                              Text(
+                                "Destinataire",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Text(operation!.client, style: TextStyle(fontWeight: FontWeight.bold)),
+                        ]),
+                      ),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+                      //  ===============
+                      SizedBox(
+                        height: 30,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Row(
+                            children: [
+                              Chip(
+                                  padding: EdgeInsets.zero,
+                                  labelPadding: EdgeInsets.symmetric(horizontal: 7),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  backgroundColor: Colors.blue.shade700,
+                                  label: Icon(
+                                    MdiIcons.dotsGrid,
+                                    color: Colors.white,
+                                    size: 17,
+                                  )),
+                              Text(
+                                "Quantité (oeuf)",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Text("${operation.qty}", style: TextStyle(fontWeight: FontWeight.bold)),
+                        ]),
+                      ),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+                      //  ===============
+                      SizedBox(
+                        height: 30,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Row(
+                            children: [
+                              Chip(
+                                  padding: EdgeInsets.zero,
+                                  labelPadding: EdgeInsets.symmetric(horizontal: 7),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  backgroundColor: Colors.blue.shade700,
+                                  label: Icon(
+                                    Icons.category,
+                                    color: Colors.white,
+                                    size: 17,
+                                  )),
+                              Text(
+                                "Class",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Text(classOptions.where((element) => element.id == operation.eggClass).last.value, style: TextStyle(fontWeight: FontWeight.bold)),
+                        ]),
+                      ),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+                      // ===============
+                      SizedBox(
+                        height: 30,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Row(
+                            children: [
+                              Chip(
+                                  padding: EdgeInsets.zero,
+                                  labelPadding: EdgeInsets.symmetric(horizontal: 6),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  backgroundColor: Colors.blue.shade700,
+                                  label: Icon(
+                                    MdiIcons.cash,
+                                    color: Colors.white,
+                                    size: 20,
+                                  )),
+                              Text(
+                                "Prix unitaire (DH)",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Text("${operation.pu} DH", style: TextStyle(fontWeight: FontWeight.bold)),
+                        ]),
+                      ),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+                      // ===============
 
-            OperationListItem(title: "Source", value: "TIFLET (T1)", titleICon: MdiIcons.sourceBranch, listColor: Colors.yellow.shade800),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            OperationListItem(title: "Stock initial", value: "40000", titleICon: MdiIcons.warehouse, listColor: Colors.yellow.shade800),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            OperationListItem(title: "Stock final", value: "1200", titleICon: MdiIcons.warehouse, listColor: Colors.yellow.shade800),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            OperationListItem(title: "Date de livraison", value: "27/10/2023, 12:30", titleICon: MdiIcons.clipboardTextClock, listColor: Colors.green.shade800),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            OperationListItem(title: "Immatriculation", value: "2344099-ا", titleICon: MdiIcons.truckCargoContainer, listColor: Colors.green.shade800),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
-            SizedBox(
-              height: 20,
-            ),
-            // Center(
-            //   child: Container(
-            //       height: 55,
-            //       width: deviceSize.width * 0.45,
-            //       decoration: BoxDecoration(
-            //         // border: Border.all(width: 1, color: Colors.purple.shade300),
-            //         color: Colors.orange.shade600,
-            //         borderRadius: BorderRadius.circular(8),
-            //       ),
-            //       child: Icon(
-            //         Icons.ios_share,
-            //         color: Colors.white,
-            //         size: 23,
-            //       )),
-            // )
-          ]),
+                      OperationListItem(title: "Source", value: "${operation.batSource}", titleICon: MdiIcons.sourceBranch, listColor: Colors.yellow.shade800),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+
+                      OperationListItem(title: "Date de livraison", value: "${operation.livDate}, ${operation.livTime}", titleICon: MdiIcons.clipboardTextClock, listColor: Colors.green.shade800),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+
+                      OperationListItem(
+                        title: "Immatriculation",
+                        value: operation.immNbr != null ? "${operation.immNbr}-${immLetters[operation.immletter ?? 0]}-${operation.immCity}" : "-",
+                        titleICon: MdiIcons.truckCargoContainer,
+                        listColor: Colors.green.shade800,
+                      ),
+
+                      SizedBox(height: 15),
+                      Text("Transporteur"),
+                      OperationListItem(title: "Nom & Prenom", value: operation.driverfName != null ? "${operation.driverfName} ${operation.driverlName}" : "-", titleICon: Icons.person, listColor: Colors.green.shade800),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+
+                      OperationListItem(title: "CIN du chauffeur", value: "${operation.driverCin}", titleICon: Icons.fact_check, listColor: Colors.green.shade800),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0), child: Divider()),
+                    ]),
         ),
       ),
     );
@@ -253,7 +285,11 @@ class OperationListItem extends StatelessWidget {
             ),
           ],
         ),
-        Text(value, style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: TextStyle(fontWeight: FontWeight.bold),
+          overflow: TextOverflow.clip,
+        ),
       ]),
     );
   }

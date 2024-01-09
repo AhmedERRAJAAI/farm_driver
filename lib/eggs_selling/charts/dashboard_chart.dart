@@ -97,7 +97,7 @@ class _EggsDashChartsState extends State<EggsDashCharts> {
                       getDaysPrices(30);
                     },
                     child: Text(
-                      "7j",
+                      "M",
                       style: TextStyle(color: Colors.blue, fontSize: 12),
                     ),
                   ),
@@ -123,19 +123,24 @@ class _EggsDashChartsState extends State<EggsDashCharts> {
               ),
             ),
           ],
-        ),
+              ),
         isLoading
-            ? requestFailed
-                ? IconButton(
-                    onPressed: () {
-                      getDaysPrices(30);
-                    },
-                    icon: Icon(Icons.refresh))
-                : Container(
+            ? Container(
+                color: Colors.white.withOpacity(0.6),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            : requestFailed
+                ? Container(
                     color: Colors.white.withOpacity(0.6),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(
+                      child: IconButton(
+                          onPressed: () {
+                            getDaysPrices(30);
+                          },
+                          icon: Icon(Icons.refresh, color: Colors.blue, size: 24)),
+                    ),
                   )
-            : SizedBox(),
+                : SizedBox(),
       ],
     )));
   }

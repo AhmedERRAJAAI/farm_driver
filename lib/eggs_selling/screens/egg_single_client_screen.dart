@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../providers/payment_provider.dart';
-// import '../widgets/dates_filter.dart';
+import '../widgets/dates_filter.dart';
 import '../widgets/drop_down_select.dart';
 import 'dart:io';
 import 'dart:async';
@@ -81,6 +81,28 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
     }
   }
 
+  String? filterFisrtDate;
+  String? filterLastDate;
+  void filterFirstDateGetter(String date) {
+    setState(() {
+      filterFisrtDate = date;
+    });
+  }
+
+  void filterLastDateGetter(String date) {
+    setState(() {
+      filterLastDate = date;
+    });
+  }
+
+  void clearFilter() {
+    setState(() {
+      filterFisrtDate = null;
+      filterLastDate = null;
+      getClients(100);
+    });
+  }
+
   List<Transaction> instTrans = [];
   @override
   Widget build(BuildContext context) {
@@ -103,14 +125,18 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // showModalBottomSheet(
-              //     context: context,
-              //     builder: (context) {
-              //       return OperationsFilter(
-              //         clientsOptions: null,
-              //         clientGetter: null,
-              //       );
-              //     });
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return OperationsFilter(
+                      clientsOptions: null,
+                      clientGetter: null,
+                      clearFilter: clearFilter,
+                      firstDateGetter: filterFirstDateGetter,
+                      lastDateGetter: filterLastDateGetter,
+                      submitter: getClients,
+                    );
+                  });
             },
             icon: const Icon(
               Icons.tune,
@@ -212,6 +238,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
                         itemCount: selectedPage == 0 ? transactions.length : instTrans.length,
                         itemBuilder: ((context, i) {
                           return PaymentListItem(
+                            isPayment: selectedPage == 0 ? true : false,
                             clientId: clientObj['id'],
                             clientTrans: selectedPage == 0 ? transactions[i] : instTrans[i],
                           );
@@ -241,28 +268,35 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
 class PaymentListItem extends StatelessWidget {
   final int clientId;
   final Transaction clientTrans;
-  const PaymentListItem({super.key, required this.clientId, required this.clientTrans});
+  final bool isPayment;
+  const PaymentListItem({super.key, required this.clientId, required this.clientTrans, required this.isPayment});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey),
+    return GestureDetector(
+      onTap: () {
+        if (clientTrans.img_url == null) return;
+        networkImgDisplay(clientTrans.img_url ?? "", context);
+      },
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: Text(clientTrans.date)),
-            Text(
-              clientTrans.isPayed == null ? "-${clientTrans.amount}" : "+${clientTrans.amount}",
-              style: TextStyle(fontWeight: FontWeight.bold, color: clientTrans.isPayed == null ? Colors.deepOrange : Colors.green),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: Text(clientTrans.date)),
+              Text(
+                clientTrans.isPayed == null ? "-${clientTrans.amount}" : "+${clientTrans.amount}",
+                style: TextStyle(fontWeight: FontWeight.bold, color: clientTrans.isPayed == null ? Colors.deepOrange : Colors.green),
+              ),
+            ],
+          ),
         ),
       ),
     );

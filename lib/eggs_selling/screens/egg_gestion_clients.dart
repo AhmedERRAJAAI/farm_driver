@@ -56,7 +56,7 @@ class _EggGestionClientsState extends State<EggGestionClients> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushNamed("egg-clients/"),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 2,
         title: const Text(

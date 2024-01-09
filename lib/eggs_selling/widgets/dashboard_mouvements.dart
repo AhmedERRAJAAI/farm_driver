@@ -60,11 +60,10 @@ class _EggDashMouvmentsState extends State<EggDashMouvments> {
               child: CircularProgressIndicator(),
             ),
           )
-        : ListView.builder(
-            itemCount: mouvements.length,
-            itemBuilder: ((context, i) {
-              return OperationListOneItem(batiment: mouvements[i].bat ?? "", name: mouvements[i].client, date: mouvements[i].date, id: mouvements[i].id, operType: mouvements[i].outType, pu: mouvements[i].pu, qty: mouvements[i].qty);
-            }),
+        : Column(
+            children: mouvements.map((mouv) {
+              return OperationListOneItem(batiment: mouv.bat ?? "", name: mouv.client, date: mouv.date, id: mouv.id, operType: mouv.outType, pu: mouv.pu, qty: mouv.qty);
+            }).toList(),
           );
   }
 }

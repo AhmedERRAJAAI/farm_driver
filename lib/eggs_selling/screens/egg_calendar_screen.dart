@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/operation_list_item.dart';
-// import 'package:intl/intl.dart';
-
-// import '../mywidgets/event_item.dart';
+import 'package:provider/provider.dart';
+import '../providers/mouvements_provider.dart';
 
 class EggCalendarScreen extends StatefulWidget {
   const EggCalendarScreen({super.key});
@@ -40,11 +39,36 @@ class _EggCalendarScreenState extends State<EggCalendarScreen> {
   void _onDaySelected(DateTime day, DateTime focuedDay) {
     setState(() {
       _today = day;
+      getDateSorties("${day.year}-${day.month}-${day.day}");
     });
+  }
+
+  bool isLoading = false;
+  bool requestFailed = false;
+
+  void getDateSorties(date) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<MouvementProvider>(context, listen: false).fetchDateMouvements(date: date).then((_) {
+        setState(() {
+          isLoading = false;
+          requestFailed = false;
+        });
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        isLoading = false;
+        requestFailed = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final mouvements = Provider.of<MouvementProvider>(context).mouvements;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -73,17 +97,27 @@ class _EggCalendarScreenState extends State<EggCalendarScreen> {
                 selectedDayPredicate: (day) => isSameDay(day, _today),
                 onDaySelected: _onDaySelected,
               ),
-              Column(
-                children: [
-                  OperationListOneItem(batiment: "T1", name: "AZIZ", date: "09/11/2023", id: 0, operType: 0, pu: 0.95, qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "T1", date: "09/11/2023", id: 0, operType: 1, pu: null, qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 2, pu: 0.95, qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 3, pu: 0.95, qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "T2", date: "09/11/2023", id: 0, operType: 1, pu: null, qty: 100000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 4, pu: 0.95, qty: 90000),
-                  OperationListOneItem(batiment: "T1", name: "JOHN DOE", date: "09/11/2023", id: 0, operType: 0, pu: 0.95, qty: 90000),
-                ],
-              ),
+              isLoading
+                  ? SizedBox(
+                      height: 100,
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : Column(
+                      children: mouvements.map((mouv) {
+                        return OperationListOneItem(
+                          batiment: mouv.bat ?? "",
+                          name: mouv.client,
+                          date: mouv.date,
+                          id: mouv.id,
+                          operType: mouv.outType,
+                          pu: mouv.pu,
+                          qty: mouv.qty,
+                        );
+                      }).toList(),
+                    )
             ],
           ),
         ),

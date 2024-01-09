@@ -37,8 +37,8 @@ class StockProvider with ChangeNotifier {
     ];
   }
 
-  Future<void> fetchStockData({required String date}) async {
-    final url = Uri.parse('${Urls.url}egg-sell/get-stock-status/?date=$date');
+  Future<void> fetchStockData() async {
+    final url = Uri.parse('${Urls.url}/egg-sell/get-stock-status/');
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
@@ -60,7 +60,6 @@ class StockProvider with ChangeNotifier {
         final fetchedProducts = json.decode(responseBody) as List;
         final List<Stock> gotData = [];
         for (var item in fetchedProducts) {
-          // print(item);
           gotData.add(
             Stock(
               bat: item['bat'],

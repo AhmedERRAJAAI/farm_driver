@@ -67,7 +67,7 @@ class OperationListOneItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(name ?? ""),
-            operationOptions[operType].id == 0 ? Text("$pu X $qty") : Text("Quantité: $qty")
+            operationOptions[operType].id == 0 && pu != null ? Text("$pu X $qty") : Text("Quantité: $qty")
           ],
         ),
       ),

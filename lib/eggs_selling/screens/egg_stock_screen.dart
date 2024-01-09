@@ -39,7 +39,7 @@ class _EggStockScreenState extends State<EggStockScreen> {
       isLoading = true;
     });
     try {
-      await Provider.of<StockProvider>(context, listen: false).fetchStockData(date: stockDate.toString()).then((_) {
+      await Provider.of<StockProvider>(context, listen: false).fetchStockData().then((_) {
         setState(() {
           isLoading = false;
           requestFailed = false;
@@ -110,7 +110,7 @@ class _EggStockScreenState extends State<EggStockScreen> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 20),
-                      height: deviceSize.height * 0.23,
+                      // height: deviceSize.height * 0.23,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,

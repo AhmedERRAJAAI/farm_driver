@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../mywidgets/side_drawer.dart';
 import '../charts/dashboard_chart.dart';
-import './eggAddDayPrice.dart';
+import 'egg_add_day_price.dart';
 import './egg_calendar_screen.dart';
 import 'egg_mouvement_form_screen.dart';
 import './egg_clients_screen.dart';
@@ -70,7 +70,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
           child: Column(
             children: [
               Container(
-                height: deviceSize.height * 0.43,
+                // height: deviceSize.height * 0.43,
                 child: Column(
                   children: [
                     SizedBox(
@@ -151,7 +151,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "les opérations d'aujourd'hui",
+                              "Derniéres opérations",
                               style: TextStyle(color: Colors.blue),
                             ),
                             TextButton(
@@ -165,7 +165,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
                         ),
                       ),
                     ),
-                    SizedBox(height: deviceSize.height * 0.5, child: EggDashMouvments())
+                    EggDashMouvments()
                   ],
                 ),
               ),
@@ -198,13 +198,13 @@ class DashBtn extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
           ),
           SizedBox(width: 4),
           Icon(
             btnIcon,
             color: Colors.white,
-            size: 22,
+            size: 19,
           ),
         ],
       ),

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 import '../constants.dart';
-// import '../widgets/dates_filter.dart';
+import '../widgets/dates_filter.dart';
 
 class EggMouvementRecords extends StatefulWidget {
   const EggMouvementRecords({super.key});
@@ -14,8 +14,8 @@ class EggMouvementRecords extends StatefulWidget {
 }
 
 class _EggMouvementRecordsState extends State<EggMouvementRecords> {
-  int recordsNbr = 40;
-  bool isEntree = true;
+  int recordsNbr = 100;
+  bool isEntree = false;
   bool isLoading = false;
   bool requestFailed = false;
   bool _isInit = true;
@@ -28,7 +28,7 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      getSortiesEntrees(recordsNbr, false);
+      getSortiesEntrees(recordsNbr, isEntree);
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -55,6 +55,28 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
 
   int selectedPage = 0;
 
+  String? filterFisrtDate;
+  String? filterLastDate;
+  void filterFirstDateGetter(String date) {
+    setState(() {
+      filterFisrtDate = date;
+    });
+  }
+
+  void filterLastDateGetter(String date) {
+    setState(() {
+      filterLastDate = date;
+    });
+  }
+
+  void clearFilter() {
+    setState(() {
+      filterFisrtDate = null;
+      filterLastDate = null;
+      getSortiesEntrees(recordsNbr, isEntree);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List mouvments = Provider.of<MouvementProvider>(context).mouvements;
@@ -72,24 +94,27 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              // showModalBottomSheet(
-              //     context: context,
-              //     builder: (context) {
-              //       return OperationsFilter(
-
-              //         clientsOptions: null,
-              //         clientGetter: null,
-              //       );
-              //     });
-            },
-            icon: const Icon(
-              Icons.tune,
-              size: 24,
-            ),
-            color: Colors.white,
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     showModalBottomSheet(
+          //         context: context,
+          //         builder: (context) {
+          //           return OperationsFilter(
+          //             clientsOptions: null,
+          //             clientGetter: null,
+          //             clearFilter: clearFilter,
+          //             firstDateGetter: filterFirstDateGetter,
+          //             lastDateGetter: filterLastDateGetter,
+          //             submitter: getSortiesEntrees,
+          //           );
+          //         });
+          //   },
+          //   icon: const Icon(
+          //     Icons.tune,
+          //     size: 24,
+          //   ),
+          //   color: Colors.white,
+          // ),
         ],
       ),
       body: Padding(

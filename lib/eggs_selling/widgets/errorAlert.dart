@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import '../../urls.dart';
 
 void alertMsg(String title, String text, context) {
   showDialog(
@@ -47,6 +48,26 @@ void imageViewModal(File? img, context) {
               fit: BoxFit.fill,
             )
           : null,
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'Fermer',
+            style: TextStyle(fontSize: 14, color: Colors.orange),
+          ),
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+void networkImgDisplay(String? img, context) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      content: img != null ? Image.network(Urls.url + img) : null,
       actions: <Widget>[
         TextButton(
           child: Text(

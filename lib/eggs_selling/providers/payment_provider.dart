@@ -11,12 +11,14 @@ class Transaction {
   final int id;
   final double amount;
   final String date;
+  final String? img_url;
   final bool? isPayed;
 
   Transaction({
     required this.id,
     required this.amount,
     required this.date,
+    required this.img_url,
     required this.isPayed,
   });
 }
@@ -35,7 +37,7 @@ class PaymentProvider with ChangeNotifier {
   }
 
   Future<void> sendPaymentData(File? selectedImage, data) async {
-    final url = Uri.parse('${Urls.url}egg-sell/add-payment/');
+    final url = Uri.parse('${Urls.url}/egg-sell/add-payment/');
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
@@ -76,7 +78,7 @@ class PaymentProvider with ChangeNotifier {
   }
 
   Future<void> fetchClientInOuts({int? count, int? client}) async {
-    final url = Uri.parse('${Urls.url}egg-sell/get-client-payments/?count=$count&client=$client');
+    final url = Uri.parse('${Urls.url}/egg-sell/get-client-payments/?count=$count&client=$client');
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
@@ -102,6 +104,7 @@ class PaymentProvider with ChangeNotifier {
           gotTransactions.add(
             Transaction(
               id: item['id'],
+              img_url: item['img_url'],
               amount: item['amount'],
               date: item['date'],
               isPayed: item['isPayed'],

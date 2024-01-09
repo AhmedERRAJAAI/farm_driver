@@ -63,17 +63,17 @@ class Mouvement {
 }
 
 class OperDetails {
-  final String? client;
-  final double? qty;
-  final String? eggClass;
+  final String client;
+  final double qty;
+  final int eggClass;
   final double? pu;
-  final double? amount;
-  final String? batSource;
+  final double amount;
+  final String batSource;
   final String? livDate;
   final String? livTime;
-  final String? immNbr;
-  final String? immCity;
-  final String? immletter;
+  final int? immNbr;
+  final int? immCity;
+  final int? immletter;
   final String? driverfName;
   final String? driverlName;
   final String? driverCin;
@@ -322,4 +322,56 @@ class MouvementProvider with ChangeNotifier {
       throw Exception("ERROR  DURING FETCHING");
     }
   }
+
+
+
+
+
+  Future<void> fetchDateMouvements({required String date}) async {
+    final url =  Uri.parse('${Urls.url}/egg-sell/get-date-sorties/?date=$date');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      _mouvements.clear();
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseBody = utf8.decode(response.bodyBytes);
+        final fetchedData = json.decode(responseBody) as List;
+
+        final List<Mouvement> gotRecords = [];
+        for (var item in fetchedData) {
+          gotRecords.add(
+            Mouvement(
+              id: item['id'],
+              qty: item['qty'],
+              pu: item['pu'],
+              client: item['client'],
+              date: item['date'],
+              outType: item['type'],
+              bat: item['bat'],
+            ),
+          );
+        }
+        _mouvements = gotRecords;
+        notifyListeners();
+      } else {
+        throw Exception("ERROR  DURING FETCHING CODE: ${response.statusCode}");
+      }
+    } catch (e) {
+      print(e);
+      throw Exception("ERROR  DURING FETCHING");
+    }
+  }
+
+
 }

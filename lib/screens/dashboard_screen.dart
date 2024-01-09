@@ -14,6 +14,7 @@ import '../mywidgets/charts_slider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+  static const routeName = 'home/';
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
