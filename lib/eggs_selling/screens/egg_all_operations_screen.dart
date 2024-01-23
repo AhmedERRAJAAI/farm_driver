@@ -74,10 +74,6 @@ class _EggAllOperationsState extends State<EggAllOperations> {
     });
   }
 
-  List<SelectOption> clientsOptions = [
-    SelectOption(id: 0, value: "Client1"),
-    SelectOption(id: 1, value: "Client2"),
-  ];
   void clientGetter(value) {}
   @override
   Widget build(BuildContext context) {
@@ -98,29 +94,7 @@ class _EggAllOperationsState extends State<EggAllOperations> {
             fontStyle: FontStyle.normal,
           ),
         ),
-        actions: [
-          // IconButton(
-          //   onPressed: () {
-          //     showModalBottomSheet(
-          //         context: context,
-          //         builder: (context) {
-          //           return OperationsFilter(
-          //             clientsOptions: null,
-          //             clientGetter: null,
-          //             clearFilter: clearFilter,
-          //             firstDateGetter: filterFirstDateGetter,
-          //             lastDateGetter: filterLastDateGetter,
-          //             submitter: getDaysPrices,
-          //           );
-          //         });
-          //   },
-          //   icon: const Icon(
-          //     Icons.tune,
-          //     size: 24,
-          //   ),
-          //   color: Colors.white,
-          // ),
-        ],
+       
         backgroundColor: Color(0xFF145da0),
       ),
       body: ListView.builder(

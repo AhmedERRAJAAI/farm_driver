@@ -58,7 +58,6 @@ class _EggCalendarScreenState extends State<EggCalendarScreen> {
         });
       });
     } catch (e) {
-      print(e);
       setState(() {
         isLoading = false;
         requestFailed = true;

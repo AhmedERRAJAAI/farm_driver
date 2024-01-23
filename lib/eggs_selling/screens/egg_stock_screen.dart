@@ -17,6 +17,7 @@ class _EggStockScreenState extends State<EggStockScreen> {
 
   bool isLoading = false;
   bool requestFailed = false;
+  bool finished = false;
   bool _isInit = true;
 
   @override
@@ -50,15 +51,17 @@ class _EggStockScreenState extends State<EggStockScreen> {
         isLoading = false;
         requestFailed = true;
       });
+    } finally {
+      finished = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final stocks = Provider.of<StockProvider>(context).stocks;
-    final globalStock = stocks.where((element) => element.bat == null).last;
-    final batsStock = stocks.where((element) => element.bat != null);
+    final instance = Provider.of<StockProvider>(context);
+    final globalStock = instance.stocks.where((element) => element.bat == null).last;
+    final batsStock = instance.stocks.where((element) => element.bat != null);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -282,21 +285,9 @@ class _StockByBatState extends State<StockByBat> {
                     ),
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.stock.bat ?? "",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    GestureDetector(
-                        onTap: () {},
-                        child: Icon(
-                          Icons.settings,
-                          size: 20,
-                          color: Colors.blue,
-                        ))
-                  ],
+                child: Text(
+                  widget.stock.bat ?? "",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: 4),
@@ -310,7 +301,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Normaux",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.normaux}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.normaux}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -320,7 +311,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Double jaune",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.dj}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.dj}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -330,7 +321,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Congelés (Kg)",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.congeles}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.congeles}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                 ],
@@ -346,7 +337,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Cassés",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.casse}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.casse}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -356,7 +347,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Blancs",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.blancs}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.blancs}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -366,7 +357,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Fêlés",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.feles}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.feles}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                   Column(
@@ -376,7 +367,7 @@ class _StockByBatState extends State<StockByBat> {
                         "Sale",
                         style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                       ),
-                      Text("${widget.stock.sale}", style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 14))
+                      Text("${widget.stock.sale}", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14))
                     ],
                   ),
                 ],

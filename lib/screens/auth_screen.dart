@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../forms/create_master_user.dart';
 
 import '../providers/auth.dart';
 
@@ -156,32 +155,7 @@ class _LoginFormState extends State<LoginForm> {
                     style: TextStyle(fontSize: 17),
                   ),
           ),
-          TextButton(
-            onPressed: () {},
-            child: const Text("Mot de passe oublié ?"),
-          ),
           const SizedBox(height: 100),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(CreateMasterUser.routeName);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber.shade700,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              child: const SizedBox(
-                height: 50,
-                child: Center(
-                  child: Text(
-                    "Créer votre profile",
-                    style: TextStyle(fontSize: 17),
-                  ),
-                ),
-              )),
         ],
       ),
     );

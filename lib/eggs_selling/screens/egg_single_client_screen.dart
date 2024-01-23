@@ -278,24 +278,28 @@ class PaymentListItem extends StatelessWidget {
         if (clientTrans.img_url == null) return;
         networkImgDisplay(clientTrans.img_url ?? "", context);
       },
-      child: Container(
-        height: 40,
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 1, color: Colors.grey),
+      child: GestureDetector(
+        onTap: (){
+        },
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: Text(clientTrans.date)),
-              Text(
-                clientTrans.isPayed == null ? "-${clientTrans.amount}" : "+${clientTrans.amount}",
-                style: TextStyle(fontWeight: FontWeight.bold, color: clientTrans.isPayed == null ? Colors.deepOrange : Colors.green),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(child: Text(clientTrans.date)),
+                Text(
+                  clientTrans.isPayed == null ? "-${clientTrans.amount}" : "+${clientTrans.amount}",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: clientTrans.isPayed == null ? Colors.deepOrange : Colors.green),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -37,35 +37,7 @@ class SideDrawer extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.spa),
-                  title: const Text("Zootechnique"),
-                  onTap: () {
-                    goToPage(context, "/");
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.egg),
-                  title: const Text("Vente de oeufs"),
-                  onTap: () {
-                    goToPage(context, EggsDashboard.routeName);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    MdiIcons.barley,
-                  ),
-                  title: const Text("Nutrition & alimentation"),
-                  onTap: () {
-                    // goToPage(context, ChartsScreen.routeName);
-                  },
-                ),
-              ],
-            ),
-          ),
+          const Expanded(child: SizedBox()),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text(
@@ -80,18 +52,3 @@ class SideDrawer extends StatelessWidget {
     );
   }
 }
-
-// AppBar(
-//           title: const Text(
-//             "FARM DRIVER",
-//             style: TextStyle(
-//                 color: Color(0xFF145da0),
-//                 fontSize: 20,
-//                 fontWeight: FontWeight.bold,
-//                 fontStyle: FontStyle.italic,
-//                 letterSpacing: 2),
-//           ),
-//           leading: Text('SAVAS'),
-//           automaticallyImplyLeading: false,
-//         ),
-//         const Divider(),

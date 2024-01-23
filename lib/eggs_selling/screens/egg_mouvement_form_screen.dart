@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 import '../widgets/drop_down_select.dart';
@@ -237,18 +238,27 @@ class _EntreeMovementState extends State<EntreeMovement> {
               children: <Widget>[
                 const Text("date d'opération"),
                 CupertinoButton(
-                  onPressed: () => _showDialog(
-                    CupertinoDatePicker(
-                      initialDateTime: operationDate,
-                      mode: CupertinoDatePickerMode.dateAndTime,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        setState(() => operationDate = newDate);
+                  onPressed: () {
+                    showDatePicker(
+                      context: context,
+                      cancelText: 'Annuler',
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2010),
+                      lastDate: DateTime(2100),
+                      initialEntryMode: DatePickerEntryMode.calendarOnly,
+                      locale: const Locale("fr"),
+                      builder: (BuildContext context, Widget? child) {
+                        return MediaQuery(
+                          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                          child: child ?? const Text(''),
+                        );
                       },
-                    ),
-                  ),
+                    ).then((value) {
+                      setState(() => operationDate = value ?? DateTime.now());
+                    });
+                  },
                   child: Text(
-                    "$operationDate".substring(0, 16),
+                    "${operationDate.day}/${operationDate.month}/${operationDate.year}",
                     style: const TextStyle(
                       fontSize: 15.0,
                     ),
@@ -502,21 +512,23 @@ class _SortieMovementState extends State<SortieMovement> {
     List<SelectOption> clientsOptions = [];
     List<SelectOption> batsOptions = [];
     final mouvement = Provider.of<MouvementProvider>(context);
-    for (var client in mouvement.formClients) {
-      clientsOptions.add(
-        SelectOption(
-          id: client.id,
-          value: "${client.firstName} ${client.lastName}".toUpperCase(),
-        ),
-      );
-    }
-    for (var bat in mouvement.batiments) {
-      batsOptions.add(
-        SelectOption(
-          id: bat.id,
-          value: bat.name.toUpperCase(),
-        ),
-      );
+    if (mouvement.formClients.isNotEmpty) {
+      for (var client in mouvement.formClients) {
+        clientsOptions.add(
+          SelectOption(
+            id: client.id,
+            value: "${client.firstName} ${client.lastName}".toUpperCase(),
+          ),
+        );
+      }
+      for (var bat in mouvement.batiments) {
+        batsOptions.add(
+          SelectOption(
+            id: bat.id,
+            value: bat.name.toUpperCase(),
+          ),
+        );
+      }
     }
     final deviceSize = MediaQuery.of(context).size;
     return Container(
@@ -530,19 +542,27 @@ class _SortieMovementState extends State<SortieMovement> {
               children: <Widget>[
                 const Text("date d'opération"),
                 CupertinoButton(
-                  onPressed: () => _showDialog(
-                    CupertinoDatePicker(
-                      maximumDate: DateTime.now(),
-                      initialDateTime: operationDate,
-                      mode: CupertinoDatePickerMode.dateAndTime,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        setState(() => operationDate = newDate);
+                  onPressed: () {
+                    showDatePicker(
+                      context: context,
+                      cancelText: 'Annuler',
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2010),
+                      lastDate: DateTime(2100),
+                      initialEntryMode: DatePickerEntryMode.calendarOnly,
+                      locale: const Locale("fr"),
+                      builder: (BuildContext context, Widget? child) {
+                        return MediaQuery(
+                          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                          child: child ?? const Text(''),
+                        );
                       },
-                    ),
-                  ),
+                    ).then((value) {
+                      setState(() => operationDate = value ?? DateTime.now());
+                    });
+                  },
                   child: Text(
-                    "$operationDate".substring(0, 16),
+                    "${operationDate.day}/${operationDate.month}/${operationDate.year}",
                     style: const TextStyle(
                       fontSize: 15.0,
                     ),
@@ -772,6 +792,7 @@ class _SortieMovementState extends State<SortieMovement> {
                       ),
                     );
                     sortieForm.currentState!.reset();
+                    quantityController.clear();
                   }
                   ;
                 },

@@ -52,8 +52,7 @@ class _EggClientScreenState extends State<EggClientScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final clientProv = Provider.of<ClientProvider>(context);
-    final clientList = clientProv.clientList;
+    final clientList = Provider.of<ClientProvider>(context).clientList;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -70,14 +69,14 @@ class _EggClientScreenState extends State<EggClientScreen> {
             fontStyle: FontStyle.normal,
           ),
         ),
-        backgroundColor: Color(0xFF145da0),
+        backgroundColor: const Color(0xFF145da0),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.of(context).pushNamed(EggGestionClients.routeName);
             },
             icon: const Icon(
-              Icons.group_add,
+              Icons.settings,
               size: 24,
             ),
             color: Colors.white,
@@ -92,6 +91,7 @@ class _EggClientScreenState extends State<EggClientScreen> {
             return ClientListItem(
               name: "${clientList[i].fname} ${clientList[i].lname}",
               id: clientList[i].id,
+              isActive: clientList[i].isActive,
             );
           },
         ),
@@ -103,7 +103,8 @@ class _EggClientScreenState extends State<EggClientScreen> {
 class ClientListItem extends StatelessWidget {
   final String name;
   final int id;
-  const ClientListItem({super.key, required this.name, required this.id});
+  final bool isActive;
+  const ClientListItem({super.key, required this.name, required this.id, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +115,6 @@ class ClientListItem extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all<Color>(
             Colors.white,
           ),
-          // side: MaterialStateProperty.all<BorderSide>(
-          //   BorderSide(
-          //     color: Colors.purple.shade300, // Change the border color to blue.
-          //     width: 2.0, // Change the border width to 2.0.
-          //   ),
-          // ),
         ),
         onPressed: () {
           Navigator.of(context).pushNamed(EggClientDetailScreen.routeName, arguments: {
@@ -128,17 +123,17 @@ class ClientListItem extends StatelessWidget {
           });
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Icon(
               Icons.person,
               size: 45,
-              color: Colors.blue.shade800,
+              color: isActive ? Colors.blue.shade800 : Colors.grey,
             ),
             Text(
               name,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.blue.shade800, fontSize: 16),
+              style: TextStyle(color: isActive ? Colors.blue.shade800 : Colors.grey, fontSize: 16),
             )
           ]),
         ),

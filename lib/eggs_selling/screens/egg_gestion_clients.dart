@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../providers/clients_provider.dart';
 
@@ -35,6 +36,25 @@ class _EggGestionClientsState extends State<EggGestionClients> {
     });
     try {
       await Provider.of<ClientProvider>(context, listen: false).fetchClients().then((_) {
+        setState(() {
+          isLoading = false;
+          requestFailed = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        requestFailed = true;
+      });
+    }
+  }
+
+  void toggleActiveClient(data) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<ClientProvider>(context, listen: false).toggleActiveClient(data).then((_) {
         setState(() {
           isLoading = false;
           requestFailed = false;
@@ -88,6 +108,11 @@ class _EggGestionClientsState extends State<EggGestionClients> {
             ),
             color: Colors.white,
           ),
+          isLoading
+              ? CupertinoActivityIndicator(
+                  color: Colors.white,
+                )
+              : SizedBox()
         ],
       ),
       body: Padding(
@@ -95,6 +120,7 @@ class _EggGestionClientsState extends State<EggGestionClients> {
         child: ListView.builder(
           itemCount: clientList.length,
           itemBuilder: ((context, i) => ManageClientListItem(
+                toggleActiveClient: toggleActiveClient,
                 client: clientList[i],
               )),
         ),
@@ -106,7 +132,8 @@ class _EggGestionClientsState extends State<EggGestionClients> {
 
 class ManageClientListItem extends StatefulWidget {
   final Client client;
-  const ManageClientListItem({super.key, required this.client});
+  final Function toggleActiveClient;
+  const ManageClientListItem({super.key, required this.client, required this.toggleActiveClient});
 
   @override
   State<ManageClientListItem> createState() => _ManageClientListItemState();
@@ -129,13 +156,18 @@ class _ManageClientListItemState extends State<ManageClientListItem> {
           children: [
             Text(
               "${widget.client.fname} ${widget.client.lname}",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, color: widget.client.isActive ? Colors.blue : Colors.grey),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    widget.toggleActiveClient({
+                      "id": widget.client.id,
+                      "active": !widget.client.isActive
+                    });
+                  },
                   icon: Icon(
                     Icons.person_off,
                     size: 20,
@@ -147,7 +179,6 @@ class _ManageClientListItemState extends State<ManageClientListItem> {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        // title:
                         content: ClientDataModal(client: widget.client),
                         actions: <Widget>[
                           TextButton(
@@ -164,7 +195,7 @@ class _ManageClientListItemState extends State<ManageClientListItem> {
                     );
                   },
                   icon: Icon(Icons.info, size: 20, color: Colors.blue),
-                )
+                ),
               ],
             )
           ],
@@ -185,9 +216,9 @@ class _AddClientState extends State<AddClient> {
   final createClientForm = GlobalKey<FormState>();
   final TextEditingController lname = TextEditingController();
   final TextEditingController fname = TextEditingController();
-  final TextEditingController initSolde = TextEditingController();
-  final TextEditingController email = TextEditingController();
-  final TextEditingController phone = TextEditingController();
+  final TextEditingController initSolde = TextEditingController(text: "0");
+  final TextEditingController email = TextEditingController(text: "");
+  final TextEditingController phone = TextEditingController(text: "");
 
   bool isLoading = false;
   bool requestFailed = false;
@@ -229,8 +260,8 @@ class _AddClientState extends State<AddClient> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text("Annuler")),
-                    Text("Ajouter nouveau client"),
+                        child: const Text("Annuler")),
+                    const Text("Ajouter nouveau client"),
                     TextButton(
                         onPressed: () {
                           if (createClientForm.currentState!.validate()) {
@@ -243,7 +274,7 @@ class _AddClientState extends State<AddClient> {
                             });
                           }
                         },
-                        child: Text("Effectuer")),
+                        child: const Text("Effectuer")),
                   ],
                 ),
                 const SizedBox(height: 6),
@@ -286,12 +317,6 @@ class _AddClientState extends State<AddClient> {
                     controller: initSolde,
                     decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'solde initial'),
                     keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Champs requis";
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -312,14 +337,6 @@ class _AddClientState extends State<AddClient> {
                     controller: email,
                     decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Email'),
                     keyboardType: TextInputType.emailAddress,
-                    validator: ((value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email est invalide';
-                      } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
-                        return 'Entrer une adresse e-mail valide';
-                      }
-                      return null;
-                    }),
                   ),
                 ),
               ],
@@ -415,8 +432,9 @@ class _ClientDataModalState extends State<ClientDataModal> {
                                 "lastName": lname.text,
                                 "phone": phone.text,
                                 "initSolde": double.parse(initSolde.text),
-                                "isActive": widget.client.isActive
+                                "active": widget.client.isActive
                               });
+                              Navigator.of(context).pop();
                             }
                           },
                           child: FittedBox(

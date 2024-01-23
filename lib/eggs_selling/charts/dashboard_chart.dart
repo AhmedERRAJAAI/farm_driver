@@ -123,7 +123,7 @@ class _EggsDashChartsState extends State<EggsDashCharts> {
               ),
             ),
           ],
-              ),
+        ),
         isLoading
             ? Container(
                 color: Colors.white.withOpacity(0.6),

@@ -65,14 +65,11 @@ class PaymentProvider with ChangeNotifier {
       }
       var response = await request.send();
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        // var responseBody = await response.stream.bytesToString();
-        // var returnedData = json.decode(responseBody);
         fetchClientInOuts();
       } else {
         throw Exception("ERROR DURING SENDING REPORTS");
       }
     } catch (e) {
-      print(e);
       rethrow;
     }
   }
@@ -117,7 +114,6 @@ class PaymentProvider with ChangeNotifier {
         throw Exception("ERROR  DURING FETCHING CODE: ${response.statusCode}");
       }
     } catch (e) {
-      print("ER $e");
       throw Exception("ERROR  DURING FETCHING");
     }
   }

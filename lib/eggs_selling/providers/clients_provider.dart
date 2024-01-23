@@ -138,7 +138,7 @@ class ClientProvider with ChangeNotifier {
           lname: data['lastName'],
           phone: data['phone'],
           initSolde: data['initSolde'],
-          isActive: data['isActive'],
+          isActive: data['active'],
         );
         int index = _clients.indexWhere((item) => item.id == data['id']);
         _clients[index] = updatedItem;
@@ -147,7 +147,33 @@ class ClientProvider with ChangeNotifier {
         throw Exception("ERROR  DURING UPDATING");
       }
     } catch (e) {
-      print(e);
+      rethrow;
+    }
+  }
+
+
+  Future<void> toggleActiveClient(Map data) async {
+    final url = Uri.parse('${Urls.url}/egg-sell/update-client-data/');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+    final body = json.encode(data);
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        int index = _clients.indexWhere((item) => item.id == data['id']);
+        _clients[index].isActive = data['active'];
+        notifyListeners();
+      } else {
+        throw Exception("ERROR  DURING UPDATING");
+      }
+    } catch (e) {
       rethrow;
     }
   }
