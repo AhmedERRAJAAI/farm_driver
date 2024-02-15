@@ -60,7 +60,7 @@ class _EggStockScreenState extends State<EggStockScreen> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final instance = Provider.of<StockProvider>(context);
-    final globalStock = instance.stocks.where((element) => element.bat == null).last;
+    final globalStock = instance.stocks.where((element) => element.bat == null);
     final batsStock = instance.stocks.where((element) => element.bat != null);
     return Scaffold(
       appBar: AppBar(
@@ -106,48 +106,49 @@ class _EggStockScreenState extends State<EggStockScreen> {
                     ),
                   ],
                 )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      // height: deviceSize.height * 0.23,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.indigo, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(children: [
-                              Icon(
-                                MdiIcons.weatherNight,
-                                color: Colors.blue.shade800,
-                                size: 22,
-                              ),
-                              Text(
-                                "${globalStock.total}",
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
-                              ),
-                            ]),
-                            SizedBox(height: 30),
-                            StockClassList(globalStock: globalStock),
-                          ],
+          : SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.indigo, width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(children: [
+                                Icon(
+                                  MdiIcons.weatherNight,
+                                  color: Colors.blue.shade800,
+                                  size: 22,
+                                ),
+                                Text(
+                                  "${globalStock.last.total}",
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade800),
+                                ),
+                              ]),
+                              SizedBox(height: 30),
+                              StockClassList(globalStock: globalStock.last),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Column(
-                        children: batsStock.map((batStock) {
-                      return StockByBat(stock: batStock);
-                    }).toList()),
-                    SizedBox(height: 10)
-                  ],
+                      Column(
+                          children: batsStock.map((batStock) {
+                        return StockByBat(stock: batStock);
+                      }).toList()),
+                      SizedBox(height: 10)
+                    ],
+                  ),
                 ),
               ),
             ),

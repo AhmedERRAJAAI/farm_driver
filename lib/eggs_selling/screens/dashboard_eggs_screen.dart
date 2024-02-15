@@ -8,6 +8,9 @@ import './egg_clients_screen.dart';
 import './egg_all_operations_screen.dart';
 import './egg_stock_screen.dart';
 import '../widgets/dashboard_mouvements.dart';
+import 'package:provider/provider.dart';
+import '../providers/daily_price_provider.dart';
+import '../providers/mouvements_provider.dart';
 
 class EggsDashboard extends StatefulWidget {
   static const routeName = "egg-dashboard/";
@@ -18,6 +21,15 @@ class EggsDashboard extends StatefulWidget {
 }
 
 class _EggsDashboardState extends State<EggsDashboard> {
+  Future<void> _referesh() async {
+    try {
+      Provider.of<EggPrice>(context, listen: false).fetchDailyPrices(30, null, null);
+      Provider.of<MouvementProvider>(context, listen: false).fetchMouvments(count: 10, isEntree: false);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -82,13 +94,13 @@ class _EggsDashboardState extends State<EggsDashboard> {
                           children: [
                             Text(
                               "évolution du cours des oeufs (gros calibre)(DH)",
-                              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
+                              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400, fontSize: 12),
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text("voir plus +", style: TextStyle(decoration: TextDecoration.underline), textAlign: TextAlign.right),
-                              style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero)),
-                            ),
+                            // TextButton(
+                            //   onPressed: () {},
+                            //   child: Text("voir plus +", style: TextStyle(decoration: TextDecoration.underline), textAlign: TextAlign.right),
+                            //   style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero)),
+                            // ),
                           ],
                         ),
                       ),
@@ -132,7 +144,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
                       )),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -150,7 +162,7 @@ class _EggsDashboardState extends State<EggsDashboard> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               "Derniéres opérations",
                               style: TextStyle(color: Colors.blue),
                             ),

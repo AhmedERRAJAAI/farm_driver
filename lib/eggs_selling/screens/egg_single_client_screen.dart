@@ -32,7 +32,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      getClients(100);
+      getClients(50000);
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -69,7 +69,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
           isLoading = false;
           requestFailed = false;
         });
-        getClients(100);
+        getClients(50000);
         Navigator.of(context).pop();
       });
     } catch (e) {
@@ -99,7 +99,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
     setState(() {
       filterFisrtDate = null;
       filterLastDate = null;
-      getClients(100);
+      getClients(50000);
     });
   }
 
@@ -122,29 +122,29 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
           "${clientObj['name']}",
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return OperationsFilter(
-                      clientsOptions: null,
-                      clientGetter: null,
-                      clearFilter: clearFilter,
-                      firstDateGetter: filterFirstDateGetter,
-                      lastDateGetter: filterLastDateGetter,
-                      submitter: getClients,
-                    );
-                  });
-            },
-            icon: const Icon(
-              Icons.tune,
-              size: 24,
-            ),
-            color: Colors.white,
-          ),
-        ],
+        // actions: [
+        // IconButton(
+        //   onPressed: () {
+        //     showModalBottomSheet(
+        //         context: context,
+        //         builder: (context) {
+        //           return OperationsFilter(
+        //             clientsOptions: null,
+        //             clientGetter: null,
+        //             clearFilter: clearFilter,
+        //             firstDateGetter: filterFirstDateGetter,
+        //             lastDateGetter: filterLastDateGetter,
+        //             submitter: getClients,
+        //           );
+        //         });
+        //   },
+        //   icon: const Icon(
+        //     Icons.tune,
+        //     size: 24,
+        //   ),
+        //     color: Colors.white,
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: requestFailed
@@ -190,7 +190,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 "Solde = paiement - ventes",
                                 style: TextStyle(fontSize: 16, color: Colors.grey),
                               ),
@@ -208,7 +208,7 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
                     width: double.infinity,
                     child: CupertinoSegmentedControl(
                       padding: EdgeInsets.zero,
-                      children: {
+                      children: const {
                         0: Text('Transactions'),
                         1: Text('Ventes'),
                         2: Text('Encaissements'),
@@ -253,9 +253,12 @@ class _EggClientDetailScreenState extends State<EggClientDetailScreen> {
               isScrollControlled: true,
               context: context,
               builder: (context) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: AddPayment(clientId: clientObj['id'], submitter: forwardPayment),
+                return FractionallySizedBox(
+                  heightFactor: 0.7,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: AddPayment(clientId: clientObj['id'], submitter: forwardPayment),
+                  ),
                 );
               });
         },
@@ -279,8 +282,7 @@ class PaymentListItem extends StatelessWidget {
         networkImgDisplay(clientTrans.img_url ?? "", context);
       },
       child: GestureDetector(
-        onTap: (){
-        },
+        onTap: () {},
         child: Container(
           height: 40,
           decoration: BoxDecoration(
@@ -395,181 +397,191 @@ class _AddPaymentState extends State<AddPayment> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Form(
-          child: Column(
-            children: [
-              SizedBox(height: 6),
-              Text(
-                "Nouveau paiement",
-                style: TextStyle(color: const Color(0xFF145da0), fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 15),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => _showDialog(
-                    CupertinoDatePicker(
-                      initialDateTime: operationDate,
-                      maximumDate: DateTime.now(),
-                      mode: CupertinoDatePickerMode.dateAndTime,
-                      use24hFormat: true,
-                      onDateTimeChanged: (DateTime newDate) {
-                        setState(() => operationDate = newDate);
-                      },
-                    ),
-                  ),
-                  child: Text(
-                    "$operationDate",
-                    style: const TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 15.0,
-                    ),
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 6),
+                Text(
+                  "Nouveau paiement",
+                  style: TextStyle(color: const Color(0xFF145da0), fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-              ),
-              SizedBox(height: 6),
-              SizedBox(
-                height: 50,
-                child: TextFormField(
-                  textInputAction: TextInputAction.next,
-                  controller: amountContoller,
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Montant encaissé'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Champs requis";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(height: 6),
-              OperationSelect(
-                inputsOptions: paymentMethod,
-                name: "Mode de paiement",
-                getter: payMethodGetter,
-                borderColor: Colors.blue,
-              ),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      isPayed = !isPayed;
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Payé"),
-                      Checkbox(
-                        checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.resolveWith(getColor),
-                        value: isPayed,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isPayed = value!;
-                          });
+                SizedBox(height: 15),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        cancelText: 'Annuler',
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2010),
+                        lastDate: DateTime(2100),
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        locale: const Locale("fr"),
+                        builder: (BuildContext context, Widget? child) {
+                          return MediaQuery(
+                            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                            child: child ?? const Text(''),
+                          );
                         },
+                      ).then((value) {
+                        setState(() => operationDate = value ?? DateTime.now());
+                      });
+                    },
+                    child: Text(
+                      "${operationDate.day}/${operationDate.month}/${operationDate.year}",
+                      style: const TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 15.0,
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              (payMode == 1 || payMode == 2)
-                  ? SizedBox(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(height: 6),
+                SizedBox(
+                  height: 50,
+                  child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    controller: amountContoller,
+                    decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Montant encaissé'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Champs requis";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(height: 6),
+                OperationSelect(
+                  inputsOptions: paymentMethod,
+                  name: "Mode de paiement",
+                  getter: payMethodGetter,
+                  borderColor: Colors.blue,
+                ),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        isPayed = !isPayed;
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Importer des images"),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  _pickImage();
-                                },
-                                child: Icon(
-                                  Icons.publish,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  _takeImage();
-                                },
-                                child: Icon(
-                                  Icons.photo_camera,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text("Payé"),
+                        Checkbox(
+                          checkColor: Colors.white,
+                          fillColor: MaterialStateProperty.resolveWith(getColor),
+                          value: isPayed,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isPayed = value!;
+                            });
+                          },
                         ),
-                        Container(
-                          decoration: BoxDecoration(border: Border.all(color: Colors.amber)),
-                          height: 100,
-                          width: double.infinity,
-                          child: Center(
-                            child: _selectedImage != null
-                                ? GestureDetector(
-                                    onTap: () {
-                                      imageViewModal(_selectedImage, context);
-                                    },
-                                    child: Image.file(
-                                      _selectedImage!,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  )
-                                : Text("selectioner une image"),
-                          ),
-                        )
                       ],
-                    ))
-                  : SizedBox(),
-              SizedBox(height: 20),
-              SizedBox(
-                width: 130,
-                height: 40,
-                child: OutlinedButton(
-                  onPressed: () {
-                    widget.submitter(
-                      _selectedImage,
-                      {
-                        "date": operationDate.toString(),
-                        "amount": amountContoller.text,
-                        "client": widget.clientId,
-                        "payMode": payMode,
-                        "isPayed": isPayed,
-                      },
-                    );
-                  },
-                  child: Text(
-                    "Enregistrer",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Colors.orange,
-                    ),
-                    side: MaterialStateProperty.all<BorderSide>(
-                      BorderSide(
-                        color: Colors.orange.shade800,
-                        width: 1.0,
-                      ),
                     ),
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 15,
+                ),
+                (payMode == 1 || payMode == 2)
+                    ? SizedBox(
+                        child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Importer des images"),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    _pickImage();
+                                  },
+                                  child: Icon(
+                                    Icons.publish,
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    _takeImage();
+                                  },
+                                  child: Icon(
+                                    Icons.photo_camera,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            decoration: BoxDecoration(border: Border.all(color: Colors.amber)),
+                            height: 100,
+                            width: double.infinity,
+                            child: Center(
+                              child: _selectedImage != null
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        imageViewModal(_selectedImage, context);
+                                      },
+                                      child: Image.file(
+                                        _selectedImage!,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    )
+                                  : Text("selectioner une image"),
+                            ),
+                          )
+                        ],
+                      ))
+                    : SizedBox(),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: 130,
+                  height: 40,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      widget.submitter(
+                        _selectedImage,
+                        {
+                          "date": operationDate.toString(),
+                          "amount": amountContoller.text,
+                          "client": widget.clientId,
+                          "payMode": payMode,
+                          "isPayed": isPayed,
+                        },
+                      );
+                    },
+                    child: Text(
+                      "Enregistrer",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.orange,
+                      ),
+                      side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(
+                          color: Colors.orange.shade800,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

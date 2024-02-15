@@ -16,11 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!--  -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <permission
         android:name="com.example.farm_driver_eggs.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -76,28 +71,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/flutter_image_picker_file_paths" />
         </provider>
-
-        <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
-            android:exported="false" />
-        <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
-            android:exported="false" />
-        <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <uses-library
             android:name="androidx.window.extensions"

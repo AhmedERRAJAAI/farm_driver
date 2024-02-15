@@ -43,6 +43,7 @@ class Batiment {
 }
 
 class Mouvement {
+  final bool isSortie;
   final int id;
   final String date;
   final int qty;
@@ -52,6 +53,7 @@ class Mouvement {
   final String? bat;
 
   Mouvement({
+    required this.isSortie,
     required this.pu,
     required this.id,
     required this.date,
@@ -206,6 +208,7 @@ class MouvementProvider with ChangeNotifier {
         for (var item in fetchedData) {
           gotRecords.add(
             Mouvement(
+              isSortie: !isEntree,
               id: item['id'],
               qty: item['qty'],
               pu: item['pu'],
@@ -323,12 +326,8 @@ class MouvementProvider with ChangeNotifier {
     }
   }
 
-
-
-
-
   Future<void> fetchDateMouvements({required String date}) async {
-    final url =  Uri.parse('${Urls.url}/egg-sell/get-date-sorties/?date=$date');
+    final url = Uri.parse('${Urls.url}/egg-sell/get-date-sorties/?date=$date');
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userdata')) {
       return;
@@ -352,6 +351,7 @@ class MouvementProvider with ChangeNotifier {
         for (var item in fetchedData) {
           gotRecords.add(
             Mouvement(
+              isSortie: true,
               id: item['id'],
               qty: item['qty'],
               pu: item['pu'],
@@ -373,5 +373,60 @@ class MouvementProvider with ChangeNotifier {
     }
   }
 
+  Future<void> deleteSortie({required id}) async {
+    final url = Uri.parse('${Urls.url}/egg-sell/delete-sortie/?id=$id');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Mouvement index = _mouvements.firstWhere((item) => (item.id == id && item.isSortie == true));
+        _mouvements.remove(index);
+        notifyListeners();
+      } else {
+        throw Exception("ERROR  DURING FETCHING CODE: ${response.statusCode}");
+      }
+    } catch (e) {
+      throw Exception("ERROR  DURING FETCHING");
+    }
+  }
 
+  Future<void> deleteEntree({required id}) async {
+    final url = Uri.parse('${Urls.url}/egg-sell/delete-entree/?id=$id');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userdata')) {
+      return;
+    }
+    final accessToken = jsonDecode(prefs.getString('userdata') ?? '')['token'];
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Mouvement index = _mouvements.firstWhere((item) => (item.id == id && item.isSortie == false));
+        _mouvements.remove(index);
+        notifyListeners();
+      } else {
+        throw Exception("ERROR  DURING FETCHING CODE: ${response.statusCode}");
+      }
+    } catch (e) {
+      print(e);
+      throw Exception("ERROR  DURING FETCHING");
+    }
+  }
 }

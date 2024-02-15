@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 import '../constants.dart';
+import './forms/sortie_form.dart';
 
 class SortieDetailsScreen extends StatefulWidget {
   const SortieDetailsScreen({super.key});
@@ -26,13 +28,13 @@ class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      getMouvementDetails(30);
+      getMouvementDetails();
     }
     _isInit = false;
     super.didChangeDependencies();
   }
 
-  void getMouvementDetails(period) async {
+  void getMouvementDetails() async {
     final operId = ModalRoute.of(context)!.settings.arguments as Map;
     setState(() {
       isLoading = true;
@@ -69,20 +71,14 @@ class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
           "Operation details",
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
         ),
+        centerTitle: true,
         actions: [
-          PopupMenuButton(
-            onSelected: (selectedVal) {},
-            icon: Icon(
-              Icons.more_vert,
-              color: Theme.of(context).primaryColor,
-            ),
-            itemBuilder: (_) => [
-              const PopupMenuItem(
-                value: 0,
-                child: Text("Télécharger PDF"),
-              ),
-            ],
-          ),
+   
+          isLoading
+              ? const CupertinoActivityIndicator(
+                  color: Colors.white,
+                )
+              : const SizedBox()
         ],
       ),
       body: SingleChildScrollView(
@@ -92,7 +88,7 @@ class _SortieDetailsScreenState extends State<SortieDetailsScreen> {
               ? SizedBox(
                   height: deviceSize.height,
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: CupertinoActivityIndicator(),
                   ),
                 )
               : requestFailed

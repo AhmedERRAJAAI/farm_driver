@@ -32,14 +32,14 @@ List<String> immLetters = <String>[
   ];
 
   List<SelectOption> operationOptions = [
-    SelectOption(id: 0, value: "Vente"),
-    SelectOption(id: 2, value: "Gratuit"),
-    SelectOption(id: 3, value: "Accident"),
-    SelectOption(id: 4, value: "Change"),
+    SelectOption(id: 0, value: "Vente (بيع)"),
+    SelectOption(id: 2, value: "Gratuit (مجاني)"),
+    SelectOption(id: 3, value: "Accident (حادثة)"),
+    SelectOption(id: 4, value: "Change (تغيير)"),
   ];
   List<SelectOption> classOptions = [
-    SelectOption(id: 0, value: "Normaux"),
-    SelectOption(id: 1, value: "Double jaune"),
+    SelectOption(id: 0, value: "Normaux (G)"),
+    SelectOption(id: 1, value: "Double jaune (DJ)"),
     SelectOption(id: 2, value: "Blancs"),
     SelectOption(id: 4, value: "Cassés"),
     SelectOption(id: 5, value: "Félés"),

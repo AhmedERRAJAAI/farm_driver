@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/operation_list_item.dart';
-import '../widgets/drop_down_select.dart';
-import '../widgets/dates_filter.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 
@@ -27,7 +25,7 @@ class _EggAllOperationsState extends State<EggAllOperations> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      getDaysPrices(100);
+      getDaysPrices(30000);
     }
     _isInit = false;
     super.didChangeDependencies();

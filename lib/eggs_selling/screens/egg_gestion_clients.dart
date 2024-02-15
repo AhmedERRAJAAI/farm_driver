@@ -168,18 +168,24 @@ class _ManageClientListItemState extends State<ManageClientListItem> {
                       "active": !widget.client.isActive
                     });
                   },
-                  icon: Icon(
-                    Icons.person_off,
-                    size: 20,
-                    color: Colors.grey,
-                  ),
+                  icon: widget.client.isActive
+                      ? const Icon(
+                          Icons.person,
+                          size: 20,
+                          color: Colors.green,
+                        )
+                      : const Icon(
+                          Icons.person_off,
+                          size: 20,
+                          color: Colors.grey,
+                        ),
                 ),
                 IconButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        content: ClientDataModal(client: widget.client),
+                        content: SingleChildScrollView(child: ClientDataModal(client: widget.client)),
                         actions: <Widget>[
                           TextButton(
                             child: Text(
@@ -244,8 +250,8 @@ class _AddClientState extends State<AddClient> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 350,
+    return SizedBox(
+      height: 450,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Form(
@@ -301,12 +307,6 @@ class _AddClientState extends State<AddClient> {
                     controller: fname,
                     decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Prénom'),
                     keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Champs requis";
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -502,12 +502,6 @@ class _ClientDataModalState extends State<ClientDataModal> {
                   controller: fname,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Champs requis";
-                    }
-                    return null;
-                  },
                 ),
               ),
             ],
@@ -525,12 +519,6 @@ class _ClientDataModalState extends State<ClientDataModal> {
                   controller: phone,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Champs requis";
-                    }
-                    return null;
-                  },
                 ),
               ),
             ],
@@ -548,14 +536,6 @@ class _ClientDataModalState extends State<ClientDataModal> {
                   controller: email,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.emailAddress,
-                  validator: ((value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Email est invalide';
-                    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
-                      return 'Entrer une adresse e-mail valide';
-                    }
-                    return null;
-                  }),
                 ),
               ),
             ],

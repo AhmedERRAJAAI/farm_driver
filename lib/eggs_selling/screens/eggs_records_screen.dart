@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../providers/mouvements_provider.dart';
 import '../constants.dart';
-import '../widgets/dates_filter.dart';
 
 class EggMouvementRecords extends StatefulWidget {
   const EggMouvementRecords({super.key});
@@ -77,6 +76,26 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
     });
   }
 
+  void deleteMouvment(id, isEntree) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      if (isEntree) {
+        await Provider.of<MouvementProvider>(context, listen: false).deleteEntree(id: id).then((_) {
+          isLoading = false;
+        });
+      } else {
+        await Provider.of<MouvementProvider>(context, listen: false).deleteSortie(id: id).then((_) {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      isLoading = false;
+      requestFailed = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List mouvments = Provider.of<MouvementProvider>(context).mouvements;
@@ -94,27 +113,11 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
         ),
         actions: [
-          // IconButton(
-          //   onPressed: () {
-          //     showModalBottomSheet(
-          //         context: context,
-          //         builder: (context) {
-          //           return OperationsFilter(
-          //             clientsOptions: null,
-          //             clientGetter: null,
-          //             clearFilter: clearFilter,
-          //             firstDateGetter: filterFirstDateGetter,
-          //             lastDateGetter: filterLastDateGetter,
-          //             submitter: getSortiesEntrees,
-          //           );
-          //         });
-          //   },
-          //   icon: const Icon(
-          //     Icons.tune,
-          //     size: 24,
-          //   ),
-          //   color: Colors.white,
-          // ),
+          isLoading
+              ? const CupertinoActivityIndicator(
+                  color: Colors.white,
+                )
+              : const SizedBox()
         ],
       ),
       body: Padding(
@@ -172,6 +175,7 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
                           itemCount: mouvments.length,
                           itemBuilder: ((context, i) {
                             return RecordListItem(
+                              deleteRecord: deleteMouvment,
                               themeColor: selectedPage == 0 ? Colors.blue.shade100 : Colors.green.shade200,
                               client: mouvments[i].client,
                               date: mouvments[i].date,
@@ -189,6 +193,7 @@ class _EggMouvementRecordsState extends State<EggMouvementRecords> {
 }
 
 class RecordListItem extends StatelessWidget {
+  final Function deleteRecord;
   final Color themeColor;
   final String? client;
   final int id;
@@ -198,6 +203,7 @@ class RecordListItem extends StatelessWidget {
   final bool isEntree;
   const RecordListItem({
     super.key,
+    required this.deleteRecord,
     required this.id,
     required this.client,
     required this.date,
@@ -217,6 +223,38 @@ class RecordListItem extends StatelessWidget {
           arguments: {
             'operation_id': id
           },
+        );
+      },
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: const Text(
+              "supprimer cet enregistrement ?",
+              style: TextStyle(color: Colors.red),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'Confirmer',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                onPressed: () {
+                  deleteRecord(id, isEntree);
+                  Navigator.of(ctx).pop();
+                },
+              ),
+              TextButton(
+                child: const Text(
+                  'Annuler',
+                  style: TextStyle(fontSize: 16, color: Colors.green),
+                ),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              ),
+            ],
+          ),
         );
       },
       child: Container(
